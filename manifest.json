@@ -1,0 +1,41 @@
+{
+  "name": "మీసేవ డైరెక్టరీ — Telangana",
+  "short_name": "మీసేవ",
+  "description": "Telangana MeeSeva Centers Directory — Find centers across all 33 districts with one tap",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#c94b0a",
+  "theme_color": "#c94b0a",
+  "lang": "te",
+  "categories": ["government", "utilities", "productivity"],
+  "icons": [
+    { "src": "icons/icon-72x72.png",   "sizes": "72x72",   "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-96x96.png",   "sizes": "96x96",   "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-128x128.png", "sizes": "128x128", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-144x144.png", "sizes": "144x144", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-152x152.png", "sizes": "152x152", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-384x384.png", "sizes": "384x384", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Directory వెతకండి",
+      "short_name": "Search",
+      "description": "MeeSeva Centers వెతకండి",
+      "url": "/?screen=dir",
+      "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "List Now — Join",
+      "short_name": "Join",
+      "description": "మీ Center list చేయండి",
+      "url": "/?screen=join",
+      "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
+}
