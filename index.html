@@ -306,7 +306,16 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .jh-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:20px;padding:4px 13px;font-size:11px;font-weight:500;margin-bottom:12px}
 .jh-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:5px;line-height:1.2}
 .jh-sub{font-size:13px;color:rgba(255,255,255,.8)}
-.join-form{padding:14px 14px 74px}
+.join-form{padding:14px 14px 30px}
+.svc-cat-title{font-size:10.5px;font-weight:700;color:var(--saf2);text-transform:uppercase;letter-spacing:.5px;margin:10px 0 6px;display:flex;align-items:center;gap:5px}
+.svc-cat-title::after{content:'';flex:1;height:1px;background:var(--line2)}
+.svc-chk-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.svc-chk{display:flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--line);border-radius:7px;padding:7px 9px;cursor:pointer;font-size:11.5px;color:var(--t2);transition:.12s;user-select:none}
+.svc-chk:hover{border-color:var(--saf2);background:var(--saf4)}
+.svc-chk.checked{background:var(--saf3);border-color:var(--saf2);color:var(--saf)}
+.svc-chk input{accent-color:var(--saf2);flex-shrink:0;width:15px;height:15px}
+.custom-tag{display:inline-flex;align-items:center;gap:4px;background:var(--saf3);border:1px solid var(--saf2);color:var(--saf);border-radius:20px;padding:3px 10px;font-size:11.5px;font-weight:500}
+.custom-tag button{background:none;border:none;color:var(--saf);cursor:pointer;font-size:14px;line-height:1;padding:0}
 .jf-group{margin-bottom:13px}
 .jf-label{font-size:10.5px;font-weight:700;color:var(--t2);letter-spacing:.4px;text-transform:uppercase;margin-bottom:5px}
 .jf-inp{width:100%;background:var(--card);border:1.5px solid var(--line2);color:var(--t1);border-radius:var(--r2);padding:10px 12px;font-size:14px;font-family:inherit;outline:none}
@@ -316,11 +325,9 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .jf-area{width:100%;background:var(--card);border:1.5px solid var(--line2);color:var(--t1);border-radius:var(--r2);padding:10px 12px;font-size:14px;font-family:inherit;outline:none;resize:none}
 .jf-area:focus{border-color:var(--saf2)}
 .jf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.svc-chk-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px}
-.svc-chk{display:flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--line);border-radius:7px;padding:7px 9px;cursor:pointer;font-size:11.5px;color:var(--t2)}
-.svc-chk input{accent-color:var(--saf2);flex-shrink:0}
-.btn-sub{width:100%;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(232,97,14,.3);display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-sub{width:100%;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:15px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 18px rgba(232,97,14,.35);display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-sub svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2}
+.btn-sub:active{transform:scale(.98)}
 
 /* ═══════════════ ADMIN SCREEN ═══════════════ */
 .admin-lock{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;gap:14px;text-align:center}
@@ -546,9 +553,34 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
       <div class="jf-group"><div class="jf-label">గ్రామం / ప్రాంతం *</div><input class="jf-inp" id="jf_village" placeholder="మీ గ్రామం లేదా ప్రాంతం"></div>
       <div class="jf-group"><div class="jf-label">WhatsApp (optional)</div><input class="jf-inp" id="jf_wa" type="tel" placeholder="WhatsApp నంబర్"></div>
       <div class="jf-group"><div class="jf-label">పూర్తి చిరునామా *</div><textarea class="jf-area" id="jf_addr" rows="2" placeholder="Shop no, Street, Village, Mandal, District"></textarea></div>
-      <div class="jf-group"><div class="jf-label">అందించే సేవలు</div><div class="svc-chk-grid" id="svcChkGrid"></div></div>
+      <!-- SERVICES SECTION -->
+      <div class="jf-group">
+        <div class="jf-label">అందించే సేవలు <span style="color:var(--t3);font-weight:400;text-transform:none;font-size:10px">(అన్నీ select చేయవచ్చు)</span></div>
+        <!-- Category wise services -->
+        <div id="svcCatWrap"></div>
+        <!-- Custom service add -->
+        <div style="margin-top:10px;background:var(--bg2);border:1px solid var(--line2);border-radius:var(--r2);padding:10px 12px">
+          <div style="font-size:11px;color:var(--t3);font-weight:600;margin-bottom:7px;text-transform:uppercase;letter-spacing:.4px">➕ Custom సేవ add చేయండి</div>
+          <div style="display:flex;gap:7px">
+            <input class="jf-inp" id="customSvc" placeholder="e.g. Caste Validity Certificate..." style="flex:1;margin:0">
+            <button onclick="addCustomSvc()" style="background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:0 14px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0">Add</button>
+          </div>
+          <div id="customSvcList" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px"></div>
+        </div>
+        <!-- Selected count -->
+        <div style="margin-top:8px;font-size:12px;color:var(--grn);font-weight:500" id="svcSelectedCount">0 సేవలు selected</div>
+      </div>
+
       <div class="jf-group"><div class="jf-label">పని వేళలు</div><input class="jf-inp" id="jf_hours" placeholder="e.g. 9am – 6pm, Mon-Sat"></div>
-      <div style="margin-top:4px"><button class="btn-sub" onclick="submitJoin()"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Submit చేయండి</button></div>
+
+      <!-- SUBMIT BUTTON - clearly visible, above bottom nav -->
+      <div style="margin-top:18px;padding-bottom:4px">
+        <button class="btn-sub" onclick="submitJoin()">
+          <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          Submit చేయండి — List Now!
+        </button>
+        <div style="text-align:center;font-size:11px;color:var(--t3);margin-top:8px">* అన్ని required fields fill చేయాలి · Free listing · 24hrs లో activate</div>
+      </div>
     </div>
   </div>
 </div>
@@ -609,7 +641,7 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 /* ══════════════════════════════════════════
    CONFIG
 ══════════════════════════════════════════ */
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS41Q9pp_LZJIADtQUHlr2Leshl0t_j8MJfyw4akayunKoBPX6b2inf0_Ll6guocxqNbgvN8n7IsMgX/pub?output=csv";
+const SHEET_URL = "YOUR_GOOGLE_SHEET_CSV_URL_HERE";
 // Columns: Name|District|Mandal|Village|Phone|WhatsApp|Address|Lat|Lng|Photo|Services|Hours|Rating|Trusted|Verified|Description
 const ADMIN_PWD = "meeseva2025";
 
@@ -1058,30 +1090,160 @@ function rateC(id,val){
 }
 
 /* ══ JOIN ══ */
+/* ══ SERVICES CATEGORIES ══ */
+const SVC_CATS = {
+  "📜 Certificates": [
+    "Income Certificate","Caste Certificate","Residence Certificate",
+    "Date of Birth Certificate","Marriage Certificate","Death Certificate",
+    "Nativity Certificate","Caste & Income Certificate","Caste Validity Certificate",
+  ],
+  "🪪 Identity & Documents": [
+    "Aadhaar Services","PAN Card","Passport","Driving Licence",
+    "Voter ID","Ration Card","Family Member Certificate",
+  ],
+  "🏡 Land & Revenue": [
+    "Land Records (Pahani)","Mutation (Daakhal)","Registration Services",
+    "Encumbrance Certificate","Survey Records","Patta Passbook",
+  ],
+  "💰 Welfare & Pensions": [
+    "Old Age Pension","Aasara Pension","Widow Pension","Disability Pension",
+    "Rythu Bandhu","Rythu Bheema","KCR Kit","NREGA Job Card",
+  ],
+  "🎓 Education & Scholarships": [
+    "EPASS Scholarship","BC Scholarship","Minority Scholarship",
+    "Fee Reimbursement","Admission Forms","Hall Ticket Download",
+  ],
+  "🏥 Health & Insurance": [
+    "Aarogyasri","PM Jan Arogya Yojana","Health Card","Disability Certificate",
+  ],
+  "💡 Utility Bill Payments": [
+    "Electricity Bill","Water Bill","Property Tax","Phone/DTH Recharge",
+    "Traffic Challan Payment","RTA Services",
+  ],
+  "📋 Other Services": [
+    "GST Registration","Udyog Aadhaar","Shop & Establishment Licence",
+    "Driving Licence Renewal","Vehicle RC","NOC Certificate",
+  ],
+};
+
+let customServices = [];
+
 function renderSvcChecks(){
-  document.getElementById("svcChkGrid").innerHTML=MS_SERVICES.slice(0,12).map(s=>`
-    <label class="svc-chk"><input type="checkbox" value="${s}"> ${s}</label>`).join("");
+  const wrap = document.getElementById("svcCatWrap");
+  wrap.innerHTML = "";
+  Object.entries(SVC_CATS).forEach(([cat, services])=>{
+    const catDiv = document.createElement("div");
+    catDiv.innerHTML = `<div class="svc-cat-title">${cat}</div><div class="svc-chk-grid">${
+      services.map(s=>`
+        <label class="svc-chk" onclick="toggleSvc(this)">
+          <input type="checkbox" value="${s}" style="pointer-events:none"> ${s}
+        </label>`).join("")
+    }</div>`;
+    wrap.appendChild(catDiv);
+  });
+  updateSvcCount();
 }
+
+function toggleSvc(label){
+  const chk = label.querySelector("input");
+  chk.checked = !chk.checked;
+  label.className = chk.checked ? "svc-chk checked" : "svc-chk";
+  updateSvcCount();
+}
+
+function addCustomSvc(){
+  const inp = document.getElementById("customSvc");
+  const val = inp.value.trim();
+  if(!val){ showToast("⚠️ Service పేరు type చేయండి"); return; }
+  if(customServices.includes(val)){ showToast("ఈ service already add అయింది"); inp.value=""; return; }
+  customServices.push(val);
+  renderCustomTags();
+  inp.value = "";
+  updateSvcCount();
+}
+
+function removeCustomSvc(idx){
+  customServices.splice(idx,1);
+  renderCustomTags();
+  updateSvcCount();
+}
+
+function renderCustomTags(){
+  document.getElementById("customSvcList").innerHTML = customServices.map((s,i)=>
+    `<span class="custom-tag">${s} <button onclick="removeCustomSvc(${i})" aria-label="Remove">×</button></span>`
+  ).join("");
+}
+
+function updateSvcCount(){
+  const checked = document.querySelectorAll("#svcCatWrap input:checked").length;
+  const total = checked + customServices.length;
+  const el = document.getElementById("svcSelectedCount");
+  if(el) el.textContent = total > 0 ? `✅ ${total} సేవలు selected` : "0 సేవలు selected";
+}
+
 function submitJoin(){
-  const name=document.getElementById("jf_name").value.trim();
-  const phone=document.getElementById("jf_phone").value.trim();
-  const center=document.getElementById("jf_center").value.trim();
-  const dist=document.getElementById("jf_dist").value;
-  const mandal=document.getElementById("jf_mandal").value;
-  const village=document.getElementById("jf_village").value.trim();
-  const addr=document.getElementById("jf_addr").value.trim();
-  if(!name||!phone||!center||!dist||!mandal||!village||!addr){showToast("⚠️ అన్ని * fields fill చేయండి");return;}
-  if(!/^\d{10}$/.test(phone)){showToast("⚠️ Valid 10-digit phone number enter చేయండి");return;}
-  const p=JSON.parse(localStorage.getItem("ms_pend")||"[]");
-  const svcs=[...document.querySelectorAll("#svcChkGrid input:checked")].map(x=>x.value);
-  p.push({name,phone,center,dist,mandal,village,addr,svcs,ts:Date.now()});
-  localStorage.setItem("ms_pend",JSON.stringify(p));
+  const name    = document.getElementById("jf_name").value.trim();
+  const phone   = document.getElementById("jf_phone").value.trim();
+  const center  = document.getElementById("jf_center").value.trim();
+  const dist    = document.getElementById("jf_dist").value;
+  const mandal  = document.getElementById("jf_mandal").value;
+  const village = document.getElementById("jf_village").value.trim();
+  const addr    = document.getElementById("jf_addr").value.trim();
+
+  // Validation
+  if(!name)   { showToast("⚠️ Operator పేరు enter చేయండి"); return; }
+  if(!phone)  { showToast("⚠️ Phone number enter చేయండి"); return; }
+  if(!/^\d{10}$/.test(phone)){ showToast("⚠️ Valid 10-digit phone number enter చేయండి"); return; }
+  if(!center) { showToast("⚠️ Center పేరు enter చేయండి"); return; }
+  if(!dist)   { showToast("⚠️ జిల్లా select చేయండి"); return; }
+  if(!mandal) { showToast("⚠️ మండలం select చేయండి"); return; }
+  if(!village){ showToast("⚠️ గ్రామం / ప్రాంతం enter చేయండి"); return; }
+  if(!addr)   { showToast("⚠️ పూర్తి చిరునామా enter చేయండి"); return; }
+
+  const checkedSvcs = [...document.querySelectorAll("#svcCatWrap input:checked")].map(x=>x.value);
+  const allSvcs = [...checkedSvcs, ...customServices];
+  const hours = document.getElementById("jf_hours").value.trim();
+  const wa    = document.getElementById("jf_wa").value.trim();
+
+  const entry = {name,phone,center,dist,mandal,village,addr,wa,svcs:allSvcs,hours,ts:Date.now(),status:"pending"};
+  const p = JSON.parse(localStorage.getItem("ms_pend")||"[]");
+  p.push(entry);
+  localStorage.setItem("ms_pend", JSON.stringify(p));
+
+  // WhatsApp message to admin
+  const waMsg = encodeURIComponent(
+    `🆕 *New MeeSeva Listing Request*\n\n`+
+    `👤 *Operator:* ${name}\n`+
+    `📞 *Phone:* ${phone}\n`+
+    `🏛️ *Center:* ${center}\n`+
+    `📍 *Location:* ${village}, ${mandal}, ${dist}\n`+
+    `🕒 *Hours:* ${hours||"Not specified"}\n`+
+    `🛠️ *Services (${allSvcs.length}):* ${allSvcs.join(", ")||"Not specified"}\n\n`+
+    `📌 *Address:* ${addr}\n\n`+
+    `_via LISTNLIVE MeeSeva Directory_`
+  );
+
   document.getElementById("joinFormWrap").innerHTML=`
-    <div style="text-align:center;padding:50px 20px">
-      <div style="font-size:60px;margin-bottom:16px">✅</div>
+    <div style="text-align:center;padding:50px 20px 30px">
+      <div style="font-size:64px;margin-bottom:16px">✅</div>
       <div style="font-size:19px;font-weight:700;color:var(--t1);margin-bottom:8px">Successfully Submitted!</div>
-      <div style="font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:24px">మీ application review చేసి<br>24 గంటల్లో contact చేస్తాం.<br>📞 9948770651</div>
-      <button onclick="location.reload()" style="background:var(--saf2);border:none;color:#fff;border-radius:9px;padding:12px 30px;font-size:14px;font-weight:700;cursor:pointer">OK</button>
+      <div style="font-size:14px;color:var(--t2);line-height:1.8;margin-bottom:8px">
+        మీ application review చేసి<br><b style="color:var(--t1)">24 గంటల్లో</b> contact చేస్తాం.
+      </div>
+      <div style="background:var(--grn3);border:1px solid var(--grn2);border-radius:var(--r);padding:12px;margin:14px 0;text-align:left">
+        <div style="font-size:11px;color:var(--grn);font-weight:700;margin-bottom:6px">✅ Selected Services (${allSvcs.length}):</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.8">${allSvcs.length?allSvcs.map(s=>`• ${s}`).join("<br>"):"No services selected"}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px;margin-top:14px">
+        <a href="https://wa.me/919948770651?text=${waMsg}" target="_blank"
+          style="display:flex;align-items:center;justify-content:center;gap:8px;background:#1da84f;border:none;color:#fff;border-radius:var(--r2);padding:13px;font-size:14px;font-weight:700;text-decoration:none">
+          💬 WhatsApp లో Confirm చేయండి
+        </a>
+        <button onclick="location.reload()" style="background:var(--bg3);border:1px solid var(--line2);color:var(--t2);border-radius:var(--r2);padding:11px;font-size:14px;cursor:pointer;font-family:inherit">
+          Home కి వెళ్ళండి
+        </button>
+      </div>
+      <div style="font-size:11px;color:var(--t3);margin-top:12px">📞 9948770651 · Hyderabad</div>
     </div>`;
 }
 
