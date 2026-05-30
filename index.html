@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#b8400a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>మీసేవ డైరెక్టరీ — Telangana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+/* ═══════════════════════════════════════════
+   ROOT — MeeSeva Saffron+Green+Gold Theme
+═══════════════════════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --saf:#c94b0a; --saf2:#e8610e; --saf3:#fde8d8; --saf4:#fff2ea;
+  --grn:#1a7a3e; --grn2:#22a050; --grn3:#d4f0e1; --grn4:#edf9f3;
+  --gld:#d4880a; --gld2:#f5a623; --gld3:#fef3cd;
+  --bg:#fffcf8; --bg2:#fff7f0; --bg3:#fef0e3; --card:#ffffff;
+  --line:#f0e4d8; --line2:#e2cdb8; --line3:#cdb090;
+  --t1:#1a0f05; --t2:#4a3525; --t3:#8a6a55; --t4:#b89a85;
+  --red:#dc2626; --redbg:#fef2f2; --blue:#1d4ed8; --bluebg:#eff6ff;
+  --r:13px; --r2:9px; --r3:6px;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(--t1);line-height:1.5}
+
+/* ═══════════════ APP SHELL ═══════════════ */
+#app{display:flex;flex-direction:column;height:100dvh;max-width:440px;margin:0 auto;background:var(--bg);overflow:hidden;position:relative;box-shadow:0 0 60px rgba(200,75,10,.1)}
+
+/* ═══════════════ SCREENS ═══════════════ */
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden}
+.screen.on{display:flex;animation:fadeIn .15s ease}
+@keyframes fadeIn{from{opacity:.5}to{opacity:1}}
+
+/* ═══════════════ NEWS TICKER ═══════════════ */
+.ticker-wrap{background:var(--grn);display:flex;align-items:center;overflow:hidden;flex-shrink:0;height:28px}
+.ticker-label{background:var(--saf2);color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.8px;padding:0 10px;height:100%;display:flex;align-items:center;white-space:nowrap;flex-shrink:0}
+.ticker-scroll{flex:1;overflow:hidden}
+.ticker-inner{display:inline-flex;white-space:nowrap;animation:ticker 45s linear infinite}
+.ticker-inner:hover{animation-play-state:paused}
+.ticker-item{font-size:11px;color:#fff;padding:0 18px;display:inline-flex;align-items:center;gap:6px;height:28px;border-right:1px solid rgba(255,255,255,.2)}
+.ticker-item::before{content:'●';font-size:7px;color:var(--gld2)}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ═══════════════ TOP BAR ═══════════════ */
+.top-bar{background:linear-gradient(135deg,#b8390a 0%,#c94b0a 55%,#d85f10 100%);padding:10px 14px 9px;flex-shrink:0;box-shadow:0 2px 14px rgba(200,75,10,.3)}
+.tb-r1{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.ms-brand{display:flex;align-items:center;gap:9px;cursor:pointer}
+.ms-logo{width:36px;height:36px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ms-logo svg{width:22px;height:22px;fill:#fff}
+.ms-n1{font-size:16px;font-weight:800;color:#fff;letter-spacing:.2px;line-height:1}
+.ms-n2{font-size:9px;color:rgba(255,255,255,.65);letter-spacing:.6px;text-transform:uppercase;margin-top:2px}
+.tb-icons{display:flex;gap:7px}
+.tb-ico{width:32px;height:32px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;position:relative}
+.tb-ico svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.notif-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;background:var(--gld2);border-radius:50%;border:1.5px solid #c94b0a}
+.tb-srch{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:var(--r2);padding:0 12px;backdrop-filter:blur(4px)}
+.tb-srch svg{width:14px;height:14px;stroke:rgba(255,255,255,.8);fill:none;stroke-width:2;flex-shrink:0}
+.tb-srch input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:13px;padding:8px 0;font-family:inherit}
+.tb-srch input::placeholder{color:rgba(255,255,255,.55)}
+
+/* ═══════════════ SCROLL BODY ═══════════════ */
+.scroll-body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:74px}
+.scroll-body::-webkit-scrollbar{width:2px}
+.scroll-body::-webkit-scrollbar-thumb{background:var(--line2)}
+
+/* ═══════════════ VISITOR BANNER ═══════════════ */
+.vis-banner{background:linear-gradient(90deg,var(--grn) 0%,var(--grn2) 100%);padding:9px 14px;display:flex;align-items:center;justify-content:space-between}
+.vb-l{display:flex;align-items:center;gap:9px}
+.vb-l svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:1.8;flex-shrink:0}
+.vb-label{font-size:10.5px;color:rgba(255,255,255,.8);margin-bottom:1px}
+.vb-num{font-size:22px;font-weight:800;color:#fff;line-height:1}
+.vb-sub{font-size:9.5px;color:rgba(255,255,255,.65)}
+.vb-r{text-align:right}
+.vb-rt{font-size:10px;color:rgba(255,255,255,.65)}
+.vb-rv{font-size:12px;color:#fff;font-weight:600;margin-top:2px}
+
+/* ═══════════════ STATS ROW ═══════════════ */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:11px 11px 0}
+.stat-c{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:10px 8px;text-align:center;box-shadow:0 1px 5px rgba(200,75,10,.06)}
+.stat-n{font-size:22px;font-weight:800;color:var(--saf2)}
+.stat-n.g{color:var(--grn)}
+.stat-n.gold{color:var(--gld)}
+.stat-l{font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+
+/* ═══════════════ SECTION HEADER ═══════════════ */
+.sec{padding:14px 12px 0}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sec-title{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:700;color:var(--t1)}
+.sec-bar{width:4px;height:18px;background:var(--saf2);border-radius:4px}
+.sec-more{font-size:12px;color:var(--saf2);cursor:pointer;font-weight:500}
+
+/* ═══════════════ QUICK CATEGORY GRID ═══════════════ */
+.qcat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px}
+.qcat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:11px 6px;text-align:center;cursor:pointer;transition:.13s;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.qcat:active{transform:scale(.94)}
+.qcat-em{font-size:23px;margin-bottom:4px}
+.qcat-lb{font-size:10.5px;color:var(--t2);font-weight:500;line-height:1.2}
+
+/* ═══════════════ NOTIFICATION CARD ═══════════════ */
+.hor-scroll{display:flex;gap:9px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.hor-scroll::-webkit-scrollbar{display:none}
+.notif-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;min-width:175px;cursor:pointer;flex-shrink:0;border-left:3px solid var(--saf2);box-shadow:0 1px 5px rgba(0,0,0,.05)}
+.notif-card.grn{border-left-color:var(--grn2)}
+.notif-card.gld{border-left-color:var(--gld2)}
+.nc-type{font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;font-weight:600}
+.nc-title{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:4px;line-height:1.3}
+.nc-date{font-size:11px;color:var(--t3)}
+
+/* ═══════════════ SCHEME CARD ═══════════════ */
+.scheme-card{background:linear-gradient(135deg,var(--grn) 0%,#1a6a32 100%);border-radius:var(--r);padding:13px 14px;margin-bottom:9px;cursor:pointer;display:flex;align-items:center;gap:12px;box-shadow:0 2px 10px rgba(26,122,62,.2);transition:.15s}
+.scheme-card:active{transform:scale(.99)}
+.sc-ico{width:42px;height:42px;background:rgba(255,255,255,.15);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.sc-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.sc-desc{font-size:11.5px;color:rgba(255,255,255,.8)}
+.sc-arr{margin-left:auto;color:rgba(255,255,255,.5);flex-shrink:0}
+.sc-arr svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* ═══════════════ NEWS CARD ═══════════════ */
+.news-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:10px;cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,.05);transition:.13s}
+.news-card:active{transform:scale(.99)}
+.nc-thumb{width:100%;height:140px;overflow:hidden;position:relative;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:42px}
+.nc-thumb img{width:100%;height:100%;object-fit:cover}
+.nc-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35)}
+.nc-play svg{width:44px;height:44px;fill:rgba(255,255,255,.9)}
+.nc-badge{position:absolute;top:8px;left:8px;background:var(--saf2);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:.3px}
+.nc-badge.video{background:#cc0000}
+.nc-body{padding:10px 12px 11px}
+.nc-cat{font-size:10px;color:var(--grn);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.nc-ttl{font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:4px;line-height:1.4}
+.nc-desc2{font-size:12.5px;color:var(--t2);margin-bottom:5px;line-height:1.6}
+.nc-dt{font-size:11px;color:var(--t3)}
+
+/* ═══════════════ CONTACT STRIP ═══════════════ */
+.contact-strip{background:linear-gradient(90deg,#b8390a,#c94b0a);margin:12px;border-radius:var(--r);padding:13px;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 3px 14px rgba(200,75,10,.2)}
+.cs-ico{width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cs-ico svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:1.8}
+.cs-lbl{font-size:10px;color:rgba(255,255,255,.7);margin-bottom:2px}
+.cs-val{font-size:13.5px;font-weight:700;color:#fff}
+
+/* ═══════════════ PAGE HEADER ═══════════════ */
+.page-hdr{background:var(--bg2);border-bottom:1px solid var(--line);padding:11px 13px;flex-shrink:0;display:flex;align-items:center;gap:10px}
+.ph-ico{width:36px;height:36px;background:var(--saf3);border:1px solid var(--line2);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ph-ico svg{width:18px;height:18px;stroke:var(--saf2);fill:none;stroke-width:1.8;stroke-linecap:round}
+.ph-title{font-size:15px;font-weight:700;color:var(--t1)}
+.ph-sub{font-size:11px;color:var(--t3);margin-top:1px}
+
+/* ═══════════════ DIRECTORY FILTERS ═══════════════ */
+.dir-top{background:var(--bg2);border-bottom:1px solid var(--line);padding:10px 12px;flex-shrink:0}
+.dir-srch{display:flex;align-items:center;gap:8px;background:var(--card);border:1.5px solid var(--line2);border-radius:var(--r2);padding:0 12px;margin-bottom:9px}
+.dir-srch svg{width:15px;height:15px;stroke:var(--t3);fill:none;stroke-width:2;flex-shrink:0}
+.dir-srch input{flex:1;background:none;border:none;outline:none;color:var(--t1);font-size:13px;padding:9px 0;font-family:inherit}
+.dir-srch input::placeholder{color:var(--t4)}
+.dir-f2{display:flex;gap:7px}
+.df-sel{flex:1;background:var(--card);border:1.5px solid var(--line2);color:var(--t2);border-radius:var(--r3);padding:7px 9px;font-size:12.5px;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none}
+.df-sel:focus{border-color:var(--saf2)}
+
+/* ═══════════════ FILTER PILLS ═══════════════ */
+.fpills{display:flex;gap:5px;padding:7px 12px 0;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.fpills::-webkit-scrollbar{display:none}
+.fpill{display:inline-flex;align-items:center;gap:4px;background:var(--card);border:1px solid var(--line2);color:var(--t3);border-radius:20px;padding:4px 11px;font-size:11.5px;cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0}
+.fpill svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+.fpill.act{background:var(--saf3);border-color:var(--saf2);color:var(--saf);font-weight:500}
+.fpill.act::after{content:' ✕';font-size:9.5px;color:var(--saf)}
+
+/* ═══════════════ RESULTS BAR ═══════════════ */
+.res-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px 4px;flex-shrink:0}
+.rc{font-size:12px;color:var(--t3)}
+.rc b{color:var(--saf2);font-weight:600}
+.vt-row{display:flex;gap:4px}
+.vt{width:28px;height:28px;background:var(--card);border:1px solid var(--line2);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t3)}
+.vt svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.vt.on{background:var(--saf3);border-color:var(--saf2);color:var(--saf2)}
+
+/* ═══════════════ LISTINGS BODY ═══════════════ */
+.lst-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:74px}
+.lst-body::-webkit-scrollbar{width:2px}
+.lst-body::-webkit-scrollbar-thumb{background:var(--line2)}
+
+/* ═══════════════ GRID CARDS ═══════════════ */
+.ms-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:4px 10px}
+.ms-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .15s,transform .12s;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+.ms-card:hover{border-color:var(--saf2);box-shadow:0 3px 14px rgba(200,75,10,.12)}
+.ms-card:active{transform:scale(.97)}
+.mc-img{width:100%;aspect-ratio:1;overflow:hidden;position:relative;background:var(--saf3);display:flex;align-items:center;justify-content:center}
+.mc-img img{width:100%;height:100%;object-fit:cover;display:block}
+.mc-av{font-size:30px;font-weight:800;color:var(--saf);width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.mc-trusted{position:absolute;top:6px;left:6px;background:var(--grn);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;display:flex;align-items:center;gap:3px}
+.mc-trusted svg{width:9px;height:9px;fill:#fff;stroke:none}
+.mc-rated{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);color:var(--gld2);font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px}
+.mc-verified{position:absolute;bottom:6px;right:6px;background:var(--blue);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
+.mc-body{padding:8px 9px 8px}
+.mc-name{font-size:12.5px;font-weight:700;color:var(--t1);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mc-mandal{font-size:11px;color:var(--grn);font-weight:600;margin-bottom:2px}
+.mc-dist{font-size:10.5px;color:var(--t3);margin-bottom:7px;display:flex;align-items:center;gap:3px;white-space:nowrap;overflow:hidden}
+.mc-dist svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
+.mc-btns{display:flex;gap:5px}
+.mc-call{flex:1;background:var(--saf3);border:1px solid var(--saf2);color:var(--saf);border-radius:6px;padding:6px 0;font-size:10.5px;cursor:pointer;font-family:inherit;text-align:center;font-weight:600}
+.mc-wa{flex:1;background:var(--grn3);border:1px solid var(--grn2);color:var(--grn);border-radius:6px;padding:6px 0;font-size:10.5px;cursor:pointer;font-family:inherit;text-align:center;font-weight:600}
+
+/* ═══════════════ LIST ITEMS ═══════════════ */
+.ms-list{display:flex;flex-direction:column;gap:8px;padding:4px 10px}
+.ml-item{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:.13s;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.ml-item:active{transform:scale(.99)}
+.ml-av{width:48px;height:48px;border-radius:11px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;background:var(--saf3);color:var(--saf);flex-shrink:0}
+.ml-av img{width:100%;height:100%;object-fit:cover}
+.ml-info{flex:1;min-width:0}
+.ml-name{font-size:13.5px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.ml-bdgs{display:flex;align-items:center;gap:5px;margin-bottom:3px}
+.ml-loc{font-size:11px;color:var(--t3)}
+.ml-call{background:var(--saf3);border:1px solid var(--saf2);color:var(--saf);border-radius:8px;padding:8px 10px;cursor:pointer;flex-shrink:0}
+.ml-call svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;display:block}
+
+/* Badges */
+.bdg-t{background:var(--grn3);color:var(--grn);border:1px solid var(--grn2);font-size:9px;padding:1px 6px;border-radius:4px;font-weight:600;display:inline-flex;align-items:center;gap:2px}
+.bdg-t svg{width:8px;height:8px;fill:var(--grn);stroke:none}
+.bdg-r{background:var(--gld3);color:var(--gld);border:1px solid var(--gld2);font-size:9px;padding:1px 6px;border-radius:4px;font-weight:600}
+.bdg-v{background:var(--bluebg);color:var(--blue);border:1px solid #93c5fd;font-size:9px;padding:1px 6px;border-radius:4px;font-weight:600}
+
+/* ═══════════════ EMPTY & LOADING ═══════════════ */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:10px;text-align:center}
+.empty-state .ei{width:58px;height:58px;background:var(--bg3);border:1px solid var(--line2);border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:27px;margin-bottom:4px}
+.empty-state p{font-size:14px;color:var(--t2);font-weight:500}
+.empty-state small{font-size:12px;color:var(--t3)}
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:12px}
+.spin{width:28px;height:28px;border:2.5px solid var(--line2);border-top-color:var(--saf2);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ═══════════════ PROFILE PAGE ═══════════════ */
+.profile{position:fixed;inset:0;max-width:440px;margin:0 auto;background:var(--bg);z-index:80;transform:translateX(100%);transition:transform .3s cubic-bezier(.32,0,.2,1);overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column}
+.profile.on{transform:translateX(0)}
+.profile::-webkit-scrollbar{display:none}
+.pp-nav{position:sticky;top:0;z-index:5;background:linear-gradient(135deg,#b8390a,#c94b0a);display:flex;align-items:center;gap:10px;padding:11px 14px;box-shadow:0 2px 12px rgba(200,75,10,.25)}
+.pp-back,.pp-shr{width:32px;height:32px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;flex-shrink:0}
+.pp-back svg,.pp-shr svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.pp-nav-title{flex:1;font-size:14px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pp-hero{position:relative;overflow:hidden}
+.pp-hero img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.pp-hero-av{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,var(--saf3),var(--bg3));display:flex;align-items:center;justify-content:center;font-size:70px;font-weight:800;color:var(--saf2)}
+.pp-hbdgs{position:absolute;bottom:10px;left:10px;display:flex;gap:5px;flex-wrap:wrap}
+.pbdg-t{background:var(--grn);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;display:flex;align-items:center;gap:3px}
+.pbdg-t svg{width:10px;height:10px;fill:#fff;stroke:none}
+.pbdg-r{background:rgba(0,0,0,.6);backdrop-filter:blur(4px);color:var(--gld2);font-size:11px;font-weight:700;padding:3px 9px;border-radius:5px}
+.pbdg-v{background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px}
+.pp-body{padding:14px 14px 110px;flex:1}
+.pp-name{font-size:21px;font-weight:800;color:var(--t1);margin-bottom:9px;line-height:1.2}
+.pp-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.pp-tag{display:inline-flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--line2);color:var(--t2);border-radius:20px;padding:3px 10px;font-size:11.5px}
+.pp-tag svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+.pp-sec-t{font-size:9.5px;color:var(--t3);font-weight:700;letter-spacing:1px;text-transform:uppercase;padding-bottom:8px;margin-bottom:12px;border-bottom:2px solid var(--line)}
+.pp-row{display:flex;align-items:flex-start;gap:11px;margin-bottom:13px}
+.pp-ico{width:34px;height:34px;background:var(--saf3);border:1px solid var(--line2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pp-ico svg{width:16px;height:16px;stroke:var(--saf2);fill:none;stroke-width:1.8;stroke-linecap:round}
+.pp-ico.g{background:var(--grn3);border-color:var(--grn2)}
+.pp-ico.g svg{stroke:var(--grn)}
+.pp-ico.gld{background:var(--gld3);border-color:var(--gld2)}
+.pp-ico.gld svg{stroke:var(--gld)}
+.pp-val .v1{font-size:14px;color:var(--t1);line-height:1.4}
+.pp-val .v2{font-size:11.5px;color:var(--t3);margin-top:1px}
+.svc-wrap{display:flex;flex-wrap:wrap;gap:6px}
+.svc-chip{background:var(--bg2);border:1px solid var(--line2);color:var(--t2);border-radius:20px;padding:4px 11px;font-size:12px}
+.pp-map{height:190px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line2)}
+.star-row{display:flex;align-items:center;gap:3px;margin-bottom:5px}
+.star{width:20px;height:20px;cursor:pointer;fill:var(--line2);stroke:none}
+.star.on{fill:var(--gld2)}
+.rate-lbl{font-size:12px;color:var(--t3);margin-left:5px}
+.pp-acts{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;background:rgba(255,252,248,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line2);padding:11px 14px calc(env(safe-area-inset-bottom,0px) + 10px);display:flex;gap:9px;z-index:9}
+.pp-btn-c{flex:1;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 3px 12px rgba(232,97,14,.3)}
+.pp-btn-c svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2}
+.pp-btn-w{flex:1;background:#1da84f;border:none;color:#fff;border-radius:var(--r2);padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 3px 12px rgba(29,168,79,.3)}
+.pp-btn-w svg{width:17px;height:17px;fill:#fff;stroke:none}
+
+/* ═══════════════ TOOLS SCREEN ═══════════════ */
+.tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:12px}
+.tool-c{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 11px;text-align:center;cursor:pointer;transition:.13s;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.tool-c:active{transform:scale(.95)}
+.tool-em{font-size:28px;margin-bottom:7px}
+.tool-name{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px}
+.tool-desc{font-size:11px;color:var(--t3)}
+.form-list{padding:0 12px}
+.form-item{background:var(--card);border:1px solid var(--line);border-radius:var(--r2);padding:12px 13px;display:flex;align-items:center;gap:11px;margin-bottom:8px;cursor:pointer;transition:.13s}
+.form-item:hover{border-color:var(--saf2);background:var(--saf4)}
+.fi-ico{width:38px;height:38px;background:var(--saf3);border:1px solid var(--line2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.fi-name{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:1px}
+.fi-sub{font-size:11px;color:var(--t3)}
+.fi-arr{color:var(--t4);margin-left:auto;flex-shrink:0}
+.fi-arr svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* ═══════════════ NEWS SCREEN ═══════════════ */
+.news-tabs{display:flex;background:var(--card);border-bottom:2px solid var(--line);flex-shrink:0}
+.n-tab{flex:1;padding:10px 4px;text-align:center;font-size:12px;font-weight:500;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.n-tab.on{color:var(--saf2);border-bottom-color:var(--saf2);font-weight:700}
+.news-panel{display:none;flex:1;overflow-y:auto;padding:10px 12px 74px}
+.news-panel::-webkit-scrollbar{display:none}
+.news-panel.on{display:block}
+
+/* ═══════════════ NOTIFICATIONS SCREEN ═══════════════ */
+.notif-group-title{padding:12px 12px 4px;font-size:11px;color:var(--t3);font-weight:700;letter-spacing:.6px;text-transform:uppercase}
+
+/* ═══════════════ JOIN SCREEN ═══════════════ */
+.join-hero{background:linear-gradient(135deg,#b8390a 0%,#c94b0a 60%,#d85f10 100%);padding:24px 18px 22px;text-align:center}
+.jh-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:20px;padding:4px 13px;font-size:11px;font-weight:500;margin-bottom:12px}
+.jh-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:5px;line-height:1.2}
+.jh-sub{font-size:13px;color:rgba(255,255,255,.8)}
+.join-form{padding:14px 14px 74px}
+.jf-group{margin-bottom:13px}
+.jf-label{font-size:10.5px;font-weight:700;color:var(--t2);letter-spacing:.4px;text-transform:uppercase;margin-bottom:5px}
+.jf-inp{width:100%;background:var(--card);border:1.5px solid var(--line2);color:var(--t1);border-radius:var(--r2);padding:10px 12px;font-size:14px;font-family:inherit;outline:none}
+.jf-inp:focus{border-color:var(--saf2)}
+.jf-sel{width:100%;background:var(--card);border:1.5px solid var(--line2);color:var(--t1);border-radius:var(--r2);padding:10px 12px;font-size:14px;font-family:inherit;outline:none;appearance:none}
+.jf-sel:focus{border-color:var(--saf2)}
+.jf-area{width:100%;background:var(--card);border:1.5px solid var(--line2);color:var(--t1);border-radius:var(--r2);padding:10px 12px;font-size:14px;font-family:inherit;outline:none;resize:none}
+.jf-area:focus{border-color:var(--saf2)}
+.jf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.svc-chk-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px}
+.svc-chk{display:flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--line);border-radius:7px;padding:7px 9px;cursor:pointer;font-size:11.5px;color:var(--t2)}
+.svc-chk input{accent-color:var(--saf2);flex-shrink:0}
+.btn-sub{width:100%;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(232,97,14,.3);display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-sub svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2}
+
+/* ═══════════════ ADMIN SCREEN ═══════════════ */
+.admin-lock{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;gap:14px;text-align:center}
+.al-ico{width:64px;height:64px;background:var(--saf3);border:2px solid var(--saf2);border-radius:18px;display:flex;align-items:center;justify-content:center}
+.al-ico svg{width:30px;height:30px;stroke:var(--saf2);fill:none;stroke-width:1.8}
+.al-title{font-size:18px;font-weight:700;color:var(--t1)}
+.al-sub{font-size:13px;color:var(--t3)}
+.al-inp{width:100%;max-width:220px;background:var(--card);border:1.5px solid var(--line2);color:var(--t1);border-radius:var(--r2);padding:11px 14px;font-size:16px;font-family:inherit;outline:none;text-align:center;letter-spacing:4px}
+.al-inp:focus{border-color:var(--saf2)}
+.al-btn{background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:11px 30px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.admin-dash{padding:0 12px 74px;display:none}
+.adm-stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+.adm-stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:13px;display:flex;align-items:center;gap:11px}
+.adm-stat-ico{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.adm-stat-n{font-size:20px;font-weight:800;color:var(--t1)}
+.adm-stat-l{font-size:10px;color:var(--t3)}
+.adm-sec{font-size:13px;font-weight:700;color:var(--t1);margin:14px 0 9px}
+.adm-item{background:var(--card);border:1px solid var(--line);border-radius:var(--r2);padding:11px 13px;display:flex;align-items:center;gap:11px;margin-bottom:8px}
+.adm-item-name{font-size:13px;font-weight:600;color:var(--t1);flex:1}
+.adm-item-sub{font-size:11px;color:var(--t3)}
+.adm-btns{display:flex;gap:5px}
+.adm-a{background:var(--grn3);border:1px solid var(--grn2);color:var(--grn);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600}
+.adm-r{background:var(--redbg);border:1px solid #fca5a5;color:var(--red);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600}
+.adm-b{background:var(--gld3);border:1px solid var(--gld2);color:var(--gld);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600}
+
+/* ═══════════════ BOTTOM NAV ═══════════════ */
+.bot-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:30;background:rgba(255,252,248,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line2);display:flex;padding-bottom:env(safe-area-inset-bottom,0px)}
+.bnav{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 10px;cursor:pointer;color:var(--t4);border:none;background:none;font-family:inherit;transition:.12s}
+.bnav svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:.12s}
+.bnav span{font-size:9.5px;font-weight:500;transition:.12s}
+.bnav.on{color:var(--saf2)}
+
+/* ═══════════════ TOAST ═══════════════ */
+.toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:var(--t1);color:#fff;border-radius:9px;padding:10px 18px;font-size:13px;font-weight:500;z-index:999;white-space:nowrap;opacity:0;transition:opacity .25s;pointer-events:none;max-width:85vw;text-align:center}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- NEWS TICKER -->
+<div class="ticker-wrap" id="tickerWrap">
+  <div class="ticker-label">📢 LIVE</div>
+  <div class="ticker-scroll"><div class="ticker-inner" id="tickerInner"></div></div>
+</div>
+
+<!-- ══════════ HOME ══════════ -->
+<div class="screen on" id="s-home">
+  <div class="top-bar">
+    <div class="tb-r1">
+      <div class="ms-brand" id="msBrand">
+        <div class="ms-logo"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+        <div><div class="ms-n1">మీసేవ డైరెక్టరీ</div><div class="ms-n2">Telangana · All 33 Districts</div></div>
+      </div>
+      <div class="tb-icons">
+        <div class="tb-ico" onclick="goScreen('s-notif')"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><div class="notif-dot"></div></div>
+      </div>
+    </div>
+    <div class="tb-srch" onclick="goScreen('s-dir')">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input placeholder="మీసేవ కేంద్రం వెతకండి..." readonly>
+    </div>
+  </div>
+  <div class="scroll-body">
+    <div class="vis-banner">
+      <div class="vb-l">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <div>
+          <div class="vb-label">నేటి Visitors</div>
+          <div class="vb-num" id="visCount">—</div>
+          <div class="vb-sub">Total: <b id="visTotal" style="color:#fff">—</b></div>
+        </div>
+      </div>
+      <div class="vb-r">
+        <div class="vb-rt">Last updated</div>
+        <div class="vb-rv" id="visTime"></div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-c"><div class="stat-n" id="stC">—</div><div class="stat-l">Centers</div></div>
+      <div class="stat-c"><div class="stat-n g">33</div><div class="stat-l">Districts</div></div>
+      <div class="stat-c"><div class="stat-n gold" id="stV">—</div><div class="stat-l">Trusted</div></div>
+    </div>
+    <div class="sec">
+      <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>మీసేవ సేవలు</div><div class="sec-more" onclick="goScreen('s-tools')">అన్నీ →</div></div>
+      <div class="qcat-grid">
+        <div class="qcat" onclick="goCat('income')"><div class="qcat-em">💰</div><div class="qcat-lb">Income Cert</div></div>
+        <div class="qcat" onclick="goCat('caste')"><div class="qcat-em">📋</div><div class="qcat-lb">Caste Cert</div></div>
+        <div class="qcat" onclick="goCat('aadhaar')"><div class="qcat-em">🪪</div><div class="qcat-lb">Aadhaar</div></div>
+        <div class="qcat" onclick="goCat('ration')"><div class="qcat-em">🃏</div><div class="qcat-lb">Ration Card</div></div>
+        <div class="qcat" onclick="goCat('pension')"><div class="qcat-em">👴</div><div class="qcat-lb">Pension</div></div>
+        <div class="qcat" onclick="goCat('land')"><div class="qcat-em">🏡</div><div class="qcat-lb">Pahani</div></div>
+        <div class="qcat" onclick="goScreen('s-notif')"><div class="qcat-em">💼</div><div class="qcat-lb">Jobs</div></div>
+        <div class="qcat" onclick="goScreen('s-tools')"><div class="qcat-em">📂</div><div class="qcat-lb">All Forms</div></div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>నోటిఫికేషన్లు</div><div class="sec-more" onclick="goScreen('s-notif')">అన్నీ →</div></div>
+      <div class="hor-scroll" id="homeNotifs"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>ప్రభుత్వ పథకాలు</div></div>
+      <div id="schemesList"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>తాజా వార్తలు</div><div class="sec-more" onclick="goScreen('s-news')">అన్నీ →</div></div>
+      <div id="homeNews"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>మీసేవ కేంద్రాలు</div><div class="sec-more" onclick="goScreen('s-dir')">అన్నీ →</div></div>
+      <div class="hor-scroll" id="homeRecent"></div>
+    </div>
+    <div class="contact-strip" onclick="window.open('tel:9948770651')">
+      <div class="cs-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+      <div><div class="cs-lbl">Helpline · సహాయవాణి</div><div class="cs-val">📞 9948770651 · Hyderabad</div></div>
+    </div>
+    <div style="height:10px"></div>
+  </div>
+</div>
+
+<!-- ══════════ DIRECTORY ══════════ -->
+<div class="screen" id="s-dir">
+  <div class="dir-top">
+    <div class="dir-srch">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="dq" placeholder="పేరు, మండలం, గ్రామం..." oninput="applyF()">
+    </div>
+    <div class="dir-f2">
+      <select id="fDist" class="df-sel" onchange="onDist()"><option value="">అన్ని జిల్లాలు (33)</option></select>
+      <select id="fMandal" class="df-sel" onchange="applyF()"><option value="">అన్ని మండలాలు</option></select>
+    </div>
+  </div>
+  <div class="fpills" id="fpills">
+    <button class="fpill" onclick="showToast('District మరియు Mandal dropdowns use చేయండి')">
+      <svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>Filters
+    </button>
+    <div id="aPills"></div>
+  </div>
+  <div class="res-bar">
+    <div class="rc" id="dirC"></div>
+    <div class="vt-row">
+      <button class="vt on" id="vgb" onclick="setV('grid')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
+      <button class="vt" id="vlb" onclick="setV('list')"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1.2" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1.2" fill="currentColor" stroke="none"/></svg></button>
+    </div>
+  </div>
+  <div class="lst-body" id="lstBody">
+    <div class="loading" id="dirLoader"><div class="spin"></div></div>
+    <div id="lstWrap" style="display:none"></div>
+  </div>
+</div>
+
+<!-- ══════════ TOOLS ══════════ -->
+<div class="screen" id="s-tools">
+  <div class="page-hdr">
+    <div class="ph-ico"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+    <div><div class="ph-title">Tools & Forms</div><div class="ph-sub">Free Tools · Required Documents</div></div>
+  </div>
+  <div class="scroll-body">
+    <div style="padding:12px 12px 4px;font-size:10px;color:var(--t3);font-weight:700;letter-spacing:.7px;text-transform:uppercase">Quick Tools</div>
+    <div class="tools-grid" id="toolsGrid"></div>
+    <div style="padding:0 12px 4px;font-size:10px;color:var(--t3);font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-top:4px">Required Documents per Service</div>
+    <div class="form-list" id="formsList"></div>
+    <div class="sec">
+      <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>💼 Job Notifications</div></div>
+      <div id="jobList"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>🎓 Admissions Open</div></div>
+      <div id="admList"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>📊 Results</div></div>
+      <div id="resultsList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ NEWS ══════════ -->
+<div class="screen" id="s-news">
+  <div class="page-hdr">
+    <div class="ph-ico"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2"/></svg></div>
+    <div><div class="ph-title">మీసేవ వార్తలు</div><div class="ph-sub">Daily News · Videos · Notices</div></div>
+  </div>
+  <div class="news-tabs">
+    <div class="n-tab on" onclick="setNTab('all',this)">అన్నీ</div>
+    <div class="n-tab" onclick="setNTab('video',this)">📹 Video</div>
+    <div class="n-tab" onclick="setNTab('notice',this)">📢 Notice</div>
+    <div class="n-tab" onclick="setNTab('scheme',this)">🏛️ Scheme</div>
+  </div>
+  <div class="news-panel on" id="np-all"></div>
+  <div class="news-panel" id="np-video"></div>
+  <div class="news-panel" id="np-notice"></div>
+  <div class="news-panel" id="np-scheme"></div>
+</div>
+
+<!-- ══════════ NOTIFICATIONS ══════════ -->
+<div class="screen" id="s-notif">
+  <div class="page-hdr">
+    <div class="ph-ico"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+    <div><div class="ph-title">నోటిఫికేషన్లు</div><div class="ph-sub">Jobs · Results · Admissions</div></div>
+  </div>
+  <div class="scroll-body" id="notifBody"></div>
+</div>
+
+<!-- ══════════ JOIN ══════════ -->
+<div class="screen" id="s-join">
+  <div class="join-hero">
+    <div class="jh-badge">✨ Free Listing</div>
+    <div class="jh-title">మీ Center List చేయండి</div>
+    <div class="jh-sub">మీ మీసేవ కేంద్రాన్ని ఈ directory లో free గా add చేయండి</div>
+  </div>
+  <div id="joinFormWrap">
+    <div class="join-form">
+      <div class="jf-row">
+        <div class="jf-group"><div class="jf-label">Operator పేరు *</div><input class="jf-inp" id="jf_name" placeholder="మీ పూర్తి పేరు"></div>
+        <div class="jf-group"><div class="jf-label">Phone *</div><input class="jf-inp" id="jf_phone" type="tel" placeholder="10 digits"></div>
+      </div>
+      <div class="jf-group"><div class="jf-label">Center పేరు *</div><input class="jf-inp" id="jf_center" placeholder="మీ మీసేవ కేంద్రం పేరు"></div>
+      <div class="jf-row">
+        <div class="jf-group"><div class="jf-label">జిల్లా *</div><select class="jf-sel" id="jf_dist" onchange="onJDist()"><option value="">జిల్లా ఎంచుకోండి</option></select></div>
+        <div class="jf-group"><div class="jf-label">మండలం *</div><select class="jf-sel" id="jf_mandal"><option value="">మండలం ఎంచుకోండి</option></select></div>
+      </div>
+      <div class="jf-group"><div class="jf-label">గ్రామం / ప్రాంతం *</div><input class="jf-inp" id="jf_village" placeholder="మీ గ్రామం లేదా ప్రాంతం"></div>
+      <div class="jf-group"><div class="jf-label">WhatsApp (optional)</div><input class="jf-inp" id="jf_wa" type="tel" placeholder="WhatsApp నంబర్"></div>
+      <div class="jf-group"><div class="jf-label">పూర్తి చిరునామా *</div><textarea class="jf-area" id="jf_addr" rows="2" placeholder="Shop no, Street, Village, Mandal, District"></textarea></div>
+      <div class="jf-group"><div class="jf-label">అందించే సేవలు</div><div class="svc-chk-grid" id="svcChkGrid"></div></div>
+      <div class="jf-group"><div class="jf-label">పని వేళలు</div><input class="jf-inp" id="jf_hours" placeholder="e.g. 9am – 6pm, Mon-Sat"></div>
+      <div style="margin-top:4px"><button class="btn-sub" onclick="submitJoin()"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Submit చేయండి</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN ══════════ -->
+<div class="screen" id="s-admin">
+  <div class="page-hdr">
+    <div class="ph-ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+    <div><div class="ph-title">Admin Panel</div><div class="ph-sub">మీసేవ Directory Management</div></div>
+  </div>
+  <div class="scroll-body">
+    <div class="admin-lock" id="adminLock">
+      <div class="al-ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+      <div class="al-title">Admin Access</div>
+      <div class="al-sub">Password enter చేయండి</div>
+      <input class="al-inp" id="adminPwd" type="password" placeholder="••••••" onkeyup="if(event.key==='Enter')adminLogin()">
+      <button class="al-btn" onclick="adminLogin()">Login</button>
+    </div>
+    <div class="admin-dash" id="adminDash">
+      <div class="adm-stats">
+        <div class="adm-stat"><div class="adm-stat-ico" style="background:var(--saf3)">📋</div><div><div class="adm-stat-n" id="aT">0</div><div class="adm-stat-l">Total Listings</div></div></div>
+        <div class="adm-stat"><div class="adm-stat-ico" style="background:var(--grn3)">✅</div><div><div class="adm-stat-n" id="aV">0</div><div class="adm-stat-l">Trusted</div></div></div>
+        <div class="adm-stat"><div class="adm-stat-ico" style="background:var(--gld3)">⏳</div><div><div class="adm-stat-n" id="aP">0</div><div class="adm-stat-l">Pending</div></div></div>
+        <div class="adm-stat"><div class="adm-stat-ico" style="background:var(--bluebg)">👁️</div><div><div class="adm-stat-n" id="aVis">0</div><div class="adm-stat-l">Today Visits</div></div></div>
+      </div>
+      <div class="adm-sec">⏳ Pending Approvals</div>
+      <div id="pendingList"></div>
+      <div class="adm-sec">📋 All Centers</div>
+      <div id="allCList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PROFILE PAGE ══════════ -->
+<div class="profile" id="profilePg">
+  <div class="pp-nav">
+    <button class="pp-back" onclick="closeProf()"><svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+    <div class="pp-nav-title" id="ppTitle"></div>
+    <button class="pp-shr" onclick="shareC()"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
+  </div>
+  <div id="ppContent"></div>
+  <div id="ppFoot" class="pp-acts" style="display:none"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bot-nav">
+  <button class="bnav on" id="bn-home" onclick="goScreen('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>హోమ్</span></button>
+  <button class="bnav" id="bn-dir" onclick="goScreen('s-dir')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Directory</span></button>
+  <button class="bnav" id="bn-tools" onclick="goScreen('s-tools')"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg><span>Tools</span></button>
+  <button class="bnav" id="bn-news" onclick="goScreen('s-news')"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2"/></svg><span>వార్తలు</span></button>
+  <button class="bnav" id="bn-join" onclick="goScreen('s-join')"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg><span>List Now</span></button>
+</div>
+
+<div class="toast" id="toast"></div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+/* ══════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════ */
+const SHEET_URL = "YOUR_GOOGLE_SHEET_CSV_URL_HERE";
+// Columns: Name|District|Mandal|Village|Phone|WhatsApp|Address|Lat|Lng|Photo|Services|Hours|Rating|Trusted|Verified|Description
+const ADMIN_PWD = "meeseva2025";
+
+/* ══════════════════════════════════════════
+   33 TELANGANA DISTRICTS + MANDALS
+══════════════════════════════════════════ */
+const TGD = {
+  "అదిలాబాద్":["అదిలాబాద్","భైంసా","బోత్","చెన్నూర్","ఇంద్రవెల్లి","జైనూర్","నేరడిగొండ","సిర్పూర్","తాంసి","ఉట్నూర్"],
+  "భద్రాద్రి కొత్తగూడెం":["బద్రాచలం","భద్రాచలం","చర్ల","దమ్మపేట","ఇల్లెందు","కొత్తగూడెం","మణుగూరు","పాల్వంచ","సత్తుపల్లి"],
+  "హనుమకొండ":["హనుమకొండ","కాజీపేట","వర్ధన్నపేట","గీసుగొండ","రాయపర్తి","పర్కాల","ధర్మసాగర్"],
+  "హైదరాబాద్":["అంబర్‌పేట","బాల్కంపేట","చార్మినార్","ఖైరతాబాద్","నాంపల్లి","సికింద్రాబాద్","సనత్‌నగర్"],
+  "జగిత్యాల":["జగిత్యాల","ధర్మపురి","కొడిమ్యాల","మల్లాపూర్","మెట్‌పల్లి","రాయికల్"],
+  "జనగాం":["జనగాం","బచ్చన్నపేట","కొడకండ","నర్మెట","రఘునాథపల్లి","తూప్రాన్"],
+  "జయశంకర్ భూపాలపల్లి":["భూపాలపల్లి","ఏటూరు నాగారం","కట్‌ఘూడెం","మహాదేవపూర్","పెనుగోడ"],
+  "జోగుళాంబ గద్వాల":["అలంపూర్","గద్వాల","గటు","ఇటిక్యాల","మల్దకల్","వెల్దుర్తి"],
+  "కామారెడ్డి":["కామారెడ్డి","బంజాపల్లి","ఎల్లారెడ్డి","మాచారెడ్డి","పోతంగల్","సైదాపూర్"],
+  "కరీంనగర్":["కరీంనగర్","చొప్పడండి","హుజురాబాద్","కోరట్ల","మానకొండూరు","రామగుండం","సిరిసిల్ల"],
+  "ఖమ్మం":["ఖమ్మం","బోనకల్","కమలాపురం","నేలకొండపల్లి","పాల్వంచ","సత్తుపల్లి","వైరా"],
+  "కుమురంభీం ఆసిఫాబాద్":["ఆసిఫాబాద్","భీమిని","జైనూర్","కాగజ్‌నగర్","నేరడిగొండ","తిర్యాణి","వాంకిడి"],
+  "మహబూబాబాద్":["మహబూబాబాద్","కేసముద్రం","కొత్తగూడ","కురవి","నల్లభెల్లి","తోర్రూర్"],
+  "మహబూబ్‌నగర్":["మహబూబ్‌నగర్","అచ్చంపేట","బాలానగర్","దేవరకద్ర","జడ్చర్ల","కొల్లాపూర్","నారాయణపేట","షాద్‌నగర్"],
+  "మంచిర్యాల":["మంచిర్యాల","కాసిపేట","చెన్నూర్","దండేపల్లి","జన్నారం","లక్సెట్టిపేట","మందమర్రి"],
+  "మేడక్":["మేడక్","ఆందోల్","నర్సాపూర్","రామాయంపేట","సంగారెడ్డి","తూప్రాన్"],
+  "మేడ్చల్ మల్కాజిగిరి":["మేడ్చల్","బాలానగర్","ఘట్కేసర్","హయత్‌నగర్","కీసర","ఉప్పల్","ఎల్‌బీనగర్"],
+  "ములుగు":["ములుగు","ఏటూరు నాగారం","కతలాపూర్","వేంకటాపురం","వాజేడు"],
+  "నాగర్‌కర్నూల్":["నాగర్‌కర్నూల్","అచ్చంపేట","అమ్రాబాద్","కల్వకుర్తి","కొల్లాపూర్","వెల్దండ"],
+  "నల్గొండ":["నల్గొండ","చందంపేట","దేవరకొండ","హుజూర్‌నగర్","మిర్యాలగూడ","నకిరేకల్","తిరుమలగిరి"],
+  "నారాయణపేట":["నారాయణపేట","కోసిగి","మాకల్","ఉప్పల"],
+  "నిర్మల్":["నిర్మల్","ఆర్మూర్","బాన్సువాడ","కడెం","ఖానాపూర్","సోన్‌పేట"],
+  "నిజామాబాద్":["నిజామాబాద్","ఆర్మూర్","బోధన్","జక్రాన్పల్లి","కమారెడ్డి","రుద్రూర్"],
+  "పెద్దపల్లి":["పెద్దపల్లి","ధర్మపురి","కొడిమ్యాల","మంథని","రామగుండం"],
+  "రాజన్న సిరిసిల్ల":["సిరిసిల్ల","ఎల్లారెడ్డి","కోహెడ","వేముగొండ"],
+  "రంగారెడ్డి":["శంషాబాద్","కందుకూర్","మహేశ్వరం","ఇబ్రహీంపట్నం","యాచారం","రాజేంద్రనగర్","చేవెళ్ళ"],
+  "సంగారెడ్డి":["సంగారెడ్డి","అందోల్","జహీరాబాద్","కొండపాక","న్యాల్‌కల్","పటాన్‌చెరు","పులికల్"],
+  "సిద్ధిపేట":["సిద్ధిపేట","చేగుంట","దుబ్బాక","గజ్వేల్","హుస్నాబాద్","ముళుగు","నర్సాపూర్","తొగుట"],
+  "సూర్యాపేట":["సూర్యాపేట","అచ్చంపేట","హుజూర్‌నగర్","కొదాడ","నకిరేకల్","తిరుమలగిరి"],
+  "వికారాబాద్":["వికారాబాద్","కోడంగల్","మర్పల్లి","నవాబ్‌పేట","పుడూర్","తాండూర్"],
+  "వనపర్తి":["వనపర్తి","గద్వాల","కొల్లాపూర్","మఖ్తల్","పెబ్బేర్"],
+  "వరంగల్":["వరంగల్","నర్సంపేట","పాలకుర్తి","పర్కాల","వర్ధన్నపేట"],
+  "యాదాద్రి భువనగిరి":["భువనగిరి","ఆలేరు","చౌటుప్పల్","మోత్కూర్","రాజాపేట","తుంగతుర్తి","యాదగిరిగుట్ట"],
+};
+
+const MS_SERVICES=["Aadhaar Services","Income Certificate","Caste Certificate","Residence Certificate","Date of Birth Certificate","Ration Card","Pensions","Land Records (Pahani)","Registration Services","Driving Licence","Passport","PAN Card","Electricity Bill","Water Bill","Challan Payment","Scholarship / EPASS","Rythu Bandhu","Aasara Pensions","Job Card (NREGA)","Birth/Death Certificate","Marriage Certificate"];
+
+const FORMS=[
+  {name:"Income Certificate",em:"💰",docs:["Aadhaar Card","Ration Card","Bank Passbook","VRO Letter"]},
+  {name:"Caste Certificate",em:"📋",docs:["Aadhaar Card","Caste Proof","Ration Card","Father's Certificate"]},
+  {name:"Residence Certificate",em:"🏠",docs:["Aadhaar Card","Ration Card","Electricity Bill"]},
+  {name:"Land Records (Pahani)",em:"🏡",docs:["Survey Number","Aadhaar Card","Ration Card"]},
+  {name:"Ration Card (New)",em:"🃏",docs:["Aadhaar (all members)","Electricity Bill","House Proof"]},
+  {name:"Old Age Pension",em:"👴",docs:["Aadhaar","Age Proof (65+)","Income Certificate","Bank Passbook"]},
+  {name:"Aasara Pension",em:"♿",docs:["Aadhaar","Disability/Widow Certificate","Income Certificate","Bank Passbook"]},
+  {name:"EPASS Scholarship",em:"🎓",docs:["Aadhaar","Caste Certificate","Income Certificate","Marks Memo","Bank Passbook"]},
+  {name:"Rythu Bandhu",em:"🌾",docs:["Pattadar Passbook","Aadhaar Card","Bank Account (linked)"]},
+  {name:"Marriage Certificate",em:"💒",docs:["Aadhaar (both)","Witness IDs (2)","Marriage Photo","Invitation Card"]},
+];
+
+const SCHEMES=[
+  {name:"రైతు బంధు",desc:"హెక్టేర్‌కు ₹10,000 సీజన్‌కు",ico:"🌾"},
+  {name:"ఆసరా పెన్షన్",desc:"వికలాంగులు, వితంతువులకు నెలసరి పెన్షన్",ico:"♿"},
+  {name:"KCR కిట్",desc:"నవజాత శిశువుకు ₹12,000 + Kit",ico:"👶"},
+  {name:"TS-ePASS",desc:"SC/ST/BC విద్యార్థులకు Scholarship",ico:"🎓"},
+  {name:"మిషన్ భగీరథ",desc:"ప్రతి ఇంటికి స్వచ్ఛమైన తాగునీరు",ico:"💧"},
+  {name:"PM ఆవాస్ యోజన",desc:"పేద కుటుంబాలకు ఇళ్ళు",ico:"🏠"},
+];
+
+const NEWS=[
+  {type:"notice",title:"మీసేవ కేంద్రాల కొత్త పని వేళలు",date:"26 May 2025",cat:"Notice",isVideo:false,desc:"అన్ని మీసేవ కేంద్రాలు 9am–6pm పని చేస్తాయి. శనివారం కూడా తెరిచి ఉంటాయి."},
+  {type:"scheme",title:"రైతు బంధు 2025 — దరఖాస్తు ప్రారంభం",date:"25 May 2025",cat:"Scheme",isVideo:false,desc:"రైతు బంధు 2025 దరఖాస్తు మొదలైంది. అన్ని మీసేవ కేంద్రాల ద్వారా దరఖాస్తు చేసుకోవచ్చు."},
+  {type:"video",title:"Aadhaar Update — సులభంగా చేయండి",date:"24 May 2025",cat:"Guide",isVideo:true,desc:"Aadhaar address/mobile update చేయడానికి కావాల్సిన documents మరియు process video."},
+  {type:"notice",title:"Aadhaar Update Camp — అన్ని మండలాల్లో",date:"23 May 2025",cat:"Notice",isVideo:false,desc:"ఆధార్ అప్‌డేట్ కోసం ప్రత్యేక శిబిరాలు నిర్వహించబడుతున్నాయి."},
+  {type:"scheme",title:"TS-ePASS Scholarship 2025-26",date:"22 May 2025",cat:"Scholarship",isVideo:false,desc:"2025-26 సంవత్సరానికి TS-ePASS scholarship దరఖాస్తులు ప్రారంభమయ్యాయి."},
+  {type:"video",title:"Income Certificate — Complete Guide",date:"21 May 2025",cat:"Guide",isVideo:true,desc:"Income Certificate పొందడానికి కావాల్సిన documents మరియు step-by-step process."},
+];
+
+const NOTIFS=[
+  {type:"job",title:"TSPSC Group-I Notification 2025",sub:"Apply: May 30 – June 15, 2025",col:"red"},
+  {type:"result",title:"TSTET Results 2025 Declared",sub:"Download Hall Ticket · Check Now",col:"green"},
+  {type:"admission",title:"LAWCET 2025 Admissions Open",sub:"Last Date: May 31, 2025",col:"gold"},
+  {type:"job",title:"Telangana Police Recruitment 2025",sub:"2000+ Vacancies · Apply Now",col:"red"},
+  {type:"result",title:"SSC 10th Results 2025",sub:"Results Released · Check Now",col:"green"},
+  {type:"admission",title:"EAMCET 2025 Counselling",sub:"Phase-1: June 1–10, 2025",col:"gold"},
+  {type:"job",title:"Municipal Corporation Jobs 2025",sub:"Various Posts · Last Date: June 5",col:"red"},
+  {type:"result",title:"TSPSC Group-4 Results 2025",sub:"Results Declared · Download Now",col:"green"},
+];
+
+const TOOLS=[
+  {em:"🧮",name:"Fee Calculator",desc:"Estimate service fees",id:"fees"},
+  {em:"🔍",name:"Check Status",desc:"Application status",id:"status"},
+  {em:"💼",name:"Job Alerts",desc:"Latest govt jobs",id:"jobs"},
+  {em:"📊",name:"Results",desc:"Latest exam results",id:"results"},
+  {em:"🏛️",name:"Govt Schemes",desc:"Welfare schemes",id:"schemes"},
+  {em:"🎓",name:"Admissions",desc:"College admissions",id:"admissions"},
+  {em:"⬇️",name:"Download Forms",desc:"Blank application forms",id:"forms"},
+  {em:"📅",name:"Important Dates",desc:"Exam calendar 2025",id:"calendar"},
+];
+
+const DEMO=[
+  {id:1,Name:"శ్రీ వెంకటేశ్వర మీసేవ",District:"హైదరాబాద్",Mandal:"అంబర్‌పేట",Village:"హిమాయత్‌నగర్",Phone:"9876543210",WhatsApp:"9876543210",Address:"Himayatnagar Main Road, Near SBI",Lat:"17.396",Lng:"78.478",Photo:"",Services:"Income Certificate,Caste Certificate,Aadhaar Services,Ration Card,EPASS,Pensions",Hours:"9am–6pm Mon-Sat",Rating:"4.8",Trusted:"true",Verified:"true",Description:"8 సంవత్సరాల అనుభవం. అన్ని మీసేవ సేవలు అందుబాటులో ఉన్నాయి. Fast processing."},
+  {id:2,Name:"జయ మీసేవ కేంద్రం",District:"రంగారెడ్డి",Mandal:"శంషాబాద్",Village:"బజారు",Phone:"9988776655",WhatsApp:"9988776655",Address:"Main Bazaar Road, Shamshabad",Lat:"17.240",Lng:"78.429",Photo:"",Services:"Land Records,Registration Services,Pensions,Ration Card,Electricity Bill",Hours:"8:30am–6:30pm",Rating:"4.5",Trusted:"true",Verified:"true",Description:"Land records specialist. Quick turnaround time."},
+  {id:3,Name:"అంబేద్కర్ మీసేవ",District:"నల్గొండ",Mandal:"నల్గొండ",Village:"బస్ స్టాండ్",Phone:"9123456780",WhatsApp:"9123456780",Address:"Bus Stand Road, Nalgonda",Lat:"17.060",Lng:"79.266",Photo:"",Services:"Caste Certificate,Income Certificate,Rythu Bandhu,EPASS",Hours:"9am–5:30pm",Rating:"4.2",Trusted:"false",Verified:"true",Description:"Serving Nalgonda since 2018."},
+  {id:4,Name:"తెలంగాణ మీసేవ సెంటర్",District:"కరీంనగర్",Mandal:"కరీంనగర్",Village:"మెయిన్ రోడ్",Phone:"9001122334",WhatsApp:"9001122334",Address:"Near Collectorate, Karimnagar",Lat:"18.438",Lng:"79.120",Photo:"",Services:"Aadhaar Services,PAN Card,Passport,Driving Licence,Income Certificate,Marriage Certificate",Hours:"9am–7pm Mon-Sat",Rating:"4.7",Trusted:"true",Verified:"true",Description:"Premium center with AC. All services in one place."},
+  {id:5,Name:"సాయి మీసేవ",District:"వరంగల్",Mandal:"వరంగల్",Village:"కాజీపేట",Phone:"9345678901",WhatsApp:"9345678901",Address:"Station Road, Kazipet",Lat:"17.957",Lng:"79.521",Photo:"",Services:"Income Certificate,Caste Certificate,Ration Card,Scholarship Applications,Pensions",Hours:"9am–6pm",Rating:"4.3",Trusted:"false",Verified:"true",Description:"All government services. Student-friendly."},
+  {id:6,Name:"గాంధీ మీసేవ కేంద్రం",District:"నిజామాబాద్",Mandal:"నిజామాబాద్",Village:"సివిల్ లైన్స్",Phone:"9876001234",WhatsApp:"9876001234",Address:"Civil Lines, Nizamabad",Lat:"18.672",Lng:"78.099",Photo:"",Services:"Land Records,Pahani,Mutation,Registration Services,Income Certificate",Hours:"9am–6pm",Rating:"4.6",Trusted:"true",Verified:"true",Description:"Land records expert. Serving farmers."},
+  {id:7,Name:"భారత్ మీసేవ",District:"సంగారెడ్డి",Mandal:"సంగారెడ్డి",Village:"మెయిన్ బజారు",Phone:"9000887766",WhatsApp:"9000887766",Address:"Main Bazaar, Sangareddy",Lat:"17.623",Lng:"78.082",Photo:"",Services:"Aadhaar Services,Income Certificate,Caste Certificate,EPASS,Rythu Bandhu",Hours:"8am–6pm Mon-Sat",Rating:"4.4",Trusted:"true",Verified:"false",Description:"Fast service. Same-day processing."},
+  {id:8,Name:"మాతృ మీసేవ",District:"ఖమ్మం",Mandal:"ఖమ్మం",Village:"బస్ స్టాండ్",Phone:"9654321098",WhatsApp:"9654321098",Address:"Bus Stand Area, Khammam",Lat:"17.246",Lng:"80.153",Photo:"",Services:"Income Certificate,Caste Certificate,Date of Birth Certificate,Marriage Certificate,Ration Card",Hours:"9am–5pm",Rating:"4.1",Trusted:"false",Verified:"true",Description:"Specializes in certificates."},
+];
+
+/* ══ STATE ══ */
+let ALL=[], CUR_V="grid", PP_D=null, PP_M=null;
+
+/* ══ INIT ══ */
+async function init(){
+  updateVisitors();
+  try{
+    if(SHEET_URL==="YOUR_GOOGLE_SHEET_CSV_URL_HERE") throw new Error("demo");
+    const r=await fetch(SHEET_URL);if(!r.ok)throw new Error();
+    ALL=parseCSV(await r.text()).map((d,i)=>({id:i+1,...d}));
+  }catch(e){ALL=DEMO;}
+  // Dropdowns
+  const dEl=document.getElementById("fDist"), jEl=document.getElementById("jf_dist");
+  Object.keys(TGD).forEach(d=>{
+    dEl.innerHTML+=`<option value="${d}">${d}</option>`;
+    jEl.innerHTML+=`<option value="${d}">${d}</option>`;
+  });
+  const vt=ALL.filter(d=>d.Trusted==="true"||d.Trusted===true).length;
+  document.getElementById("stC").textContent=ALL.length;
+  document.getElementById("stV").textContent=vt;
+  document.getElementById("aT").textContent=ALL.length;
+  document.getElementById("aV").textContent=vt;
+  document.getElementById("aP").textContent=Math.max(0,Math.floor(ALL.length*.12));
+  renderTicker();renderHomeNotifs();renderSchemes();renderHomeNews();renderHomeRecent();
+  renderTools();renderForms();renderNotifTypes();renderNewsAll();renderSvcChecks();renderAdminList();
+  document.getElementById("dirLoader").style.display="none";
+  document.getElementById("lstWrap").style.display="";
+  applyF();
+}
+
+/* ══ CSV ══ */
+function parseCSV(t){
+  const ls=t.trim().split("\n");
+  const h=csvSpl(ls[0]).map(x=>x.trim().replace(/^"|"$/g,""));
+  return ls.slice(1).map(l=>{const v=csvSpl(l);const o={};h.forEach((k,i)=>{o[k]=(v[i]||"").trim().replace(/^"|"$/g,"");});return o;}).filter(r=>r.Name);
+}
+function csvSpl(l){const r=[];let c="",q=false;for(const ch of l){if(ch==='"'){q=!q;}else if(ch===','&&!q){r.push(c);c="";}else{c+=ch;}}r.push(c);return r;}
+
+/* ══ VISITORS ══ */
+function updateVisitors(){
+  const today=new Date().toDateString();
+  const s=JSON.parse(localStorage.getItem("ms_v")||"{}");
+  if(s.d!==today){s.d=today;s.t=0;s.total=s.total||0;}
+  s.t++;s.total++;
+  localStorage.setItem("ms_v",JSON.stringify(s));
+  document.getElementById("visCount").textContent=s.t.toLocaleString();
+  document.getElementById("visTotal").textContent=s.total.toLocaleString();
+  document.getElementById("visTime").textContent=new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+  document.getElementById("aVis").textContent=s.t;
+}
+
+/* ══ TICKER ══ */
+function renderTicker(){
+  const all=[...NOTIFS.map(n=>n.title),...NEWS.map(n=>n.title)];
+  const inner=document.getElementById("tickerInner");
+  const html=all.map(t=>`<div class="ticker-item">${t}</div>`).join("");
+  inner.innerHTML=html+html;
+}
+
+/* ══ HOME RENDERS ══ */
+function renderHomeNotifs(){
+  const el=document.getElementById("homeNotifs");
+  NOTIFS.slice(0,5).forEach(n=>{
+    el.innerHTML+=`<div class="notif-card ${n.col==="green"?"grn":n.col==="gold"?"gld":""}">
+      <div class="nc-type">${n.type.toUpperCase()}</div><div class="nc-title">${n.title}</div><div class="nc-date">${n.sub}</div>
+    </div>`;
+  });
+}
+function renderSchemes(){
+  const el=document.getElementById("schemesList");
+  SCHEMES.forEach(s=>{
+    el.innerHTML+=`<div class="scheme-card">
+      <div class="sc-ico">${s.ico}</div>
+      <div><div class="sc-name">${s.name}</div><div class="sc-desc">${s.desc}</div></div>
+      <div class="sc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>`;
+  });
+}
+function renderHomeNews(){
+  const el=document.getElementById("homeNews");
+  NEWS.slice(0,3).forEach(n=>{el.innerHTML+=newsCardHtml(n);});
+}
+function renderHomeRecent(){
+  const el=document.getElementById("homeRecent");
+  ALL.slice(0,7).forEach(d=>{
+    el.innerHTML+=`<div class="notif-card" style="border-left-color:var(--saf2)" onclick="openProfile(${d.id})">
+      <div class="nc-type">${d.Mandal}</div><div class="nc-title">${d.Name}</div>
+      <div class="nc-date">📍 ${d.Village||""} · ☎️ ${d.Phone}</div>
+    </div>`;
+  });
+}
+
+/* ══ NEWS CARD ══ */
+function newsCardHtml(n){
+  return `<div class="news-card">
+    <div class="nc-thumb">
+      ${n.isVideo?`<div class="nc-play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>`:""}
+      <span>${n.isVideo?"📹":"📰"}</span>
+      <div class="nc-badge ${n.isVideo?"video":""}">${n.isVideo?"VIDEO":"NEWS"}</div>
+    </div>
+    <div class="nc-body">
+      <div class="nc-cat">${n.cat}</div>
+      <div class="nc-ttl">${n.title}</div>
+      <div class="nc-desc2">${n.desc}</div>
+      <div class="nc-dt">📅 ${n.date}</div>
+    </div>
+  </div>`;
+}
+
+/* ══ NEWS SCREEN ══ */
+function renderNewsAll(){
+  NEWS.forEach(n=>{
+    const c=newsCardHtml(n);
+    document.getElementById("np-all").innerHTML+=c;
+    if(n.isVideo) document.getElementById("np-video").innerHTML+=c;
+    if(n.type==="notice") document.getElementById("np-notice").innerHTML+=c;
+    if(n.type==="scheme") document.getElementById("np-scheme").innerHTML+=c;
+  });
+}
+function setNTab(tab,el){
+  document.querySelectorAll(".n-tab").forEach(t=>t.className="n-tab");
+  document.querySelectorAll(".news-panel").forEach(p=>p.className="news-panel");
+  el.className="n-tab on";
+  document.getElementById("np-"+tab).className="news-panel on";
+}
+
+/* ══ NOTIFICATIONS SCREEN ══ */
+function renderNotifTypes(){
+  const el=document.getElementById("notifBody");
+  const groups={job:"💼 Job Notifications",result:"📊 Results",admission:"🎓 Admissions Open"};
+  Object.entries(groups).forEach(([type,label])=>{
+    el.innerHTML+=`<div class="notif-group-title">${label}</div>`;
+    NOTIFS.filter(n=>n.type===type).forEach(n=>{
+      el.innerHTML+=`<div style="margin:0 12px 8px">
+        <div class="notif-card ${n.col==="green"?"grn":n.col==="gold"?"gld":""}">
+          <div class="nc-type">${n.type.toUpperCase()}</div><div class="nc-title">${n.title}</div><div class="nc-date">${n.sub}</div>
+        </div>
+      </div>`;
+    });
+  });
+}
+
+/* ══ TOOLS ══ */
+function renderTools(){
+  document.getElementById("toolsGrid").innerHTML=TOOLS.map(t=>`
+    <div class="tool-c" onclick="showToast('${t.name} feature coming soon!')">
+      <div class="tool-em">${t.em}</div><div class="tool-name">${t.name}</div><div class="tool-desc">${t.desc}</div>
+    </div>`).join("");
+}
+function renderForms(){
+  document.getElementById("formsList").innerHTML=FORMS.map(f=>`
+    <div class="form-item" onclick="showDocs('${f.name}','${f.docs.join("|")}')">
+      <div class="fi-ico">${f.em}</div>
+      <div><div class="fi-name">${f.name}</div><div class="fi-sub">${f.docs.length} documents కావాలి</div></div>
+      <div class="fi-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>`).join("");
+  // Job/Admission/Result alerts
+  const notifCard=(n,type)=>`<div style="margin-bottom:8px"><div class="notif-card ${n.col==="green"?"grn":n.col==="gold"?"gld":""}">
+    <div class="nc-type">${type}</div><div class="nc-title">${n.title}</div><div class="nc-date">${n.sub}</div>
+  </div></div>`;
+  document.getElementById("jobList").innerHTML=NOTIFS.filter(n=>n.type==="job").map(n=>notifCard(n,"JOB")).join("");
+  document.getElementById("admList").innerHTML=NOTIFS.filter(n=>n.type==="admission").map(n=>notifCard(n,"ADMISSION")).join("");
+  document.getElementById("resultsList").innerHTML=NOTIFS.filter(n=>n.type==="result").map(n=>notifCard(n,"RESULT")).join("");
+}
+function showDocs(name,docsStr){
+  const docs=docsStr.split("|");
+  alert(`${name}\n\nకావాల్సిన Documents:\n${docs.map((d,i)=>`${i+1}. ${d}`).join("\n")}`);
+}
+function goCat(id){showToast(`${id} form documents తెరుస్తున్నాం`);goScreen("s-tools");}
+
+/* ══ DIRECTORY FILTER ══ */
+function onDist(){
+  const dist=document.getElementById("fDist").value;
+  const mEl=document.getElementById("fMandal");
+  mEl.innerHTML='<option value="">అన్ని మండలాలు</option>';
+  const m=[...new Set([...(TGD[dist]||[]),...ALL.filter(d=>d.District===dist).map(d=>d.Mandal).filter(Boolean)])];
+  m.forEach(x=>{mEl.innerHTML+=`<option value="${x}">${x}</option>`;});
+  applyF();
+}
+function onJDist(){
+  const dist=document.getElementById("jf_dist").value;
+  const mEl=document.getElementById("jf_mandal");
+  mEl.innerHTML='<option value="">మండలం ఎంచుకోండి</option>';
+  (TGD[dist]||[]).forEach(m=>{mEl.innerHTML+=`<option value="${m}">${m}</option>`;});
+}
+function getFilt(){
+  const q=(document.getElementById("dq").value||"").toLowerCase().trim();
+  const dist=document.getElementById("fDist").value;
+  const mandal=document.getElementById("fMandal").value;
+  return ALL.filter(d=>
+    (!q||(d.Name||"").toLowerCase().includes(q)||(d.Village||"").toLowerCase().includes(q)||(d.Mandal||"").toLowerCase().includes(q))&&
+    (!dist||d.District===dist)&&(!mandal||d.Mandal===mandal)
+  );
+}
+function applyF(){renderDir();renderAPills();}
+function renderAPills(){
+  const dist=document.getElementById("fDist").value;
+  const mandal=document.getElementById("fMandal").value;
+  let h="";
+  if(dist)h+=`<span class="fpill act" onclick="clrPill('dist')">${dist.split(" ")[0]}</span>`;
+  if(mandal)h+=`<span class="fpill act" onclick="clrPill('mandal')">${mandal}</span>`;
+  document.getElementById("aPills").innerHTML=h;
+}
+function clrPill(k){
+  if(k==="dist"){document.getElementById("fDist").value="";onDist();}
+  else{document.getElementById("fMandal").value="";applyF();}
+}
+function setV(v){
+  CUR_V=v;
+  document.getElementById("vgb").className=v==="grid"?"vt on":"vt";
+  document.getElementById("vlb").className=v==="list"?"vt on":"vt";
+  renderDir();
+}
+
+/* ══ RENDER DIRECTORY ══ */
+function renderDir(){
+  const data=getFilt();
+  document.getElementById("dirC").innerHTML=`<b>${data.length}</b> centers దొరికాయి`;
+  const wrap=document.getElementById("lstWrap");
+  if(!data.length){
+    wrap.innerHTML=`<div class="empty-state"><div class="ei">🔍</div><p>Centers దొరకలేదు</p><small>వేరే filter try చేయండి</small></div>`;return;
+  }
+  const trusted=d=>d.Trusted==="true"||d.Trusted===true;
+  const verified=d=>d.Verified==="true"||d.Verified===true;
+  const rat=d=>parseFloat(d.Rating)||0;
+  if(CUR_V==="grid"){
+    wrap.innerHTML=`<div class="ms-grid">${data.map(d=>`
+      <div class="ms-card" data-id="${d.id}">
+        <div class="mc-img">
+          ${d.Photo?`<img src="${d.Photo}" loading="lazy" onerror="this.style.display='none'">`:``}
+          ${!d.Photo?`<div class="mc-av">${(d.Name||"?").charAt(0)}</div>`:""}
+          ${trusted(d)?`<div class="mc-trusted"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Trusted</div>`:""}
+          ${rat(d)>0?`<div class="mc-rated">★${rat(d)}</div>`:""}
+          ${verified(d)?`<div class="mc-verified">✓ Verified</div>`:""}
+        </div>
+        <div class="mc-body">
+          <div class="mc-name">${d.Name}</div>
+          <div class="mc-mandal">${d.Mandal}</div>
+          <div class="mc-dist"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${d.Village||""} · ${(d.District||"").split(" ")[0]}</div>
+          <div class="mc-btns">
+            <button class="mc-call" data-tel="${d.Phone}">📞 కాల్</button>
+            ${d.WhatsApp?`<button class="mc-wa" data-wa="${d.WhatsApp}">💬 WA</button>`:""}
+          </div>
+        </div>
+      </div>`).join("")}</div>`;
+  }else{
+    wrap.innerHTML=`<div class="ms-list">${data.map(d=>`
+      <div class="ml-item" data-id="${d.id}">
+        <div class="ml-av">${d.Photo?`<img src="${d.Photo}" loading="lazy" onerror="this.style.display='none'">`:""}<span style="${d.Photo?"display:none":""}">${(d.Name||"?").charAt(0)}</span></div>
+        <div class="ml-info">
+          <div class="ml-name">${d.Name}</div>
+          <div class="ml-bdgs">
+            ${trusted(d)?`<span class="bdg-t"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Trusted</span>`:""}
+            ${rat(d)>0?`<span class="bdg-r">★${rat(d)}</span>`:""}
+            ${verified(d)?`<span class="bdg-v">✓ Verified</span>`:""}
+          </div>
+          <div class="ml-loc">📍 ${d.Village||""}, ${d.Mandal} · ${(d.District||"").split(" ")[0]}</div>
+        </div>
+        <button class="ml-call" data-tel="${d.Phone}"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></button>
+      </div>`).join("")}</div>`;
+  }
+}
+
+/* ══ PROFILE ══ */
+function openProfile(id){
+  const d=ALL.find(x=>x.id===id);if(!d)return;
+  PP_D=d;
+  document.getElementById("ppTitle").textContent=d.Name;
+  const tr=d.Trusted==="true"||d.Trusted===true;
+  const vr=d.Verified==="true"||d.Verified===true;
+  const rt=parseFloat(d.Rating)||0;
+  const lat=parseFloat(d.Lat),lng=parseFloat(d.Lng),hasMap=lat&&lng;
+  const svcs=(d.Services||"").split(",").map(s=>s.trim()).filter(Boolean);
+  document.getElementById("ppContent").innerHTML=`
+    <div class="pp-hero">
+      ${d.Photo?`<img src="${d.Photo}" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block" onerror="this.style.display='none'">`:""}
+      <div class="pp-hero-av" style="${d.Photo?"display:none":""}">${(d.Name||"?").charAt(0)}</div>
+      <div class="pp-hbdgs">
+        ${tr?`<div class="pbdg-t"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Trusted</div>`:""}
+        ${rt>0?`<div class="pbdg-r">★ ${rt}</div>`:""}
+        ${vr?`<div class="pbdg-v">✓ Verified</div>`:""}
+      </div>
+    </div>
+    <div class="pp-body">
+      <div class="pp-name">${d.Name}</div>
+      <div class="pp-tags">
+        <span class="pp-tag"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${d.Village||""}</span>
+        <span class="pp-tag">🏛️ ${d.Mandal}</span>
+        <span class="pp-tag">📍 ${d.District||""}</span>
+        ${rt>0?`<span class="pp-tag" style="background:var(--gld3);border-color:var(--gld2);color:var(--gld)">★ ${rt} / 5</span>`:""}
+      </div>
+      <div class="pp-sec-t">సంప్రదించండి</div>
+      <div class="pp-row">
+        <div class="pp-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+        <div class="pp-val"><div class="v1">${d.Phone}</div><div class="v2">Phone నంబర్</div></div>
+      </div>
+      ${d.WhatsApp?`<div class="pp-row"><div class="pp-ico g"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="pp-val"><div class="v1">${d.WhatsApp}</div><div class="v2">WhatsApp</div></div></div>`:""}
+      <div class="pp-row"><div class="pp-ico"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="pp-val"><div class="v1">${d.Address||""}</div><div class="v2">${d.Village||""}, ${d.Mandal}, ${d.District}</div></div></div>
+      ${d.Hours?`<div class="pp-row"><div class="pp-ico gld"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="pp-val"><div class="v1">${d.Hours}</div><div class="v2">పని వేళలు</div></div></div>`:""}
+      ${svcs.length?`<div style="margin-bottom:16px"><div class="pp-sec-t">అందించే సేవలు (${svcs.length})</div><div class="svc-wrap">${svcs.map(s=>`<div class="svc-chip">✓ ${s}</div>`).join("")}</div></div>`:""}
+      ${d.Description?`<div style="margin-bottom:16px"><div class="pp-sec-t">గురించి</div><p style="font-size:13.5px;color:var(--t2);line-height:1.75">${d.Description}</p></div>`:""}
+      <div style="margin-bottom:16px">
+        <div class="pp-sec-t">Rating ఇవ్వండి</div>
+        <div class="star-row" id="starRow">
+          ${[1,2,3,4,5].map(i=>`<svg class="star${i<=rt?" on":""}" viewBox="0 0 24 24" onclick="rateC(${d.id},${i})"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`).join("")}
+          <span class="rate-lbl">${rt>0?rt+" / 5":"Rate this center"}</span>
+        </div>
+      </div>
+      ${hasMap?`<div style="margin-bottom:4px"><div class="pp-sec-t">లొకేషన్ మ్యాప్</div><div class="pp-map" id="ppMapEl"></div></div>`:""}
+    </div>`;
+  document.getElementById("ppFoot").style.display="flex";
+  document.getElementById("ppFoot").innerHTML=`
+    <button class="pp-btn-c" data-tel="${d.Phone}">
+      <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>కాల్ చేయండి</button>
+    ${d.WhatsApp?`<button class="pp-btn-w" data-wa="${d.WhatsApp}">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</button>`:""}`;
+  document.getElementById("profilePg").className="profile on";
+  document.getElementById("profilePg").scrollTop=0;
+  if(hasMap){setTimeout(()=>{
+    if(PP_M){PP_M.remove();PP_M=null;}
+    PP_M=L.map("ppMapEl").setView([lat,lng],15);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OSM"}).addTo(PP_M);
+    L.marker([lat,lng],{icon:L.divIcon({html:`<div style="background:var(--saf2);color:#fff;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(200,75,10,.4)">${(d.Name||"?").charAt(0)}</div>`,className:"",iconSize:[34,34],iconAnchor:[17,17]})})
+      .addTo(PP_M).bindPopup(`<b>${d.Name}</b><br>${d.Address}`).openPopup();
+  },160);}
+}
+function closeProf(){document.getElementById("profilePg").className="profile";if(PP_M){PP_M.remove();PP_M=null;}PP_D=null;}
+function shareC(){
+  if(!PP_D)return;
+  const t=`${PP_D.Name}\n📍 ${PP_D.Village}, ${PP_D.Mandal}, ${PP_D.District}\n📞 ${PP_D.Phone}\n\nమీసేవ డైరెక్టరీ · 9948770651 · Hyderabad`;
+  if(navigator.share)navigator.share({title:PP_D.Name,text:t});
+  else if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>showToast("Copied!"));
+}
+function rateC(id,val){
+  document.querySelectorAll("#starRow .star").forEach((s,i)=>{s.className=i<val?"star on":"star";});
+  document.querySelector(".rate-lbl").textContent=`${val} / 5`;
+  showToast("Rating ఇచ్చినందుకు ధన్యవాదాలు! ★"+val);
+}
+
+/* ══ JOIN ══ */
+function renderSvcChecks(){
+  document.getElementById("svcChkGrid").innerHTML=MS_SERVICES.slice(0,12).map(s=>`
+    <label class="svc-chk"><input type="checkbox" value="${s}"> ${s}</label>`).join("");
+}
+function submitJoin(){
+  const name=document.getElementById("jf_name").value.trim();
+  const phone=document.getElementById("jf_phone").value.trim();
+  const center=document.getElementById("jf_center").value.trim();
+  const dist=document.getElementById("jf_dist").value;
+  const mandal=document.getElementById("jf_mandal").value;
+  const village=document.getElementById("jf_village").value.trim();
+  const addr=document.getElementById("jf_addr").value.trim();
+  if(!name||!phone||!center||!dist||!mandal||!village||!addr){showToast("⚠️ అన్ని * fields fill చేయండి");return;}
+  if(!/^\d{10}$/.test(phone)){showToast("⚠️ Valid 10-digit phone number enter చేయండి");return;}
+  const p=JSON.parse(localStorage.getItem("ms_pend")||"[]");
+  const svcs=[...document.querySelectorAll("#svcChkGrid input:checked")].map(x=>x.value);
+  p.push({name,phone,center,dist,mandal,village,addr,svcs,ts:Date.now()});
+  localStorage.setItem("ms_pend",JSON.stringify(p));
+  document.getElementById("joinFormWrap").innerHTML=`
+    <div style="text-align:center;padding:50px 20px">
+      <div style="font-size:60px;margin-bottom:16px">✅</div>
+      <div style="font-size:19px;font-weight:700;color:var(--t1);margin-bottom:8px">Successfully Submitted!</div>
+      <div style="font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:24px">మీ application review చేసి<br>24 గంటల్లో contact చేస్తాం.<br>📞 9948770651</div>
+      <button onclick="location.reload()" style="background:var(--saf2);border:none;color:#fff;border-radius:9px;padding:12px 30px;font-size:14px;font-weight:700;cursor:pointer">OK</button>
+    </div>`;
+}
+
+/* ══ ADMIN ══ */
+function adminLogin(){
+  if(document.getElementById("adminPwd").value===ADMIN_PWD){
+    document.getElementById("adminLock").style.display="none";
+    document.getElementById("adminDash").style.display="block";
+    renderAdminList();
+  }else{showToast("❌ Incorrect password!");}
+}
+function renderAdminList(){
+  const pend=JSON.parse(localStorage.getItem("ms_pend")||"[]");
+  const pEl=document.getElementById("pendingList");
+  pEl.innerHTML=!pend.length?`<div style="font-size:13px;color:var(--t3);padding:10px 0">No pending requests</div>`:
+    pend.map((p,i)=>`<div class="adm-item"><div><div class="adm-item-name">${p.center}</div><div class="adm-item-sub">${p.mandal}, ${p.dist} · ${p.phone}</div></div><div class="adm-btns"><button class="adm-a" onclick="approvePend(${i})">Approve</button><button class="adm-r" onclick="rejectPend(${i})">Reject</button></div></div>`).join("");
+  const aEl=document.getElementById("allCList");
+  aEl.innerHTML=ALL.slice(0,10).map(d=>`
+    <div class="adm-item"><div><div class="adm-item-name">${d.Name}</div><div class="adm-item-sub">${d.Mandal}, ${(d.District||"").split(" ")[0]} · ★${d.Rating||"-"}</div></div>
+    <div class="adm-btns"><button class="adm-b" onclick="toggleBadge(${d.id})">Badge</button><button class="adm-r" onclick="showToast('Removed!')">Remove</button></div></div>`).join("");
+  document.getElementById("aP").textContent=pend.length;
+}
+function approvePend(i){const p=JSON.parse(localStorage.getItem("ms_pend")||"[]");p.splice(i,1);localStorage.setItem("ms_pend",JSON.stringify(p));showToast("✅ Approved!");renderAdminList();}
+function rejectPend(i){const p=JSON.parse(localStorage.getItem("ms_pend")||"[]");p.splice(i,1);localStorage.setItem("ms_pend",JSON.stringify(p));showToast("❌ Rejected");renderAdminList();}
+function toggleBadge(id){const d=ALL.find(x=>x.id===id);if(!d)return;d.Trusted=d.Trusted==="true"?"false":"true";showToast(d.Trusted==="true"?"✅ Trusted badge added!":"Badge removed");renderDir();}
+
+/* ══ NAVIGATION ══ */
+function goScreen(s){
+  document.getElementById("tickerWrap").style.display=s==="s-home"?"flex":"none";
+  document.querySelectorAll(".screen").forEach(e=>e.className="screen");
+  document.getElementById(s).className="screen on";
+  ["home","dir","tools","news","join"].forEach(id=>{
+    document.getElementById("bn-"+id).className=s==="s-"+id?"bnav on":"bnav";
+  });
+}
+
+/* ══ MISC ══ */
+function showToast(msg,d=2600){
+  const t=document.getElementById("toast");t.textContent=msg;t.className="toast show";
+  setTimeout(()=>{t.className="toast";},d);
+}
+
+/* ══ EVENT DELEGATION ══ */
+document.getElementById("lstWrap").addEventListener("click",e=>{
+  const tel=e.target.closest("[data-tel]");if(tel){window.open("tel:"+tel.dataset.tel);return;}
+  const wa=e.target.closest("[data-wa]");if(wa){window.open("https://wa.me/91"+wa.dataset.wa);return;}
+  const card=e.target.closest(".ms-card,.ml-item");
+  if(card&&!e.target.closest(".mc-btns,.ml-call"))openProfile(+card.dataset.id);
+});
+document.getElementById("ppFoot").addEventListener("click",e=>{
+  const tel=e.target.closest("[data-tel]");if(tel){window.open("tel:"+tel.dataset.tel);return;}
+  const wa=e.target.closest("[data-wa]");if(wa){window.open("https://wa.me/91"+wa.dataset.wa);return;}
+});
+
+/* ══ SWIPE BACK on PROFILE ══ */
+let _sx=0;
+document.getElementById("profilePg").addEventListener("touchstart",e=>{_sx=e.touches[0].clientX;},{passive:true});
+document.getElementById("profilePg").addEventListener("touchend",e=>{if(_sx<30&&e.changedTouches[0].clientX-_sx>70)closeProf();},{passive:true});
+
+/* ══ TRIPLE-TAP LOGO → ADMIN ══ */
+let _at=0;
+document.getElementById("msBrand").addEventListener("click",()=>{
+  _at++;if(_at>=3){_at=0;goScreen("s-admin");}
+  setTimeout(()=>{_at=0;},1500);
+});
+
+/* ══ START ══ */
+init();
+</script>
+</body>
+</html>
