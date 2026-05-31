@@ -127,7 +127,52 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 /* ═══════════════ NOTIFICATION CARD ═══════════════ */
 .hor-scroll{display:flex;gap:9px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
 .hor-scroll::-webkit-scrollbar{display:none}
-.notif-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;min-width:175px;cursor:pointer;flex-shrink:0;border-left:3px solid var(--saf2);box-shadow:0 1px 5px rgba(0,0,0,.05)}
+
+/* ═══ DETAIL DRAWER ═══ */
+.detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;opacity:0;pointer-events:none;transition:opacity .25s}
+.detail-overlay.on{opacity:1;pointer-events:all}
+.detail-drawer{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(102%);width:100%;max-width:440px;background:var(--card);border-radius:22px 22px 0 0;border-top:1.5px solid var(--line2);z-index:310;transition:transform .32s cubic-bezier(.32,0,.2,1);max-height:92dvh;overflow-y:auto;display:flex;flex-direction:column}
+.detail-drawer::-webkit-scrollbar{display:none}
+.detail-drawer.on{transform:translateX(-50%) translateY(0)}
+.dd-handle{width:36px;height:4px;background:var(--line2);border-radius:4px;margin:12px auto 0;flex-shrink:0}
+.dd-header{padding:12px 16px 10px;border-bottom:1px solid var(--line);flex-shrink:0;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.dd-badge{display:inline-block;font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.dd-badge.news{background:var(--saf3);color:var(--saf)}
+.dd-badge.notif{background:var(--redbg);color:var(--red)}
+.dd-badge.notif-a{background:#eff6ff;color:#1d4ed8}
+.dd-badge.scheme{background:var(--grn3);color:var(--grn)}
+.dd-badge.video{background:#ffecec;color:#cc0000}
+.dd-title{font-size:16px;font-weight:700;color:var(--t1);line-height:1.35;margin-bottom:4px}
+.dd-date{font-size:11.5px;color:var(--t3)}
+.dd-close{width:30px;height:30px;background:var(--bg3);border:1px solid var(--line2);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--t2);flex-shrink:0;font-family:inherit}
+.dd-thumb{width:100%;aspect-ratio:16/9;background:var(--bg3);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;font-size:52px}
+.dd-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.dd-video-outer{width:100%;aspect-ratio:16/9;background:#000;position:relative}
+.dd-video-outer iframe{width:100%;height:100%;border:none;display:block}
+.dd-play-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.4);cursor:pointer;flex-direction:column;gap:8px}
+.dd-play-btn svg{width:52px;height:52px;fill:rgba(255,255,255,.9)}
+.dd-play-lbl{font-size:12px;color:rgba(255,255,255,.85);font-weight:600}
+.dd-body{padding:14px 16px 8px;flex:1}
+.dd-desc{font-size:14px;color:var(--t2);line-height:1.85;margin-bottom:14px;white-space:pre-wrap}
+.dd-sec-title{font-size:10px;color:var(--t3);font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding-bottom:7px;margin-bottom:10px;border-bottom:1.5px solid var(--line)}
+.dd-info-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.dd-info-ico{font-size:17px;width:22px;flex-shrink:0;margin-top:1px}
+.dd-info-main{font-size:13.5px;color:var(--t1);line-height:1.45}
+.dd-info-sub{font-size:11.5px;color:var(--t3);margin-top:1px}
+.dd-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.dd-tag{background:var(--bg2);border:1px solid var(--line2);color:var(--t2);border-radius:20px;padding:4px 11px;font-size:12px}
+.dd-actions{padding:12px 16px calc(env(safe-area-inset-bottom,0px)+14px);border-top:1px solid var(--line);display:flex;gap:8px;flex-shrink:0}
+.dd-info-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.dd-info-ico{font-size:17px;width:22px;flex-shrink:0;margin-top:2px}
+.dd-info-main{font-size:13.5px;color:var(--t1);line-height:1.45;flex:1}
+.dd-info-sub{font-size:11.5px;color:var(--t3);margin-top:1px}
+.dd-sec-title{font-size:10px;color:var(--t3);font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding-bottom:7px;margin-bottom:10px;border-bottom:1.5px solid var(--line)}
+.dd-btn-p{flex:1;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px}
+.dd-btn-p.green{background:var(--grn)}
+.dd-btn-s{background:var(--bg2);border:1.5px solid var(--line2);color:var(--t2);border-radius:var(--r2);padding:13px 16px;font-size:13px;cursor:pointer;font-family:inherit}
+
+.notif-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;min-width:175px;cursor:pointer;flex-shrink:0;border-left:3px solid var(--saf2);box-shadow:0 1px 5px rgba(0,0,0,.05);transition:transform .12s}
+.notif-card:active{transform:scale(.97)}
 .notif-card.grn{border-left-color:var(--grn2)}
 .notif-card.gld{border-left-color:var(--gld2)}
 .nc-type{font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;font-weight:600}
@@ -898,6 +943,27 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- ═══ DETAIL DRAWER — News / Notif / Scheme ═══ -->
+<div class="detail-overlay" id="ddOverlay" onclick="closeDetail()"></div>
+<div class="detail-drawer" id="ddDrawer">
+  <div class="dd-handle"></div>
+  <div class="dd-header">
+    <div style="flex:1">
+      <div class="dd-badge" id="ddBadge"></div>
+      <div class="dd-title" id="ddTitle"></div>
+      <div class="dd-date" id="ddDate"></div>
+    </div>
+    <button class="dd-close" onclick="closeDetail()">✕</button>
+  </div>
+  <div id="ddMedia"></div>
+  <div class="dd-body">
+    <div class="dd-desc" id="ddDesc"></div>
+    <div id="ddExtra"></div>
+  </div>
+  <div class="dd-actions" id="ddActions"></div>
+</div>
+
 </div><!-- /#app -->
 
 <!-- BOTTOM NAV — outside #app to avoid overflow:hidden clipping -->
@@ -929,7 +995,7 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 /* ══════════════════════════════════════════
    CONFIG
 ══════════════════════════════════════════ */
-const SHEET_URL = "YOUR_GOOGLE_SHEET_CSV_URL_HERE";
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS41Q9pp_LZJIADtQUHlr2Leshl0t_j8MJfyw4akayunKoBPX6b2inf0_Ll6guocxqNbgvN8n7IsMgX/pub?output=csv";
 // Columns: Name|District|Mandal|Village|Phone|WhatsApp|Address|Lat|Lng|Photo|Services|Hours|Rating|Trusted|Verified|Description
 const ADMIN_PWD = "meeseva2025";
 
@@ -1099,7 +1165,7 @@ function updateVisitors(){
 
 /* ══ TICKER ══ */
 function renderTicker(){
-  const all=[...NOTIFS.map(n=>n.title),...NEWS.map(n=>n.title)];
+  const all=[...NOTIFS_FULL.map(n=>n.title),...NEWS_FULL.map(n=>n.title)];
   const inner=document.getElementById("tickerInner");
   const html=all.map(t=>`<div class="ticker-item">${t}</div>`).join("");
   inner.innerHTML=html+html;
@@ -1108,25 +1174,28 @@ function renderTicker(){
 /* ══ HOME RENDERS ══ */
 function renderHomeNotifs(){
   const el=document.getElementById("homeNotifs");
-  NOTIFS.slice(0,5).forEach(n=>{
-    el.innerHTML+=`<div class="notif-card ${n.col==="green"?"grn":n.col==="gold"?"gld":""}">
-      <div class="nc-type">${n.type.toUpperCase()}</div><div class="nc-title">${n.title}</div><div class="nc-date">${n.sub}</div>
+  NOTIFS_FULL.slice(0,5).forEach(n=>{
+    const col=n.col==="green"?"grn":n.col==="gold"?"gld":"";
+    el.innerHTML+=`<div class="notif-card ${col}" onclick="openDetail('notif','${n.id}')">
+      <div class="nc-type">${n.type.toUpperCase()} ${n.icon||""}</div>
+      <div class="nc-title">${n.title}</div>
+      <div class="nc-date">${n.sub} →</div>
     </div>`;
   });
 }
 function renderSchemes(){
   const el=document.getElementById("schemesList");
-  SCHEMES.forEach(s=>{
-    el.innerHTML+=`<div class="scheme-card">
+  SCHEMES_FULL.forEach(s=>{
+    el.innerHTML+=`<div class="scheme-card" onclick="openDetail('scheme','${s.id}')">
       <div class="sc-ico">${s.ico}</div>
-      <div><div class="sc-name">${s.name}</div><div class="sc-desc">${s.desc}</div></div>
+      <div><div class="sc-name">${s.name}</div><div class="sc-desc">${s.desc.split('\n')[0]}</div></div>
       <div class="sc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
     </div>`;
   });
 }
 function renderHomeNews(){
   const el=document.getElementById("homeNews");
-  NEWS.slice(0,3).forEach(n=>{el.innerHTML+=newsCardHtml(n);});
+  NEWS_FULL.slice(0,3).forEach(n=>{el.innerHTML+=newsCardHtml(n);});
 }
 function renderHomeRecent(){
   const el=document.getElementById("homeRecent");
@@ -1140,7 +1209,7 @@ function renderHomeRecent(){
 
 /* ══ NEWS CARD ══ */
 function newsCardHtml(n){
-  return `<div class="news-card">
+  return `<div class="news-card" onclick="openDetail('news','${n.id}')">
     <div class="nc-thumb">
       ${n.isVideo?`<div class="nc-play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>`:""}
       <span>${n.isVideo?"📹":"📰"}</span>
@@ -1149,15 +1218,15 @@ function newsCardHtml(n){
     <div class="nc-body">
       <div class="nc-cat">${n.cat}</div>
       <div class="nc-ttl">${n.title}</div>
-      <div class="nc-desc2">${n.desc}</div>
-      <div class="nc-dt">📅 ${n.date}</div>
+      <div class="nc-desc2">${n.desc.split('\n')[0]}</div>
+      <div class="nc-dt">📅 ${n.date} &nbsp;→ వివరాలు చదవండి</div>
     </div>
   </div>`;
 }
 
 /* ══ NEWS SCREEN ══ */
 function renderNewsAll(){
-  NEWS.forEach(n=>{
+  NEWS_FULL.forEach(n=>{
     const c=newsCardHtml(n);
     document.getElementById("np-all").innerHTML+=c;
     if(n.isVideo) document.getElementById("np-video").innerHTML+=c;
@@ -1178,17 +1247,18 @@ function renderNotifTypes(){
   const groups={job:"💼 Job Notifications",result:"📊 Results",admission:"🎓 Admissions Open"};
   Object.entries(groups).forEach(([type,label])=>{
     el.innerHTML+=`<div class="notif-group-title">${label}</div>`;
-    NOTIFS.filter(n=>n.type===type).forEach(n=>{
+    NOTIFS_FULL.filter(n=>n.type===type).forEach(n=>{
+      const col=n.col==="green"?"grn":n.col==="gold"?"gld":"";
       el.innerHTML+=`<div style="margin:0 12px 8px">
-        <div class="notif-card ${n.col==="green"?"grn":n.col==="gold"?"gld":""}">
-          <div class="nc-type">${n.type.toUpperCase()}</div><div class="nc-title">${n.title}</div><div class="nc-date">${n.sub}</div>
+        <div class="notif-card ${col}" onclick="openDetail('notif','${n.id}')">
+          <div class="nc-type">${n.type.toUpperCase()} ${n.icon||""}</div>
+          <div class="nc-title">${n.title}</div>
+          <div class="nc-date">${n.sub} &nbsp;→</div>
         </div>
       </div>`;
     });
   });
 }
-
-/* ══ TOOLS ══ */
 function renderTools(){
   document.getElementById("toolsGrid").innerHTML=TOOLS.map(t=>`
     <div class="tool-c" onclick="showToast('${t.name} feature coming soon!')">
@@ -1203,12 +1273,12 @@ function renderForms(){
       <div class="fi-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
     </div>`).join("");
   // Job/Admission/Result alerts
-  const notifCard=(n,type)=>`<div style="margin-bottom:8px"><div class="notif-card ${n.col==="green"?"grn":n.col==="gold"?"gld":""}">
-    <div class="nc-type">${type}</div><div class="nc-title">${n.title}</div><div class="nc-date">${n.sub}</div>
+  const notifCard=(n,type)=>`<div style="margin-bottom:8px"><div class="notif-card ${n.col==="green"?"grn":n.col==="gold"?"gld":""}" onclick="openDetail('notif','${n.id}')">
+    <div class="nc-type">${type} ${n.icon||""}</div><div class="nc-title">${n.title}</div><div class="nc-date">${n.sub} →</div>
   </div></div>`;
-  document.getElementById("jobList").innerHTML=NOTIFS.filter(n=>n.type==="job").map(n=>notifCard(n,"JOB")).join("");
-  document.getElementById("admList").innerHTML=NOTIFS.filter(n=>n.type==="admission").map(n=>notifCard(n,"ADMISSION")).join("");
-  document.getElementById("resultsList").innerHTML=NOTIFS.filter(n=>n.type==="result").map(n=>notifCard(n,"RESULT")).join("");
+  document.getElementById("jobList").innerHTML=NOTIFS_FULL.filter(n=>n.type==="job").map(n=>notifCard(n,"JOB")).join("");
+  document.getElementById("admList").innerHTML=NOTIFS_FULL.filter(n=>n.type==="admission").map(n=>notifCard(n,"ADMISSION")).join("");
+  document.getElementById("resultsList").innerHTML=NOTIFS_FULL.filter(n=>n.type==="result").map(n=>notifCard(n,"RESULT")).join("");
 }
 function showDocs(name,docsStr){
   const docs=docsStr.split("|");
@@ -1724,6 +1794,105 @@ function getFilt(){
     return true;
   });
 }
+    return true;
+  });
+}
+
+/* ══════════════════════════════════════════
+   DETAIL DRAWER — News / Notif / Scheme
+══════════════════════════════════════════ */
+const NOTIFS_FULL=[
+  {id:"n1",type:"job",col:"red",title:"TSPSC Group-I Notification 2025",sub:"Apply: May 30 – June 15, 2025",date:"20 May 2025",icon:"💼",desc:"తెలంగాణ రాష్ట్ర పబ్లిక్ సర్వీస్ కమీషన్ (TSPSC) Group-I పోస్టుల కోసం notification విడుదల చేసింది.\n\nమొత్తం Posts: 503\nవేతనం: ₹35,120 – ₹1,12,400\nఅర్హత: Degree (Any discipline)\nవయసు: 18–44 years",eligibility:["Degree completed","Telangana Domicile","18–44 years"],deadline:"June 15, 2025",link:"https://tspsc.gov.in"},
+  {id:"n2",type:"result",col:"green",title:"TSTET Results 2025 Declared",sub:"Download · Check Now",date:"18 May 2025",icon:"📊",desc:"తెలంగాణ టీచర్ ఎలిజిబిలిటీ టెస్ట్ (TSTET) 2025 ఫలితాలు విడుదలయ్యాయి.\n\nPaper-I మరియు Paper-II రెండింటి results declared.\nHTNo తో check చేయండి.",eligibility:[],deadline:"",link:"https://tstet.cgg.gov.in"},
+  {id:"n3",type:"admission",col:"gold",title:"LAWCET 2025 Admissions Open",sub:"Last Date: May 31, 2025",date:"15 May 2025",icon:"⚖️",desc:"Law Common Entrance Test 2025 admissions:\n\nCourses: 3-Year LLB, 5-Year LLB\nParticipating Colleges: 120+\nCounselling: Online mode",eligibility:["Degree with 45% marks","Age: No limit for 3yr LLB"],deadline:"May 31, 2025",link:"https://lawcet.tsche.ac.in"},
+  {id:"n4",type:"job",col:"red",title:"Telangana Police Recruitment 2025",sub:"2000+ Vacancies · Apply Now",date:"12 May 2025",icon:"👮",desc:"తెలంగాణ పోలీస్ రిక్రూట్‌మెంట్ 2025:\n\nConstable: 1,800 posts\nSI (Civil): 217 posts\nSI (AR): 100 posts",eligibility:["10th/Intermediate passed","Age: 18–25 years","Height: Men 167cm Women 152cm"],deadline:"June 20, 2025",link:"https://tslprb.in"},
+  {id:"n5",type:"result",col:"green",title:"SSC 10th Results 2025",sub:"Results Released · Check Now",date:"10 May 2025",icon:"📝",desc:"తెలంగాణ SSC 2025 ఫలితాలు:\n\nPass Percentage: 87.24%\nHTNo తో results check చేయవచ్చు.\nRecounting / Revaluation: June 1 నుండి",eligibility:[],deadline:"",link:"https://results.ts.nic.in"},
+  {id:"n6",type:"admission",col:"gold",title:"EAMCET 2025 Counselling",sub:"Phase-1: June 1–10, 2025",date:"8 May 2025",icon:"🎓",desc:"TS EAMCET 2025 Counselling:\n\nPhase-1: June 1–10\nPhase-2: June 20–30\nDocuments: Rank Card, Caste Cert, Income Cert, Aadhaar",eligibility:["EAMCET Qualified","Telangana Domicile"],deadline:"June 10, 2025",link:"https://tseamcet.nic.in"},
+  {id:"n7",type:"job",col:"red",title:"Municipal Corporation Jobs 2025",sub:"Various Posts · Last Date: June 5",date:"5 May 2025",icon:"🏛️",desc:"తెలంగాణ Municipal Corporations పోస్టులు:\n\nSanitary Worker: 450\nJunior Assistant: 120\nDriver: 85\nOther: 345",eligibility:["10th Pass","Local candidate preference","Age: 18–40 years"],deadline:"June 5, 2025",link:"https://municipal.telangana.gov.in"},
+  {id:"n8",type:"result",col:"green",title:"TSPSC Group-4 Results 2025",sub:"Results Declared · Download Now",date:"2 May 2025",icon:"📋",desc:"TSPSC Group-4 ఫలితాలు:\n\nTotal appeared: 3,24,000+\nQualified: 18,500+\nDocument verification dates announced",eligibility:[],deadline:"",link:"https://tspsc.gov.in"},
+];
+
+const SCHEMES_FULL=[
+  {id:"s1",name:"రైతు బంధు",ico:"🌾",desc:"ప్రతి సీజన్‌కు హెక్టేర్‌కు ₹10,000 సహాయం. Kharif మరియు Rabi రెండు సీజన్లలో పొందవచ్చు.",eligibility:["భూమి పట్టా పాస్‌బుక్","రైతు పేరిట భూమి నమోదు","Aadhaar బ్యాంక్ link"],docs:["Pattadar Passbook","Aadhaar Card","Bank Passbook"],howToApply:"మీసేవ కేంద్రానికి వెళ్ళి Pahani మరియు Pattadar Passbook తీసుకెళ్ళండి",helpline:"1800-425-2977",link:"https://rythubandhu.telangana.gov.in"},
+  {id:"s2",name:"ఆసరా పెన్షన్",ico:"♿",desc:"వికలాంగులు, వితంతువులు, వృద్ధులకు నెలసరి పెన్షన్. ₹2,016 నుండి ₹3,016 వరకు నెలకు.",eligibility:["వయసు: 57+ (వృద్ధులు)","40%+ disability","Annual income<₹1.5L"],docs:["Aadhaar","Caste Certificate","Income Certificate","Disability Certificate","Bank Passbook"],howToApply:"గ్రామ సచివాలయం లేదా మీసేవ కేంద్రంలో apply చేయండి",helpline:"1800-425-2977",link:"https://wdcw.telangana.gov.in"},
+  {id:"s3",name:"KCR కిట్",ico:"👶",desc:"Govt hospital లో జన్మించే నవజాత శిశువుకు ₹12,000 నగదు + Baby kit.",eligibility:["Government hospital delivery","Telangana Domicile","Aadhaar registration"],docs:["Delivery Certificate","Aadhaar (Mother)","Bank Passbook","Ration Card"],howToApply:"ఆసుపత్రిలోనే apply జరుగుతుంది",helpline:"104",link:"https://hmfw.telangana.gov.in"},
+  {id:"s4",name:"TS-ePASS",ico:"🎓",desc:"SC/ST/BC/Minority విద్యార్థులకు Fee Reimbursement scholarship. ₹10,000–₹50,000 per year.",eligibility:["SC/ST/BC/Minority students","Annual family income<₹2L","75% attendance"],docs:["Aadhaar","Caste Cert","Income Cert","Marks Memo","Bank Passbook","College Bonafide"],howToApply:"epass.cgg.gov.in లో online apply లేదా మీసేవ కేంద్రానికి వెళ్ళండి",helpline:"040-23120100",link:"https://epass.cgg.gov.in"},
+  {id:"s5",name:"మిషన్ భగీరథ",ico:"💧",desc:"తెలంగాణ ప్రతి ఇంటికి స్వచ్ఛమైన తాగునీరు supply చేసే flagship programme.",eligibility:["తెలంగాణ నివాసి","గ్రామ/పట్టణ ప్రాంతాలు"],docs:["Aadhaar Card","Ration Card"],howToApply:"గ్రామ సచివాలయం ద్వారా కనెక్షన్ కోసం apply చేయండి",helpline:"9100099100",link:"https://missionbhagiratha.telangana.gov.in"},
+  {id:"s6",name:"PM ఆవాస్ యోజన",ico:"🏠",desc:"పేద కుటుంబాలకు గృహ నిర్మాణ సహాయం. Rural ₹1.20L, Urban ₹1.50L subsidy.",eligibility:["EWS/LIG category","పక్కా ఇల్లు లేదు","Annual income<₹3L","Aadhaar linked bank"],docs:["Aadhaar","Income Certificate","Caste Certificate","Land documents","Bank Passbook"],howToApply:"గ్రామ సచివాలయం లేదా Municipal Office ద్వారా apply చేయండి",helpline:"1800-11-6446",link:"https://pmayg.nic.in"},
+];
+
+const NEWS_FULL=[
+  {id:"news1",type:"notice",title:"మీసేవ కేంద్రాల కొత్త పని వేళలు",date:"26 May 2025",cat:"Notice",isVideo:false,thumb:"",desc:"అన్ని మీసేవ కేంద్రాలు సోమవారం–శనివారం ఉదయం 9:00 – సాయంత్రం 6:00 వరకు పని చేస్తాయి.\n\nఆదివారం మరియు ప్రభుత్వ సెలవులు మూసి ఉంటాయి.\n\nJune 1, 2025 నుండి అమలు.",source:"Telangana IT Dept",link:""},
+  {id:"news2",type:"scheme",title:"రైతు బంధు 2025 — దరఖాస్తు ప్రారంభం",date:"25 May 2025",cat:"Scheme",isVideo:false,thumb:"",desc:"రైతు బంధు 2025 Kharif season దరఖాస్తు ప్రారంభమైంది.\n\n• Last Date: June 30, 2025\n• Amount: హెక్టేర్‌కు ₹10,000\n• అన్ని మీసేవ కేంద్రాల ద్వారా apply చేయవచ్చు\n\nPattadar Passbook మరియు Aadhaar తీసుకెళ్ళండి.",source:"Agriculture Dept",link:"https://rythubandhu.telangana.gov.in"},
+  {id:"news3",type:"video",title:"Aadhaar Update — సులభంగా చేయండి",date:"24 May 2025",cat:"Guide",isVideo:true,videoId:"kK7K_PQYB6I",thumb:"",desc:"Aadhaar address లేదా mobile update కోసం:\n\n1. మీసేవ కేంద్రానికి వెళ్ళండి\n2. Update form తీసుకోండి\n3. Documents attach చేయండి\n4. Biometric verification చేయండి",source:"UIDAI · MeeSeva",link:""},
+  {id:"news4",type:"notice",title:"Aadhaar Update Camp — అన్ని మండలాల్లో",date:"23 May 2025",cat:"Notice",isVideo:false,thumb:"",desc:"ఆధార్ అప్‌డేట్ ప్రత్యేక శిబిరాలు:\n\n• తేదీ: June 10–20, 2025\n• అన్ని మండల కేంద్రాలు\n• Free of cost\n• Documents: Aadhaar + Address proof",source:"UIDAI · District Collector",link:""},
+  {id:"news5",type:"scheme",title:"TS-ePASS Scholarship 2025-26",date:"22 May 2025",cat:"Scholarship",isVideo:false,thumb:"",desc:"2025-26 TS-ePASS scholarship దరఖాస్తులు:\n\n• Last Date: July 31, 2025\n• Eligible: SC/ST/BC/Minority\n• Amount: ₹10,000–₹50,000/year",source:"BC Welfare Dept",link:"https://epass.cgg.gov.in"},
+  {id:"news6",type:"video",title:"Income Certificate — Complete Guide",date:"21 May 2025",cat:"Guide",isVideo:true,videoId:"dQw4w9WgXcQ",thumb:"",desc:"Income Certificate పొందడానికి:\n\n1. మీసేవ కేంద్రానికి వెళ్ళండి\n2. Application form fill చేయండి\n3. Documents submit చేయండి\n4. 7 రోజుల్లో certificate ready",source:"MeeSeva · Revenue Dept",link:""},
+];
+
+function openDetail(type,id){
+  let item;
+  if(type==="notif") item=NOTIFS_FULL.find(n=>n.id===id);
+  else if(type==="scheme") item=SCHEMES_FULL.find(s=>s.id===id);
+  else if(type==="news") item=NEWS_FULL.find(n=>n.id===id);
+  if(!item) return;
+
+  const badge=document.getElementById("ddBadge");
+  if(type==="notif"){
+    badge.className="dd-badge notif";
+    badge.textContent=item.type==="job"?"💼 JOB":item.type==="result"?"📊 RESULT":"🎓 ADMISSION";
+  }else if(type==="scheme"){badge.className="dd-badge scheme";badge.textContent="🏛️ GOVT SCHEME";}
+  else{badge.className=`dd-badge ${item.isVideo?"video":"news"}`;badge.textContent=item.isVideo?"📹 VIDEO":"📰 NEWS";}
+
+  document.getElementById("ddTitle").textContent=item.name||item.title||"";
+  document.getElementById("ddDate").textContent=item.date?`📅 ${item.date}`:item.sub||"";
+  document.getElementById("ddDesc").textContent=item.desc||"";
+
+  const media=document.getElementById("ddMedia");
+  if(type==="news"&&item.isVideo&&item.videoId){
+    media.innerHTML=`<div class="dd-video-outer"><div class="dd-play-btn" onclick="loadVideo('${item.videoId}')"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg><div class="dd-play-lbl">▶ Video చూడండి</div></div></div>`;
+  }else if(type==="scheme"){
+    media.innerHTML=`<div class="dd-thumb" style="background:linear-gradient(135deg,var(--grn),#1a6a32);font-size:58px">${item.ico}</div>`;
+  }else if(type==="notif"){
+    media.innerHTML=`<div class="dd-thumb" style="background:var(--saf3);font-size:56px">${item.icon||"📢"}</div>`;
+  }else{media.innerHTML="";}
+
+  let extra="";
+  if(type==="notif"&&item.eligibility?.length){
+    extra+=`<div class="dd-sec-title">అర్హత షరతులు</div>`;
+    item.eligibility.forEach(e=>{extra+=`<div class="dd-info-row"><div class="dd-info-ico">✅</div><div class="dd-info-main">${e}</div></div>`;});
+    if(item.deadline) extra+=`<div class="dd-info-row"><div class="dd-info-ico">⏰</div><div><div class="dd-info-main">${item.deadline}</div><div class="dd-info-sub">చివరి తేదీ</div></div></div>`;
+  }
+  if(type==="scheme"){
+    if(item.eligibility?.length){extra+=`<div class="dd-sec-title">అర్హత</div>`;item.eligibility.forEach(e=>{extra+=`<div class="dd-info-row"><div class="dd-info-ico">✅</div><div class="dd-info-main">${e}</div></div>`;});}
+    if(item.docs?.length){extra+=`<div class="dd-sec-title" style="margin-top:10px">కావాల్సిన Documents</div>`;item.docs.forEach(d=>{extra+=`<div class="dd-info-row"><div class="dd-info-ico">📄</div><div class="dd-info-main">${d}</div></div>`;});}
+    if(item.howToApply) extra+=`<div class="dd-sec-title" style="margin-top:10px">Apply ఎలా చేయాలి</div><div style="background:var(--grn3);border:1px solid var(--grn2);border-radius:var(--r2);padding:11px 13px;font-size:13px;color:var(--t1);line-height:1.7">${item.howToApply}</div>`;
+    if(item.helpline) extra+=`<div style="margin-top:10px" class="dd-info-row"><div class="dd-info-ico">📞</div><div><div class="dd-info-main">${item.helpline}</div><div class="dd-info-sub">Helpline</div></div></div>`;
+  }
+  if(type==="news"&&item.source) extra+=`<div style="margin-top:6px;font-size:11.5px;color:var(--t3)">📡 Source: <b>${item.source}</b></div>`;
+  document.getElementById("ddExtra").innerHTML=extra;
+
+  let acts="";
+  if(item.link) acts=`<button class="dd-btn-p${type==="scheme"?" green":""}" onclick="window.open('${item.link}','_blank')">🔗 ${type==="notif"?"Apply చేయండి":type==="scheme"?"Apply / More Info":"మరింత చదవండి"}</button>`;
+  if(type==="scheme"&&item.helpline) acts+=`<button class="dd-btn-s" onclick="window.open('tel:${item.helpline}')">📞 Helpline</button>`;
+  if(!acts) acts=`<button class="dd-btn-p" onclick="closeDetail()">✓ సరే, అర్థమైంది</button>`;
+  document.getElementById("ddActions").innerHTML=acts;
+
+  document.getElementById("ddOverlay").classList.add("on");
+  document.getElementById("ddDrawer").classList.add("on");
+  document.getElementById("ddDrawer").scrollTop=0;
+}
+
+function loadVideo(vid){
+  const outer=document.querySelector(".dd-video-outer");
+  if(outer) outer.innerHTML=`<iframe src="https://www.youtube.com/embed/${vid}?autoplay=1" allow="autoplay;fullscreen" allowfullscreen></iframe>`;
+}
+
+function closeDetail(){
+  document.getElementById("ddOverlay").classList.remove("on");
+  document.getElementById("ddDrawer").classList.remove("on");
+}
+
 function goScreen(s){
   // Hide ticker on non-home screens
   const ticker = document.getElementById("tickerWrap");
