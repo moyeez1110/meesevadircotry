@@ -87,7 +87,7 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .tb-srch input::placeholder{color:rgba(255,255,255,.55)}
 
 /* ═══════════════ SCROLL BODY ═══════════════ */
-.scroll-body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:74px}
+.scroll-body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:90px}
 .scroll-body::-webkit-scrollbar{width:2px}
 .scroll-body::-webkit-scrollbar-thumb{background:var(--line2)}
 
@@ -200,9 +200,57 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .vt.on{background:var(--saf3);border-color:var(--saf2);color:var(--saf2)}
 
 /* ═══════════════ LISTINGS BODY ═══════════════ */
-.lst-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:74px}
+.lst-body{
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:160px;
+}
 .lst-body::-webkit-scrollbar{width:2px}
 .lst-body::-webkit-scrollbar-thumb{background:var(--line2)}
+
+/* FAB */
+.dir-fab{
+  position:fixed;
+  bottom:calc(62px + env(safe-area-inset-bottom,0px) + 12px);
+  right:16px;
+  z-index:190;
+  background:var(--saf2);
+  color:#fff;border:none;border-radius:50px;
+  padding:13px 18px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;
+  display:flex;align-items:center;gap:7px;
+  box-shadow:0 4px 20px rgba(200,75,10,.4);
+  transition:transform .15s;white-space:nowrap;
+}
+.dir-fab:active{transform:scale(.95)}
+.dir-fab svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;flex-shrink:0}
+
+/* Drawers */
+.adv-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:210;opacity:0;pointer-events:none;transition:opacity .25s}
+.adv-overlay.on{opacity:1;pointer-events:all}
+.adv-drawer{
+  position:fixed;bottom:0;left:50%;
+  transform:translateX(-50%) translateY(102%);
+  width:100%;max-width:440px;
+  background:var(--card);
+  border-radius:20px 20px 0 0;
+  border-top:1.5px solid var(--line2);
+  padding:0 16px calc(env(safe-area-inset-bottom,0px) + 24px);
+  z-index:220;
+  transition:transform .32s cubic-bezier(.32,0,.2,1);
+  max-height:88dvh;overflow-y:auto;
+}
+.adv-drawer::-webkit-scrollbar{display:none}
+.adv-drawer.on{transform:translateX(-50%) translateY(0)}
+.adv-lbl{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.6px;text-transform:uppercase;margin-bottom:5px}
+.adv-sel{width:100%;background:var(--bg2);border:1.5px solid var(--line2);color:var(--t1);border-radius:var(--r2);padding:9px 10px;font-size:13px;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none}
+.adv-sel:focus{border-color:var(--saf2)}
+.adv-sel option{background:var(--card)}
+.adv-inp{width:100%;background:var(--bg2);border:1.5px solid var(--line2);color:var(--t1);border-radius:var(--r2);padding:10px 12px;font-size:13.5px;font-family:inherit;outline:none}
+.adv-inp:focus{border-color:var(--saf2)}
+.ms-card.custom-card{border-color:var(--saf2);border-width:1.5px}
+.ml-item.custom-item{border-color:var(--saf2);border-width:1.5px}
 
 /* ═══════════════ GRID CARDS ═══════════════ */
 .ms-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:4px 10px}
@@ -325,11 +373,15 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .notif-group-title{padding:12px 12px 4px;font-size:11px;color:var(--t3);font-weight:700;letter-spacing:.6px;text-transform:uppercase}
 
 /* ═══════════════ JOIN SCREEN ═══════════════ */
+/* Join screen scroll fix */
+.join-scroll-wrap{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:90px}
+.join-scroll-wrap::-webkit-scrollbar{width:2px}
+.join-scroll-wrap::-webkit-scrollbar-thumb{background:var(--line2)}
 .join-hero{background:linear-gradient(135deg,#b8390a 0%,#c94b0a 60%,#d85f10 100%);padding:24px 18px 22px;text-align:center}
 .jh-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:20px;padding:4px 13px;font-size:11px;font-weight:500;margin-bottom:12px}
 .jh-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:5px;line-height:1.2}
 .jh-sub{font-size:13px;color:rgba(255,255,255,.8)}
-.join-form{padding:14px 14px 30px}
+.join-form{padding:14px 14px 16px}
 .svc-cat-title{font-size:10.5px;font-weight:700;color:var(--saf2);text-transform:uppercase;letter-spacing:.5px;margin:10px 0 6px;display:flex;align-items:center;gap:5px}
 .svc-cat-title::after{content:'';flex:1;height:1px;background:var(--line2)}
 .svc-chk-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
@@ -377,7 +429,17 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .adm-b{background:var(--gld3);border:1px solid var(--gld2);color:var(--gld);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600}
 
 /* ═══════════════ BOTTOM NAV ═══════════════ */
-.bot-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:30;background:rgba(255,252,248,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line2);display:flex;padding-bottom:env(safe-area-inset-bottom,0px)}
+.bot-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:440px;
+  z-index:200;/* above splash(999 only during load), pwa banner(50), profile(80) */
+  background:rgba(255,252,248,.97);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-top:1.5px solid var(--line2);
+  display:flex;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  box-shadow:0 -2px 16px rgba(200,75,10,.08);
+}
 .bnav{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 10px;cursor:pointer;color:var(--t4);border:none;background:none;font-family:inherit;transition:.12s}
 .bnav svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:.12s}
 .bnav span{font-size:9.5px;font-weight:500;transition:.12s}
@@ -535,33 +597,158 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 
 <!-- ══════════ DIRECTORY ══════════ -->
 <div class="screen" id="s-dir">
+
+  <!-- Top search + filters -->
   <div class="dir-top">
     <div class="dir-srch">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input id="dq" placeholder="పేరు, మండలం, గ్రామం..." oninput="applyF()">
+      <button onclick="document.getElementById('dq').value='';applyF()" style="background:none;border:none;color:var(--t3);cursor:pointer;padding:2px;font-size:18px;line-height:1">×</button>
     </div>
     <div class="dir-f2">
       <select id="fDist" class="df-sel" onchange="onDist()"><option value="">అన్ని జిల్లాలు (33)</option></select>
       <select id="fMandal" class="df-sel" onchange="applyF()"><option value="">అన్ని మండలాలు</option></select>
     </div>
   </div>
+
+  <!-- Filter pills + active tags -->
   <div class="fpills" id="fpills">
-    <button class="fpill" onclick="showToast('District మరియు Mandal dropdowns use చేయండి')">
-      <svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>Filters
+    <button class="fpill" onclick="openAdvDrawer()">
+      <svg viewBox="0 0 24 24" width="11" height="11"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+      Advanced
     </button>
-    <div id="aPills"></div>
+    <div id="aPills" style="display:contents"></div>
   </div>
+
+  <!-- Results bar -->
   <div class="res-bar">
-    <div class="rc" id="dirC"></div>
+    <div class="rc" id="dirC">0 centers</div>
     <div class="vt-row">
-      <button class="vt on" id="vgb" onclick="setV('grid')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
-      <button class="vt" id="vlb" onclick="setV('list')"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1.2" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1.2" fill="currentColor" stroke="none"/></svg></button>
+      <button class="vt on" id="vgb" onclick="setV('grid')" title="Grid view">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      </button>
+      <button class="vt" id="vlb" onclick="setV('list')" title="List view">
+        <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1.2" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1.2" fill="currentColor" stroke="none"/></svg>
+      </button>
     </div>
   </div>
+
+  <!-- Scrollable listings -->
   <div class="lst-body" id="lstBody">
     <div class="loading" id="dirLoader"><div class="spin"></div></div>
     <div id="lstWrap" style="display:none"></div>
+    <!-- bottom space so last card clears FAB + nav -->
+    <div style="height:140px"></div>
   </div>
+
+  <!-- FAB — Add Custom Listing -->
+  <button class="dir-fab" onclick="openCustomAdd()" title="Custom listing add చేయండి">
+    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    <span>Add Center</span>
+  </button>
+
+</div>
+
+<!-- ══ ADVANCED FILTER DRAWER ══ -->
+<div class="adv-overlay" id="advOverlay" onclick="closeAdvDrawer()"></div>
+<div class="adv-drawer" id="advDrawer">
+  <div style="width:36px;height:4px;background:var(--line2);border-radius:4px;margin:12px auto 16px"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+    <div style="font-size:15px;font-weight:700;color:var(--t1)">Advanced Filters</div>
+    <button onclick="closeAdvDrawer()" style="background:var(--bg3);border:1px solid var(--line2);border-radius:7px;width:28px;height:28px;cursor:pointer;font-size:16px;color:var(--t2);display:flex;align-items:center;justify-content:center">×</button>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+    <div>
+      <div class="adv-lbl">జిల్లా</div>
+      <select id="af-dist" class="adv-sel" onchange="onAdvDist()"><option value="">అన్ని జిల్లాలు</option></select>
+    </div>
+    <div>
+      <div class="adv-lbl">మండలం</div>
+      <select id="af-mandal" class="adv-sel" onchange="syncAdvToMain();applyF()"><option value="">అన్ని మండలాలు</option></select>
+    </div>
+    <div>
+      <div class="adv-lbl">Trusted Centers</div>
+      <select id="af-trust" class="adv-sel" onchange="applyF()">
+        <option value="">అన్నీ</option>
+        <option value="trusted">✅ Trusted మాత్రమే</option>
+        <option value="verified">✓ Verified మాత్రమే</option>
+      </select>
+    </div>
+    <div>
+      <div class="adv-lbl">Rating</div>
+      <select id="af-rating" class="adv-sel" onchange="applyF()">
+        <option value="">అన్ని Ratings</option>
+        <option value="4.5">★ 4.5+</option>
+        <option value="4">★ 4.0+</option>
+        <option value="3.5">★ 3.5+</option>
+      </select>
+    </div>
+    <div style="grid-column:1/-1">
+      <div class="adv-lbl">Village / ప్రాంతం</div>
+      <input class="adv-inp" id="af-village" placeholder="గ్రామం పేరు type చేయండి..." oninput="applyF()">
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:14px">
+    <button onclick="applyF();closeAdvDrawer()" style="flex:1;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:12px;font-size:14px;font-weight:700;cursor:pointer">వెతకండి</button>
+    <button onclick="resetAdvFilters()" style="background:none;border:1.5px solid var(--line2);color:var(--t2);border-radius:var(--r2);padding:12px 16px;font-size:13px;cursor:pointer">Reset</button>
+  </div>
+</div>
+
+<!-- ══ CUSTOM ADD LISTING DRAWER ══ -->
+<div class="adv-overlay" id="caOverlay" onclick="closeCustomAdd()"></div>
+<div class="adv-drawer" id="caDrawer">
+  <div style="width:36px;height:4px;background:var(--line2);border-radius:4px;margin:12px auto 14px"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+    <div style="font-size:15px;font-weight:700;color:var(--t1)">➕ Custom Center Add చేయండి</div>
+    <button onclick="closeCustomAdd()" style="background:var(--bg3);border:1px solid var(--line2);border-radius:7px;width:28px;height:28px;cursor:pointer;font-size:16px;color:var(--t2);display:flex;align-items:center;justify-content:center">×</button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div>
+      <div class="adv-lbl">Center పేరు *</div>
+      <input class="adv-inp" id="ca-name" placeholder="Center పేరు">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div>
+        <div class="adv-lbl">జిల్లా *</div>
+        <select class="adv-sel" id="ca-dist" onchange="onCADist()"><option value="">Select</option></select>
+      </div>
+      <div>
+        <div class="adv-lbl">మండలం *</div>
+        <select class="adv-sel" id="ca-mandal"><option value="">Select</option></select>
+      </div>
+    </div>
+    <div>
+      <div class="adv-lbl">Village / ప్రాంతం</div>
+      <input class="adv-inp" id="ca-village" placeholder="గ్రామం లేదా ప్రాంతం">
+    </div>
+    <div>
+      <div class="adv-lbl">Phone *</div>
+      <input class="adv-inp" id="ca-phone" type="tel" placeholder="10-digit phone number">
+    </div>
+    <div>
+      <div class="adv-lbl">WhatsApp</div>
+      <input class="adv-inp" id="ca-wa" type="tel" placeholder="WhatsApp number (optional)">
+    </div>
+    <div>
+      <div class="adv-lbl">Address</div>
+      <input class="adv-inp" id="ca-addr" placeholder="Shop no, Street, Village">
+    </div>
+    <div>
+      <div class="adv-lbl">Hours</div>
+      <input class="adv-inp" id="ca-hours" placeholder="9am–6pm Mon-Sat">
+    </div>
+    <div>
+      <div class="adv-lbl">Services (comma separated)</div>
+      <input class="adv-inp" id="ca-svcs" placeholder="Income Certificate, Aadhaar, Ration Card...">
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:14px">
+    <button onclick="saveCustomListing()" style="flex:1;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:12px;font-size:14px;font-weight:700;cursor:pointer">
+      ✅ Save చేయండి
+    </button>
+    <button onclick="closeCustomAdd()" style="background:none;border:1.5px solid var(--line2);color:var(--t2);border-radius:var(--r2);padding:12px 14px;font-size:13px;cursor:pointer">Cancel</button>
+  </div>
+  <div style="font-size:11px;color:var(--t3);text-align:center;margin-top:8px">మీ device లో locally save అవుతుంది · App reinstall చేస్తే data clear అవుతుంది</div>
 </div>
 
 <!-- ══════════ TOOLS ══════════ -->
@@ -619,7 +806,8 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 
 <!-- ══════════ JOIN ══════════ -->
 <div class="screen" id="s-join">
-  <div class="join-hero">
+  <div class="join-scroll-wrap">
+    <div class="join-hero">
     <div class="jh-badge">✨ Free Listing</div>
     <div class="jh-title">మీ Center List చేయండి</div>
     <div class="jh-sub">మీ మీసేవ కేంద్రాన్ని ఈ directory లో free గా add చేయండి</div>
@@ -666,11 +854,10 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
         </button>
         <div style="text-align:center;font-size:11px;color:var(--t3);margin-top:8px">* అన్ని required fields fill చేయాలి · Free listing · 24hrs లో activate</div>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════ ADMIN ══════════ -->
+    </div><!-- /.join-form -->
+  </div><!-- /#joinFormWrap -->
+  </div><!-- /.join-scroll-wrap -->
+</div><!-- /#s-join -->
 <div class="screen" id="s-admin">
   <div class="page-hdr">
     <div class="ph-ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
@@ -710,17 +897,33 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
   <div id="ppFoot" class="pp-acts" style="display:none"></div>
 </div>
 
-<!-- BOTTOM NAV -->
-<div class="bot-nav">
-  <button class="bnav on" id="bn-home" onclick="goScreen('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>హోమ్</span></button>
-  <button class="bnav" id="bn-dir" onclick="goScreen('s-dir')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Directory</span></button>
-  <button class="bnav" id="bn-tools" onclick="goScreen('s-tools')"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg><span>Tools</span></button>
-  <button class="bnav" id="bn-news" onclick="goScreen('s-news')"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2"/></svg><span>వార్తలు</span></button>
-  <button class="bnav" id="bn-join" onclick="goScreen('s-join')"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg><span>List Now</span></button>
-</div>
-
 <div class="toast" id="toast"></div>
-</div>
+</div><!-- /#app -->
+
+<!-- BOTTOM NAV — outside #app to avoid overflow:hidden clipping -->
+<nav class="bot-nav" id="botNav">
+  <button class="bnav on" id="bn-home" onclick="goScreen('s-home')">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>హోమ్</span>
+  </button>
+  <button class="bnav" id="bn-dir" onclick="goScreen('s-dir')">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <span>Directory</span>
+  </button>
+  <button class="bnav" id="bn-tools" onclick="goScreen('s-tools')">
+    <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+    <span>Tools</span>
+  </button>
+  <button class="bnav" id="bn-news" onclick="goScreen('s-news')">
+    <svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2"/></svg>
+    <span>వార్తలు</span>
+  </button>
+  <button class="bnav" id="bn-join" onclick="goScreen('s-join')">
+    <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+    <span>List Now</span>
+  </button>
+</nav>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 /* ══════════════════════════════════════════
@@ -852,6 +1055,14 @@ async function init(){
     dEl.innerHTML+=`<option value="${d}">${d}</option>`;
     jEl.innerHTML+=`<option value="${d}">${d}</option>`;
   });
+  // Populate adv drawer districts too
+  const afEl = document.getElementById("af-dist");
+  if(afEl) Object.keys(TGD).forEach(d=>{ afEl.innerHTML += `<option value="${d}">${d}</option>`; });
+
+  // Load saved custom listings and merge
+  const customs = loadCustomListings();
+  if(customs.length){ ALL = [...ALL, ...customs]; }
+
   const vt=ALL.filter(d=>d.Trusted==="true"||d.Trusted===true).length;
   document.getElementById("stC").textContent=ALL.length;
   document.getElementById("stV").textContent=vt;
@@ -1020,15 +1231,7 @@ function onJDist(){
   mEl.innerHTML='<option value="">మండలం ఎంచుకోండి</option>';
   (TGD[dist]||[]).forEach(m=>{mEl.innerHTML+=`<option value="${m}">${m}</option>`;});
 }
-function getFilt(){
-  const q=(document.getElementById("dq").value||"").toLowerCase().trim();
-  const dist=document.getElementById("fDist").value;
-  const mandal=document.getElementById("fMandal").value;
-  return ALL.filter(d=>
-    (!q||(d.Name||"").toLowerCase().includes(q)||(d.Village||"").toLowerCase().includes(q)||(d.Mandal||"").toLowerCase().includes(q))&&
-    (!dist||d.District===dist)&&(!mandal||d.Mandal===mandal)
-  );
-}
+/* ══ DIRECTORY FILTER (old — replaced by getFilt above) ══ */
 function applyF(){renderDir();renderAPills();}
 function renderAPills(){
   const dist=document.getElementById("fDist").value;
@@ -1062,13 +1265,14 @@ function renderDir(){
   const rat=d=>parseFloat(d.Rating)||0;
   if(CUR_V==="grid"){
     wrap.innerHTML=`<div class="ms-grid">${data.map(d=>`
-      <div class="ms-card" data-id="${d.id}">
+      <div class="ms-card${d.isCustom?" custom-card":""}" data-id="${d.id}">
         <div class="mc-img">
           ${d.Photo?`<img src="${d.Photo}" loading="lazy" onerror="this.style.display='none'">`:``}
           ${!d.Photo?`<div class="mc-av">${(d.Name||"?").charAt(0)}</div>`:""}
           ${trusted(d)?`<div class="mc-trusted"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Trusted</div>`:""}
           ${rat(d)>0?`<div class="mc-rated">★${rat(d)}</div>`:""}
           ${verified(d)?`<div class="mc-verified">✓ Verified</div>`:""}
+          ${d.isCustom?`<div style="position:absolute;top:6px;right:6px;background:rgba(200,75,10,.85);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px">MY ENTRY</div>`:""}
         </div>
         <div class="mc-body">
           <div class="mc-name">${d.Name}</div>
@@ -1078,6 +1282,7 @@ function renderDir(){
             <button class="mc-call" data-tel="${d.Phone}">📞 కాల్</button>
             ${d.WhatsApp?`<button class="mc-wa" data-wa="${d.WhatsApp}">💬 WA</button>`:""}
           </div>
+          ${d.isCustom?`<button onclick="deleteCustomListing(${d.id})" style="width:100%;margin-top:5px;background:var(--redbg);border:1px solid #fca5a5;color:var(--red);border-radius:6px;padding:5px;font-size:10.5px;cursor:pointer;font-family:inherit">🗑️ Delete</button>`:""}
         </div>
       </div>`).join("")}</div>`;
   }else{
@@ -1355,14 +1560,198 @@ function approvePend(i){const p=JSON.parse(localStorage.getItem("ms_pend")||"[]"
 function rejectPend(i){const p=JSON.parse(localStorage.getItem("ms_pend")||"[]");p.splice(i,1);localStorage.setItem("ms_pend",JSON.stringify(p));showToast("❌ Rejected");renderAdminList();}
 function toggleBadge(id){const d=ALL.find(x=>x.id===id);if(!d)return;d.Trusted=d.Trusted==="true"?"false":"true";showToast(d.Trusted==="true"?"✅ Trusted badge added!":"Badge removed");renderDir();}
 
-/* ══ NAVIGATION ══ */
-function goScreen(s){
-  document.getElementById("tickerWrap").style.display=s==="s-home"?"flex":"none";
-  document.querySelectorAll(".screen").forEach(e=>e.className="screen");
-  document.getElementById(s).className="screen on";
-  ["home","dir","tools","news","join"].forEach(id=>{
-    document.getElementById("bn-"+id).className=s==="s-"+id?"bnav on":"bnav";
+/* ══ ADVANCED FILTER DRAWER ══ */
+function openAdvDrawer(){
+  // Sync main dropdowns to adv drawer
+  document.getElementById("af-dist").value = document.getElementById("fDist").value;
+  syncAdvMandals();
+  document.getElementById("af-mandal").value = document.getElementById("fMandal").value;
+  document.getElementById("advOverlay").className = "adv-overlay on";
+  document.getElementById("advDrawer").classList.add("on");
+}
+function closeAdvDrawer(){
+  document.getElementById("advOverlay").className = "adv-overlay";
+  document.getElementById("advDrawer").classList.remove("on");
+}
+function onAdvDist(){
+  syncAdvMandals();
+  applyF();
+}
+function syncAdvMandals(){
+  const dist = document.getElementById("af-dist").value;
+  const mEl  = document.getElementById("af-mandal");
+  mEl.innerHTML = '<option value="">అన్ని మండలాలు</option>';
+  const m = [...new Set([...(TGD[dist]||[]),...ALL.filter(d=>d.District===dist).map(d=>d.Mandal).filter(Boolean)])];
+  m.forEach(x=>{ mEl.innerHTML += `<option value="${x}">${x}</option>`; });
+}
+function syncAdvToMain(){
+  // Sync adv drawer values back to main selects
+  const dist = document.getElementById("af-dist").value;
+  const mandal = document.getElementById("af-mandal").value;
+  const fDist = document.getElementById("fDist");
+  const fMandal = document.getElementById("fMandal");
+  if(dist && !fDist.querySelector(`option[value="${dist}"]`)){
+    fDist.innerHTML += `<option value="${dist}">${dist}</option>`;
+  }
+  fDist.value = dist;
+  if(mandal){
+    if(!fMandal.querySelector(`option[value="${mandal}"]`)){
+      fMandal.innerHTML += `<option value="${mandal}">${mandal}</option>`;
+    }
+    fMandal.value = mandal;
+  } else {
+    fMandal.value = "";
+  }
+}
+function resetAdvFilters(){
+  document.getElementById("af-dist").value   = "";
+  document.getElementById("af-mandal").value  = "";
+  document.getElementById("af-trust").value   = "";
+  document.getElementById("af-rating").value  = "";
+  document.getElementById("af-village").value = "";
+  document.getElementById("fDist").value      = "";
+  document.getElementById("fMandal").value    = "";
+  document.getElementById("dq").value         = "";
+  applyF();
+  renderAPills();
+}
+
+/* ══ CUSTOM LISTINGS ══ */
+const CUSTOM_KEY = "ms_custom_listings";
+
+function loadCustomListings(){
+  try{ return JSON.parse(localStorage.getItem(CUSTOM_KEY)||"[]"); }
+  catch(e){ return []; }
+}
+function saveCustomListings(arr){
+  localStorage.setItem(CUSTOM_KEY, JSON.stringify(arr));
+}
+
+function openCustomAdd(){
+  // Populate dropdowns
+  const dEl = document.getElementById("ca-dist");
+  if(dEl.options.length < 2){
+    Object.keys(TGD).forEach(d=>{ dEl.innerHTML += `<option value="${d}">${d}</option>`; });
+  }
+  // Reset form
+  ["ca-name","ca-village","ca-phone","ca-wa","ca-addr","ca-hours","ca-svcs"].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.value = "";
   });
+  document.getElementById("ca-dist").value   = "";
+  document.getElementById("ca-mandal").innerHTML = '<option value="">Select</option>';
+  document.getElementById("caOverlay").className = "adv-overlay on";
+  document.getElementById("caDrawer").classList.add("on");
+}
+function closeCustomAdd(){
+  document.getElementById("caOverlay").className = "adv-overlay";
+  document.getElementById("caDrawer").classList.remove("on");
+}
+function onCADist(){
+  const dist = document.getElementById("ca-dist").value;
+  const mEl  = document.getElementById("ca-mandal");
+  mEl.innerHTML = '<option value="">మండలం select చేయండి</option>';
+  (TGD[dist]||[]).forEach(m=>{ mEl.innerHTML += `<option value="${m}">${m}</option>`; });
+}
+function saveCustomListing(){
+  const name    = document.getElementById("ca-name").value.trim();
+  const dist    = document.getElementById("ca-dist").value;
+  const mandal  = document.getElementById("ca-mandal").value;
+  const village = document.getElementById("ca-village").value.trim();
+  const phone   = document.getElementById("ca-phone").value.trim();
+  const wa      = document.getElementById("ca-wa").value.trim();
+  const addr    = document.getElementById("ca-addr").value.trim();
+  const hours   = document.getElementById("ca-hours").value.trim();
+  const svcs    = document.getElementById("ca-svcs").value.trim();
+
+  if(!name)  { showToast("⚠️ Center పేరు enter చేయండి"); return; }
+  if(!dist)  { showToast("⚠️ జిల్లా select చేయండి"); return; }
+  if(!mandal){ showToast("⚠️ మండలం select చేయండి"); return; }
+  if(!phone) { showToast("⚠️ Phone number enter చేయండి"); return; }
+  if(!/^\d{10}$/.test(phone)){ showToast("⚠️ Valid 10-digit phone enter చేయండి"); return; }
+
+  const customs = loadCustomListings();
+  const newId   = 90000 + Date.now() % 100000;
+  customs.push({
+    id: newId,
+    Name: name, District: dist, Mandal: mandal,
+    Village: village, Phone: phone, WhatsApp: wa,
+    Address: addr, Hours: hours,
+    Services: svcs, Rating:"0",
+    Trusted:"false", Verified:"false",
+    Description:"Custom listing", Photo:"",
+    isCustom: true,
+    addedAt: new Date().toLocaleDateString("te-IN")
+  });
+  saveCustomListings(customs);
+
+  // Merge into ALL
+  ALL = [...DEMO, ...customs];
+  closeCustomAdd();
+  applyF();
+  showToast(`✅ "${name}" successfully add అయింది!`);
+}
+function deleteCustomListing(id){
+  if(!confirm("ఈ listing delete చేయాలా?")) return;
+  const customs = loadCustomListings().filter(c=> c.id !== id);
+  saveCustomListings(customs);
+  ALL = [...DEMO, ...customs];
+  applyF();
+  showToast("🗑️ Listing removed");
+}
+
+/* ══ FIXED getFilt — all filters ══ */
+function getFilt(){
+  const q       = (document.getElementById("dq").value||"").toLowerCase().trim();
+  const dist    = document.getElementById("fDist").value || document.getElementById("af-dist").value;
+  const mandal  = document.getElementById("fMandal").value || document.getElementById("af-mandal").value;
+  const village = (document.getElementById("af-village").value||"").toLowerCase().trim();
+  const trust   = document.getElementById("af-trust").value;
+  const minRat  = parseFloat(document.getElementById("af-rating").value)||0;
+  return ALL.filter(d=>{
+    if(q && !(
+      (d.Name||"").toLowerCase().includes(q)||
+      (d.Village||"").toLowerCase().includes(q)||
+      (d.Mandal||"").toLowerCase().includes(q)||
+      (d.Services||"").toLowerCase().includes(q)
+    )) return false;
+    if(dist   && d.District !== dist)  return false;
+    if(mandal && d.Mandal   !== mandal) return false;
+    if(village && !(d.Village||"").toLowerCase().includes(village)) return false;
+    if(trust==="trusted"  && !(d.Trusted ==="true"||d.Trusted ===true)) return false;
+    if(trust==="verified" && !(d.Verified==="true"||d.Verified===true)) return false;
+    if(minRat && parseFloat(d.Rating||0) < minRat) return false;
+    return true;
+  });
+}
+function goScreen(s){
+  // Hide ticker on non-home screens
+  const ticker = document.getElementById("tickerWrap");
+  if(ticker) ticker.style.display = s==="s-home" ? "flex" : "none";
+
+  // Hide all screens
+  document.querySelectorAll(".screen").forEach(el=>{
+    el.style.display = "none";
+    el.classList.remove("on");
+  });
+
+  // Show target screen
+  const target = document.getElementById(s);
+  if(target){
+    target.style.display = "flex";
+    target.classList.add("on");
+  }
+
+  // Update bottom nav active state
+  const navIds = ["home","dir","tools","news","join"];
+  navIds.forEach(id=>{
+    const btn = document.getElementById("bn-"+id);
+    if(btn) btn.className = (s === "s-"+id) ? "bnav on" : "bnav";
+  });
+
+  // Scroll to top
+  const body = target ? target.querySelector(".scroll-body, .lst-body, .news-panel.on") : null;
+  if(body) body.scrollTop = 0;
 }
 
 /* ══ MISC ══ */
@@ -1481,8 +1870,12 @@ updateOnlineStatus();
 // ── Splash Screen ──
 function hideSplash() {
   const splash = document.getElementById('pwaSplash');
+  if(!splash) return;
   splash.classList.add('hide');
-  setTimeout(() => { splash.style.display = 'none'; }, 500);
+  setTimeout(() => {
+    splash.style.display = 'none';
+    splash.style.zIndex = '-1';
+  }, 500);
 }
 
 // ── URL Shortcut Handler ──
