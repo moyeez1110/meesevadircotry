@@ -993,10 +993,22 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 /* ══════════════════════════════════════════
-   CONFIG
+   ⚙️ CONFIG — మీ 4 Sheet URLs ఇక్కడ paste చేయండి
 ══════════════════════════════════════════ */
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS41Q9pp_LZJIADtQUHlr2Leshl0t_j8MJfyw4akayunKoBPX6b2inf0_Ll6guocxqNbgvN8n7IsMgX/pub?output=csv";
-// Columns: Name|District|Mandal|Village|Phone|WhatsApp|Address|Lat|Lng|Photo|Services|Hours|Rating|Trusted|Verified|Description
+
+// 1️⃣ Directory Sheet URL (Centers data)
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS41Q9pp_LZJIADtQUHlr2Leshl0t_j8MJfyw4akayunKoBPX6b2inf0_Ll6guocxqNbgvN8n7IsMgX/pub?gid=0&single=true&output=csv";
+
+// 2️⃣ News Sheet URL (Daily news, videos, notices)
+const NEWS_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS41Q9pp_LZJIADtQUHlr2Leshl0t_j8MJfyw4akayunKoBPX6b2inf0_Ll6guocxqNbgvN8n7IsMgX/pub?gid=1645011939&single=true&output=csv";
+
+// 3️⃣ Notifications Sheet URL (Jobs, Results, Admissions)
+const NOTIF_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS41Q9pp_LZJIADtQUHlr2Leshl0t_j8MJfyw4akayunKoBPX6b2inf0_Ll6guocxqNbgvN8n7IsMgX/pub?gid=1902288471&single=true&output=csv";
+
+// 4️⃣ Schemes Sheet URL (Govt schemes)
+const SCHEME_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS41Q9pp_LZJIADtQUHlr2Leshl0t_j8MJfyw4akayunKoBPX6b2inf0_Ll6guocxqNbgvN8n7IsMgX/pub?gid=1423770108&single=true&output=csv";
+
+// Admin password (మీరు మార్చుకోవచ్చు)
 const ADMIN_PWD = "meeseva2025";
 
 /* ══════════════════════════════════════════
@@ -1110,31 +1122,75 @@ let ALL=[], CUR_V="grid", PP_D=null, PP_M=null;
 /* ══ INIT ══ */
 async function init(){
   updateVisitors();
-  try{
-    if(SHEET_URL==="YOUR_GOOGLE_SHEET_CSV_URL_HERE") throw new Error("demo");
-    const r=await fetch(SHEET_URL);if(!r.ok)throw new Error();
-    ALL=parseCSV(await r.text()).map((d,i)=>({id:i+1,...d}));
-  }catch(e){ALL=DEMO;}
-  // Dropdowns
-  const dEl=document.getElementById("fDist"), jEl=document.getElementById("jf_dist");
-  Object.keys(TGD).forEach(d=>{
-    dEl.innerHTML+=`<option value="${d}">${d}</option>`;
-    jEl.innerHTML+=`<option value="${d}">${d}</option>`;
-  });
-  // Populate adv drawer districts too
-  const afEl = document.getElementById("af-dist");
-  if(afEl) Object.keys(TGD).forEach(d=>{ afEl.innerHTML += `<option value="${d}">${d}</option>`; });
 
-  // Load saved custom listings and merge
-  const customs = loadCustomListings();
-  if(customs.length){ ALL = [...ALL, ...customs]; }
+  // Sheet fetch helper
+  async function fetchSheet(url){
+    if(!url||url.includes("YOUR_")) return null;
+    try{const r=await fetch(url);if(!r.ok)throw new Error();return parseCSV(await r.text());}
+    catch(e){return null;}
+  }
 
+  // 1️⃣ Directory
+  const dirRows = await fetchSheet(SHEET_URL);
+  ALL = dirRows ? dirRows.map((d,i)=>({id:i+1,...d})) : DEMO;
+
+  // 2️⃣ News
+  const newsRows = await fetchSheet(NEWS_SHEET_URL);
+  if(newsRows && newsRows.length){
+    NEWS_FULL.length=0;
+    newsRows.forEach(r=>NEWS_FULL.push({
+      id:r.ID||("news"+Date.now()),type:(r.Type||"notice").toLowerCase(),
+      title:r.Title||"",date:r.Date||"",cat:r.Category||"News",
+      isVideo:r.IsVideo==="TRUE"||r.IsVideo==="true",videoId:r.VideoID||"",
+      thumb:r.Thumb||"",desc:r.Description||"",source:r.Source||"మీసేవ",link:r.Link||""
+    }));
+  }
+
+  // 3️⃣ Notifications
+  const notifRows = await fetchSheet(NOTIF_SHEET_URL);
+  if(notifRows && notifRows.length){
+    NOTIFS_FULL.length=0;
+    notifRows.forEach(r=>NOTIFS_FULL.push({
+      id:r.ID||("n"+Date.now()),type:(r.Type||"job").toLowerCase(),col:r.Color||"red",
+      title:r.Title||"",sub:r.SubTitle||"",date:r.Date||"",
+      icon:r.Type==="result"?"📊":r.Type==="admission"?"🎓":"💼",
+      desc:r.Description||"",
+      eligibility:r.Eligibility?r.Eligibility.split("|").map(s=>s.trim()).filter(Boolean):[],
+      deadline:r.Deadline||"",link:r.Link||""
+    }));
+  }
+
+  // 4️⃣ Schemes
+  const schemeRows = await fetchSheet(SCHEME_SHEET_URL);
+  if(schemeRows && schemeRows.length){
+    SCHEMES_FULL.length=0;
+    schemeRows.forEach(r=>SCHEMES_FULL.push({
+      id:r.ID||("s"+Date.now()),name:r.Name||"",ico:r.Icon||"🏛️",
+      desc:r.Description||"",
+      eligibility:r.Eligibility?r.Eligibility.split("|").map(s=>s.trim()).filter(Boolean):[],
+      docs:r.Documents?r.Documents.split("|").map(s=>s.trim()).filter(Boolean):[],
+      howToApply:r.HowToApply||"",helpline:r.Helpline||"",link:r.Link||""
+    }));
+  }
+
+  // Populate dropdowns
+  const dEl=document.getElementById("fDist"),jEl=document.getElementById("jf_dist");
+  Object.keys(TGD).forEach(d=>{dEl.innerHTML+=`<option value="${d}">${d}</option>`;jEl.innerHTML+=`<option value="${d}">${d}</option>`;});
+  const afEl=document.getElementById("af-dist");
+  if(afEl) Object.keys(TGD).forEach(d=>{afEl.innerHTML+=`<option value="${d}">${d}</option>`;});
+
+  // Custom listings merge
+  const customs=loadCustomListings();
+  if(customs.length){ALL=[...ALL,...customs];}
+
+  // Stats
   const vt=ALL.filter(d=>d.Trusted==="true"||d.Trusted===true).length;
   document.getElementById("stC").textContent=ALL.length;
   document.getElementById("stV").textContent=vt;
   document.getElementById("aT").textContent=ALL.length;
   document.getElementById("aV").textContent=vt;
   document.getElementById("aP").textContent=Math.max(0,Math.floor(ALL.length*.12));
+
   renderTicker();renderHomeNotifs();renderSchemes();renderHomeNews();renderHomeRecent();
   renderTools();renderForms();renderNotifTypes();renderNewsAll();renderSvcChecks();renderAdminList();
   document.getElementById("dirLoader").style.display="none";
@@ -1791,9 +1847,6 @@ function getFilt(){
     if(trust==="trusted"  && !(d.Trusted ==="true"||d.Trusted ===true)) return false;
     if(trust==="verified" && !(d.Verified==="true"||d.Verified===true)) return false;
     if(minRat && parseFloat(d.Rating||0) < minRat) return false;
-    return true;
-  });
-}
     return true;
   });
 }
