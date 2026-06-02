@@ -999,16 +999,40 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 // 1️⃣ Directory Sheet URL (Centers data)
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS41Q9pp_LZJIADtQUHlr2Leshl0t_j8MJfyw4akayunKoBPX6b2inf0_Ll6guocxqNbgvN8n7IsMgX/pub?gid=0&single=true&output=csv";
 
-// 2️⃣ News Sheet URL (Daily news, videos, notices)
+// 2️⃣ News Sheet URL
 const NEWS_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS41Q9pp_LZJIADtQUHlr2Leshl0t_j8MJfyw4akayunKoBPX6b2inf0_Ll6guocxqNbgvN8n7IsMgX/pub?gid=1645011939&single=true&output=csv";
 
-// 3️⃣ Notifications Sheet URL (Jobs, Results, Admissions)
+// 3️⃣ Notifications Sheet URL
 const NOTIF_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS41Q9pp_LZJIADtQUHlr2Leshl0t_j8MJfyw4akayunKoBPX6b2inf0_Ll6guocxqNbgvN8n7IsMgX/pub?gid=1902288471&single=true&output=csv";
 
-// 4️⃣ Schemes Sheet URL (Govt schemes)
+// 4️⃣ Schemes Sheet URL
 const SCHEME_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS41Q9pp_LZJIADtQUHlr2Leshl0t_j8MJfyw4akayunKoBPX6b2inf0_Ll6guocxqNbgvN8n7IsMgX/pub?gid=1423770108&single=true&output=csv";
 
-// Admin password (మీరు మార్చుకోవచ్చు)
+// 5️⃣ Google Form URL — Operator Listing Submit కోసం
+// Google Form create చేసి ఆ form URL ఇక్కడ paste చేయండి
+// Format: https://docs.google.com/forms/d/YOUR_FORM_ID/formResponse
+const GFORM_URL = "YOUR_GOOGLE_FORM_URL_HERE";
+
+// Google Form Field IDs — Form create చేసిన తర్వాత inspect చేసి fill చేయండి
+// (ఎలా చేయాలో కింద చూడండి)
+const GFORM_FIELDS = {
+  name:    "entry.000000001",  // Operator పేరు field ID
+  center:  "entry.000000002",  // Center పేరు field ID
+  phone:   "entry.000000003",  // Phone field ID
+  wa:      "entry.000000004",  // WhatsApp field ID
+  dist:    "entry.000000005",  // District field ID
+  mandal:  "entry.000000006",  // Mandal field ID
+  village: "entry.000000007",  // Village field ID
+  addr:    "entry.000000008",  // Address field ID
+  hours:   "entry.000000009",  // Hours field ID
+  svcs:    "entry.000000010",  // Services field ID
+};
+
+// 6️⃣ OneSignal App ID — Push Notifications కోసం
+// onesignal.com లో free account → App create → App ID copy చేయండి
+const ONESIGNAL_APP_ID = "YOUR_ONESIGNAL_APP_ID_HERE";
+
+// Admin password
 const ADMIN_PWD = "meeseva2025";
 
 /* ══════════════════════════════════════════
@@ -1179,9 +1203,13 @@ async function init(){
   const afEl=document.getElementById("af-dist");
   if(afEl) Object.keys(TGD).forEach(d=>{afEl.innerHTML+=`<option value="${d}">${d}</option>`;});
 
-  // Custom listings merge
-  const customs=loadCustomListings();
-  if(customs.length){ALL=[...ALL,...customs];}
+  // Custom listings merge (user-added)
+  const customs = loadCustomListings();
+  if(customs.length){ ALL = [...ALL, ...customs]; }
+
+  // Approved listings merge (admin-approved)
+  const approved = loadApprovedListings();
+  if(approved.length){ ALL = [...ALL, ...approved]; }
 
   // Stats
   const vt=ALL.filter(d=>d.Trusted==="true"||d.Trusted===true).length;
@@ -1672,21 +1700,142 @@ function adminLogin(){
   }else{showToast("❌ Incorrect password!");}
 }
 function renderAdminList(){
-  const pend=JSON.parse(localStorage.getItem("ms_pend")||"[]");
-  const pEl=document.getElementById("pendingList");
-  pEl.innerHTML=!pend.length?`<div style="font-size:13px;color:var(--t3);padding:10px 0">No pending requests</div>`:
-    pend.map((p,i)=>`<div class="adm-item"><div><div class="adm-item-name">${p.center}</div><div class="adm-item-sub">${p.mandal}, ${p.dist} · ${p.phone}</div></div><div class="adm-btns"><button class="adm-a" onclick="approvePend(${i})">Approve</button><button class="adm-r" onclick="rejectPend(${i})">Reject</button></div></div>`).join("");
-  const aEl=document.getElementById("allCList");
-  aEl.innerHTML=ALL.slice(0,10).map(d=>`
-    <div class="adm-item"><div><div class="adm-item-name">${d.Name}</div><div class="adm-item-sub">${d.Mandal}, ${(d.District||"").split(" ")[0]} · ★${d.Rating||"-"}</div></div>
-    <div class="adm-btns"><button class="adm-b" onclick="toggleBadge(${d.id})">Badge</button><button class="adm-r" onclick="showToast('Removed!')">Remove</button></div></div>`).join("");
-  document.getElementById("aP").textContent=pend.length;
-}
-function approvePend(i){const p=JSON.parse(localStorage.getItem("ms_pend")||"[]");p.splice(i,1);localStorage.setItem("ms_pend",JSON.stringify(p));showToast("✅ Approved!");renderAdminList();}
-function rejectPend(i){const p=JSON.parse(localStorage.getItem("ms_pend")||"[]");p.splice(i,1);localStorage.setItem("ms_pend",JSON.stringify(p));showToast("❌ Rejected");renderAdminList();}
-function toggleBadge(id){const d=ALL.find(x=>x.id===id);if(!d)return;d.Trusted=d.Trusted==="true"?"false":"true";showToast(d.Trusted==="true"?"✅ Trusted badge added!":"Badge removed");renderDir();}
+  const pend     = JSON.parse(localStorage.getItem("ms_pend")||"[]");
+  const approved = loadApprovedListings();
 
-/* ══ ADVANCED FILTER DRAWER ══ */
+  document.getElementById("aP").textContent = pend.length;
+  document.getElementById("aV").textContent = ALL.filter(d=>d.Trusted==="true"||d.Trusted===true).length;
+
+  // Pending
+  const pEl = document.getElementById("pendingList");
+  if(!pend.length){
+    pEl.innerHTML=`<div style="font-size:13px;color:var(--t3);padding:12px 0;text-align:center">✅ Pending requests లేవు</div>`;
+  }else{
+    pEl.innerHTML=pend.map((p,i)=>`
+      <div class="adm-item" style="flex-direction:column;align-items:stretch;gap:8px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+          <div style="flex:1">
+            <div class="adm-item-name">${p.center}</div>
+            <div class="adm-item-sub">👤 ${p.name} · 📞 ${p.phone}</div>
+            <div class="adm-item-sub">📍 ${p.village||""}, ${p.mandal}, ${p.dist}</div>
+            ${p.svcs&&p.svcs.length?`<div style="font-size:10.5px;color:var(--t3);margin-top:3px">🛠️ ${Array.isArray(p.svcs)?p.svcs.slice(0,3).join(", "):p.svcs}</div>`:""}
+          </div>
+          <div style="font-size:10px;color:var(--t3);white-space:nowrap">${p.addedAt||""}</div>
+        </div>
+        <div class="adm-btns">
+          <button class="adm-a" style="flex:1;padding:8px" onclick="approvePend(${i})">✅ Approve — Directory లో Add చేయి</button>
+          <button class="adm-r" onclick="rejectPend(${i})">❌ Reject</button>
+        </div>
+      </div>`).join("");
+  }
+
+  // All centers
+  const aEl = document.getElementById("allCList");
+  const allShow = [...ALL].slice(0,15);
+  aEl.innerHTML = allShow.map(d=>`
+    <div class="adm-item">
+      <div style="flex:1">
+        <div class="adm-item-name">${d.Name}
+          ${d.isApproved?'<span style="background:var(--grn3);color:var(--grn);font-size:9px;padding:1px 6px;border-radius:4px;margin-left:5px">✓ Approved</span>':""}
+          ${d.Trusted==="true"?'<span style="background:var(--gld3);color:var(--gld);font-size:9px;padding:1px 6px;border-radius:4px;margin-left:3px">🏅 Trusted</span>':""}
+        </div>
+        <div class="adm-item-sub">${d.Mandal||""}, ${(d.District||"").split(" ")[0]} · ★${d.Rating||"0"}</div>
+      </div>
+      <div class="adm-btns">
+        <button class="adm-b" onclick="toggleBadge(${d.id})">🏅</button>
+        <button class="adm-r" onclick="removeFromDir(${d.id})">🗑️</button>
+      </div>
+    </div>`).join("");
+}
+function loadApprovedListings(){
+  try{ return JSON.parse(localStorage.getItem(APPROVED_KEY)||"[]"); }
+  catch(e){ return []; }
+}
+function saveApprovedListings(arr){
+  localStorage.setItem(APPROVED_KEY, JSON.stringify(arr));
+}
+
+function approvePend(i){
+  const pend = JSON.parse(localStorage.getItem("ms_pend")||"[]");
+  const entry = pend[i];
+  if(!entry){ showToast("❌ Entry not found"); return; }
+
+  // Add to approved listings with full structure
+  const approved = loadApprovedListings();
+  const newId = 80000 + Date.now() % 100000;
+  const newListing = {
+    id:          newId,
+    Name:        entry.center,
+    District:    entry.dist,
+    Mandal:      entry.mandal,
+    Village:     entry.village || "",
+    Phone:       entry.phone,
+    WhatsApp:    entry.wa || entry.phone,
+    Address:     entry.addr || "",
+    Lat:         "",
+    Lng:         "",
+    Photo:       "",
+    Services:    Array.isArray(entry.svcs) ? entry.svcs.join(",") : (entry.svcs||""),
+    Hours:       entry.hours || "9am–6pm",
+    Rating:      "0",
+    Trusted:     "false",
+    Verified:    "true",
+    Description: `Operator: ${entry.name} · ${entry.addedAt||new Date().toLocaleDateString("te-IN")}`,
+    isApproved:  true,
+    approvedAt:  new Date().toLocaleDateString("te-IN"),
+    operatorName: entry.name,
+  };
+  approved.push(newListing);
+  saveApprovedListings(approved);
+
+  // Remove from pending
+  pend.splice(i, 1);
+  localStorage.setItem("ms_pend", JSON.stringify(pend));
+
+  // Immediately add to live data & refresh directory
+  ALL.push(newListing);
+  applyF();
+
+  showToast(`✅ "${entry.center}" approved! Directory లో live అయింది 🎉`);
+  renderAdminList();
+
+  // Update stats
+  document.getElementById("stC").textContent = ALL.length;
+  document.getElementById("aT").textContent  = ALL.length;
+  document.getElementById("aP").textContent  = pend.length;
+}
+
+function rejectPend(i){
+  const pend = JSON.parse(localStorage.getItem("ms_pend")||"[]");
+  const name = pend[i]?.center || "Entry";
+  pend.splice(i,1);
+  localStorage.setItem("ms_pend", JSON.stringify(pend));
+  showToast(`❌ "${name}" rejected`);
+  renderAdminList();
+  document.getElementById("aP").textContent = pend.length;
+}
+function removeFromDir(id){
+  if(!confirm("ఈ listing directory నుండి remove చేయాలా?")) return;
+  const approved=loadApprovedListings().filter(d=>d.id!==id);
+  saveApprovedListings(approved);
+  const customs=loadCustomListings().filter(d=>d.id!==id);
+  saveCustomListings(customs);
+  const i=ALL.findIndex(d=>d.id===id);
+  if(i!==-1) ALL.splice(i,1);
+  applyF();renderAdminList();
+  document.getElementById("stC").textContent=ALL.length;
+  document.getElementById("aT").textContent=ALL.length;
+  showToast("🗑️ Listing removed");
+}
+function toggleBadge(id){
+  const d=ALL.find(x=>x.id===id);if(!d)return;
+  d.Trusted=d.Trusted==="true"?"false":"true";
+  const approved=loadApprovedListings();
+  const ai=approved.findIndex(a=>a.id===id);
+  if(ai!==-1){approved[ai].Trusted=d.Trusted;saveApprovedListings(approved);}
+  showToast(d.Trusted==="true"?"🏅 Trusted badge added!":"Badge removed");
+  renderAdminList();applyF();
+}
 function openAdvDrawer(){
   // Sync main dropdowns to adv drawer
   document.getElementById("af-dist").value = document.getElementById("fDist").value;
