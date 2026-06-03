@@ -10,6 +10,18 @@
 
 <!-- ═══ PWA META TAGS ═══ -->
 <link rel="manifest" href="manifest.json">
+<!-- OneSignal Push Notifications SDK -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: typeof ONESIGNAL_APP_ID !== 'undefined' ? ONESIGNAL_APP_ID : "YOUR_ONESIGNAL_APP_ID_HERE",
+      notifyButton: { enable: false }, // మనమే custom UI చేస్తున్నాం
+      allowLocalhostAsSecureOrigin: true,
+    });
+  });
+</script>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -354,31 +366,16 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .pp-back,.pp-shr{width:32px;height:32px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;flex-shrink:0}
 .pp-back svg,.pp-shr svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
 .pp-nav-title{flex:1;font-size:14px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-/* ── Gallery / Carousel ── */
-.pp-gallery{position:relative;overflow:hidden;background:#000;flex-shrink:0}
-.pp-gallery-track{display:flex;transition:transform .35s cubic-bezier(.32,0,.2,1)}
-.pp-gallery-slide{min-width:100%;position:relative;background:#111}
-.pp-gallery-slide img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
-.pp-gallery-slide .pp-yt{width:100%;aspect-ratio:16/9;display:block;border:none}
-.pp-gallery-av{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,var(--saf3),var(--bg3));display:flex;align-items:center;justify-content:center;font-size:70px;font-weight:800;color:var(--saf2)}
-.pp-gal-prev,.pp-gal-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.45);backdrop-filter:blur(6px);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;transition:.15s}
-.pp-gal-prev{left:8px}
-.pp-gal-next{right:8px}
-.pp-gal-prev svg,.pp-gal-next svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-.pp-gal-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:3}
-.pp-gal-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.45);border:none;cursor:pointer;padding:0;transition:.2s}
-.pp-gal-dot.on{background:#fff;width:16px;border-radius:4px}
-.pp-gal-type{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);color:#fff;font-size:9px;font-weight:700;padding:3px 7px;border-radius:5px;z-index:3;letter-spacing:.4px}
-.pp-hbdgs{position:absolute;bottom:28px;left:10px;display:flex;gap:5px;flex-wrap:wrap;z-index:3}
+.pp-hero{position:relative;overflow:hidden}
+.pp-hero img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.pp-hero-av{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,var(--saf3),var(--bg3));display:flex;align-items:center;justify-content:center;font-size:70px;font-weight:800;color:var(--saf2)}
+.pp-hbdgs{position:absolute;bottom:10px;left:10px;display:flex;gap:5px;flex-wrap:wrap}
 .pbdg-t{background:var(--grn);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;display:flex;align-items:center;gap:3px}
 .pbdg-t svg{width:10px;height:10px;fill:#fff;stroke:none}
 .pbdg-r{background:rgba(0,0,0,.6);backdrop-filter:blur(4px);color:var(--gld2);font-size:11px;font-weight:700;padding:3px 9px;border-radius:5px}
 .pbdg-v{background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px}
-
-/* ── Body ── */
-.pp-body{padding:14px 14px 130px;flex:1}
-.pp-name{font-size:21px;font-weight:800;color:var(--t1);margin-bottom:6px;line-height:1.2}
+.pp-body{padding:14px 14px 110px;flex:1}
+.pp-name{font-size:21px;font-weight:800;color:var(--t1);margin-bottom:9px;line-height:1.2}
 .pp-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
 .pp-tag{display:inline-flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--line2);color:var(--t2);border-radius:20px;padding:3px 10px;font-size:11.5px}
 .pp-tag svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
@@ -390,8 +387,6 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .pp-ico.g svg{stroke:var(--grn)}
 .pp-ico.gld{background:var(--gld3);border-color:var(--gld2)}
 .pp-ico.gld svg{stroke:var(--gld)}
-.pp-ico.pur{background:#f3e8ff;border-color:#c084fc}
-.pp-ico.pur svg{stroke:#9333ea}
 .pp-val .v1{font-size:14px;color:var(--t1);line-height:1.4}
 .pp-val .v2{font-size:11.5px;color:var(--t3);margin-top:1px}
 .svc-wrap{display:flex;flex-wrap:wrap;gap:6px}
@@ -401,35 +396,11 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .star{width:20px;height:20px;cursor:pointer;fill:var(--line2);stroke:none}
 .star.on{fill:var(--gld2)}
 .rate-lbl{font-size:12px;color:var(--t3);margin-left:5px}
-
-/* ── Offers ── */
-.offer-card{background:linear-gradient(135deg,#fff7ed,#fef3cd);border:1.5px solid var(--gld2);border-radius:var(--r);padding:12px 14px;margin-bottom:9px;display:flex;align-items:flex-start;gap:10px}
-.offer-card-ico{font-size:22px;flex-shrink:0;margin-top:1px}
-.offer-card-title{font-size:13.5px;font-weight:700;color:var(--t1);margin-bottom:3px;line-height:1.3}
-.offer-card-desc{font-size:12px;color:var(--t2);line-height:1.5}
-.offer-card-exp{font-size:10.5px;color:var(--gld);font-weight:600;margin-top:4px}
-
-/* ── UPI / QR ── */
-.upi-box{background:var(--card);border:1.5px solid var(--line2);border-radius:var(--r);padding:14px;text-align:center;margin-bottom:14px}
-.upi-qr{width:140px;height:140px;margin:0 auto 10px;background:var(--bg2);border:1px solid var(--line2);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.upi-qr img{width:100%;height:100%;object-fit:contain}
-.upi-id{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px}
-.upi-name{font-size:12px;color:var(--t3)}
-.upi-copy{background:var(--saf3);border:1px solid var(--saf2);color:var(--saf2);border-radius:6px;padding:6px 16px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px}
-
-/* ── Action bar ── */
-.pp-acts{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;background:rgba(255,252,248,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line2);padding:11px 14px calc(env(safe-area-inset-bottom,0px) + 10px);display:flex;gap:9px;z-index:9}
+.pp-acts{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;background:rgba(255,252,248,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line2);padding:11px 14px calc(env(safe-area-inset-bottom,0px) + 10px);display:flex;gap:9px;z-index:9}
 .pp-btn-c{flex:1;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 3px 12px rgba(232,97,14,.3)}
 .pp-btn-c svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2}
 .pp-btn-w{flex:1;background:#1da84f;border:none;color:#fff;border-radius:var(--r2);padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 3px 12px rgba(29,168,79,.3)}
 .pp-btn-w svg{width:17px;height:17px;fill:#fff;stroke:none}
-.pp-btn-upi{background:linear-gradient(135deg,#7c3aed,#9333ea);border:none;color:#fff;border-radius:var(--r2);padding:13px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0}
-
-/* ── Lightbox ── */
-.pp-lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
-.pp-lightbox.on{opacity:1;pointer-events:all}
-.pp-lightbox img{max-width:95vw;max-height:88vh;object-fit:contain;border-radius:6px}
-.pp-lb-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.15);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
 /* ═══════════════ TOOLS SCREEN ═══════════════ */
 .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:12px}
@@ -693,12 +664,7 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
     </div>
     <div class="dir-f2">
       <select id="fDist" class="df-sel" onchange="onDist()"><option value="">అన్ని జిల్లాలు (33)</option></select>
-      <select id="fMandal" class="df-sel" onchange="populateCenterDropdown();applyF()"><option value="">అన్ని మండలాలు</option></select>
-    </div>
-    <div class="dir-f2" style="margin-top:7px">
-      <select id="fCenter" class="df-sel" onchange="applyF()" style="flex:1">
-        <option value="">అన్ని Centers</option>
-      </select>
+      <select id="fMandal" class="df-sel" onchange="applyF()"><option value="">అన్ని మండలాలు</option></select>
     </div>
   </div>
 
@@ -732,8 +698,8 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
     <div style="height:140px"></div>
   </div>
 
-  <!-- FAB — Add Listing → redirects to List Now page -->
-  <button class="dir-fab" onclick="goScreen('s-join')" title="మీ Center List చేయండి">
+  <!-- FAB — Add Custom Listing -->
+  <button class="dir-fab" onclick="openCustomAdd()" title="Custom listing add చేయండి">
     <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     <span>Add Center</span>
   </button>
@@ -937,14 +903,6 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 
       <div class="jf-group"><div class="jf-label">పని వేళలు</div><input class="jf-inp" id="jf_hours" placeholder="e.g. 9am – 6pm, Mon-Sat"></div>
 
-      <div class="jf-group"><div class="jf-label">Shop Photo URLs <span style="color:var(--t3);font-weight:400;text-transform:none;font-size:10px">(comma separated image links)</span></div><input class="jf-inp" id="jf_photos" placeholder="https://... , https://..."></div>
-
-      <div class="jf-group"><div class="jf-label">YouTube Video IDs <span style="color:var(--t3);font-weight:400;text-transform:none;font-size:10px">(promo / shop videos)</span></div><input class="jf-inp" id="jf_videos" placeholder="e.g. dQw4w9WgXcQ (video ID only)"></div>
-
-      <div class="jf-group"><div class="jf-label">UPI ID <span style="color:var(--t3);font-weight:400;text-transform:none;font-size:10px">(optional)</span></div><input class="jf-inp" id="jf_upi" placeholder="e.g. yourname@upi"></div>
-
-      <div class="jf-group"><div class="jf-label">ప్రత్యేక ఆఫర్లు <span style="color:var(--t3);font-weight:400;text-transform:none;font-size:10px">(optional)</span></div><textarea class="jf-area" id="jf_offers" rows="2" placeholder="🎁 Free Consultation|First visit free|Valid:31 Dec 2025&#10;(use semicolon ; to separate multiple offers)"></textarea></div>
-
       <!-- SUBMIT BUTTON - clearly visible, above bottom nav -->
       <div style="margin-top:18px;padding-bottom:4px">
         <button class="btn-sub" onclick="submitJoin()">
@@ -979,6 +937,48 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
       </div>
       <div class="adm-sec">⏳ Pending Approvals</div>
       <div id="pendingList"></div>
+      <div class="adm-sec">📢 Push Notification పంపండి</div>
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <div class="adv-lbl">Notification Title</div>
+            <input class="adv-inp" id="pn-title" placeholder="e.g. రైతు బంధు 2025 — Apply Now!">
+          </div>
+          <div>
+            <div class="adv-lbl">Message</div>
+            <textarea class="adv-inp" id="pn-msg" rows="3" placeholder="Notification message..." style="resize:none"></textarea>
+          </div>
+          <div>
+            <div class="adv-lbl">Type</div>
+            <select class="adv-sel" id="pn-type">
+              <option value="general">📢 General Announcement</option>
+              <option value="job">💼 Job Notification</option>
+              <option value="scheme">🏛️ Govt Scheme</option>
+              <option value="news">📰 Latest News</option>
+              <option value="alert">🚨 Important Alert</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button onclick="sendPushNotification()" style="flex:1;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:12px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit">
+              📤 Send Notification
+            </button>
+            <button onclick="checkSubscribers()" style="background:var(--bg2);border:1.5px solid var(--line2);color:var(--t2);border-radius:var(--r2);padding:12px 14px;font-size:12px;cursor:pointer;font-family:inherit">
+              👥 Subscribers
+            </button>
+          </div>
+          <div id="pn-status" style="font-size:12px;color:var(--t3);text-align:center;min-height:16px"></div>
+        </div>
+      </div>
+
+      <div class="adm-sec">📊 Google Form Pending Requests</div>
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:10px">
+        <div style="font-size:13px;color:var(--t2);margin-bottom:10px">Google Sheet లో pending entries చూడండి:</div>
+        <a id="gform-sheet-link" href="#" target="_blank" style="display:flex;align-items:center;gap:8px;background:var(--grn3);border:1px solid var(--grn2);color:var(--grn);border-radius:var(--r2);padding:10px 14px;font-size:13px;font-weight:600;text-decoration:none;margin-bottom:8px">
+          📊 Google Sheet తెరవండి →
+        </a>
+        <div style="font-size:11px;color:var(--t3)">Sheet లో data చూసి app లో Approve/Reject చేయండి</div>
+      </div>
+
       <div class="adm-sec">📋 All Centers</div>
       <div id="allCList"></div>
     </div>
@@ -994,11 +994,6 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
   </div>
   <div id="ppContent"></div>
   <div id="ppFoot" class="pp-acts" style="display:none"></div>
-</div>
-
-<div class="pp-lightbox" id="ppLightbox" onclick="closeLightbox()">
-  <img id="ppLightboxImg" src="" alt="">
-  <button class="pp-lb-close" onclick="closeLightbox()">✕</button>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -1092,7 +1087,11 @@ const GFORM_FIELDS = {
 const ONESIGNAL_APP_ID = "YOUR_ONESIGNAL_APP_ID_HERE";
 
 // Admin password
-const ADMIN_PWD = "meeseva2025";
+const ADMIN_PWD = "JSK@Admin#2025!";
+
+// 7️⃣ Apps Script URL
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAfxC_Zg_9iAg-Cjfzo31v5zB9uOHvXcU03TzhGLes03Y3204kh5ivXEyZaCrE8msY/exec";
+const APPS_SECRET     = "JSK@Secret#2025";
 
 // localStorage key for admin-approved listings
 const APPROVED_KEY = "ms_approved_listings";
@@ -1192,7 +1191,7 @@ const TOOLS=[
 ];
 
 const DEMO=[
-  {id:1,Name:"శ్రీ వెంకటేశ్వర మీసేవ",District:"హైదరాబాద్",Mandal:"అంబర్‌పేట",Village:"హిమాయత్‌నగర్",Phone:"9876543210",WhatsApp:"9876543210",Address:"Himayatnagar Main Road, Near SBI",Lat:"17.396",Lng:"78.478",Photo:"",Photos:"",Videos:"dQw4w9WgXcQ",Services:"Income Certificate,Caste Certificate,Aadhaar Services,Ration Card,EPASS,Pensions",Hours:"9am–6pm Mon-Sat",Rating:"4.8",Trusted:"true",Verified:"true",UPI:"venkateswara.meeseva@upi",UPIName:"శ్రీ వెంకటేశ్వర మీసేవ",Offers:"🎁 Free Consultation|Income & Caste Certificate first visit free|Valid:31 Dec 2025; 🔥 Combo Offer|Aadhaar + PAN Card together ₹50 off|Valid:30 Nov 2025",Description:"8 సంవత్సరాల అనుభవం. అన్ని మీసేవ సేవలు అందుబాటులో ఉన్నాయి. Fast processing."},
+  {id:1,Name:"శ్రీ వెంకటేశ్వర మీసేవ",District:"హైదరాబాద్",Mandal:"అంబర్‌పేట",Village:"హిమాయత్‌నగర్",Phone:"9876543210",WhatsApp:"9876543210",Address:"Himayatnagar Main Road, Near SBI",Lat:"17.396",Lng:"78.478",Photo:"",Services:"Income Certificate,Caste Certificate,Aadhaar Services,Ration Card,EPASS,Pensions",Hours:"9am–6pm Mon-Sat",Rating:"4.8",Trusted:"true",Verified:"true",Description:"8 సంవత్సరాల అనుభవం. అన్ని మీసేవ సేవలు అందుబాటులో ఉన్నాయి. Fast processing."},
   {id:2,Name:"జయ మీసేవ కేంద్రం",District:"రంగారెడ్డి",Mandal:"శంషాబాద్",Village:"బజారు",Phone:"9988776655",WhatsApp:"9988776655",Address:"Main Bazaar Road, Shamshabad",Lat:"17.240",Lng:"78.429",Photo:"",Services:"Land Records,Registration Services,Pensions,Ration Card,Electricity Bill",Hours:"8:30am–6:30pm",Rating:"4.5",Trusted:"true",Verified:"true",Description:"Land records specialist. Quick turnaround time."},
   {id:3,Name:"అంబేద్కర్ మీసేవ",District:"నల్గొండ",Mandal:"నల్గొండ",Village:"బస్ స్టాండ్",Phone:"9123456780",WhatsApp:"9123456780",Address:"Bus Stand Road, Nalgonda",Lat:"17.060",Lng:"79.266",Photo:"",Services:"Caste Certificate,Income Certificate,Rythu Bandhu,EPASS",Hours:"9am–5:30pm",Rating:"4.2",Trusted:"false",Verified:"true",Description:"Serving Nalgonda since 2018."},
   {id:4,Name:"తెలంగాణ మీసేవ సెంటర్",District:"కరీంనగర్",Mandal:"కరీంనగర్",Village:"మెయిన్ రోడ్",Phone:"9001122334",WhatsApp:"9001122334",Address:"Near Collectorate, Karimnagar",Lat:"18.438",Lng:"79.120",Photo:"",Services:"Aadhaar Services,PAN Card,Passport,Driving Licence,Income Certificate,Marriage Certificate",Hours:"9am–7pm Mon-Sat",Rating:"4.7",Trusted:"true",Verified:"true",Description:"Premium center with AC. All services in one place."},
@@ -1281,9 +1280,9 @@ async function init(){
   document.getElementById("aV").textContent=vt;
   document.getElementById("aP").textContent=Math.max(0,Math.floor(ALL.length*.12));
 
+  initPushNotifications();
   renderTicker();renderHomeNotifs();renderSchemes();renderHomeNews();renderHomeRecent();
   renderTools();renderForms();renderNotifTypes();renderNewsAll();renderSvcChecks();renderAdminList();
-  populateCenterDropdown();
   document.getElementById("dirLoader").style.display="none";
   document.getElementById("lstWrap").style.display="";
   applyF();
@@ -1440,7 +1439,6 @@ function onDist(){
   mEl.innerHTML='<option value="">అన్ని మండలాలు</option>';
   const m=[...new Set([...(TGD[dist]||[]),...ALL.filter(d=>d.District===dist).map(d=>d.Mandal).filter(Boolean)])];
   m.forEach(x=>{mEl.innerHTML+=`<option value="${x}">${x}</option>`;});
-  populateCenterDropdown();
   applyF();
 }
 function onJDist(){
@@ -1461,29 +1459,13 @@ function renderAPills(){
 }
 function clrPill(k){
   if(k==="dist"){document.getElementById("fDist").value="";onDist();}
-  else{document.getElementById("fMandal").value="";populateCenterDropdown();applyF();}
+  else{document.getElementById("fMandal").value="";applyF();}
 }
 function setV(v){
   CUR_V=v;
   document.getElementById("vgb").className=v==="grid"?"vt on":"vt";
   document.getElementById("vlb").className=v==="list"?"vt on":"vt";
   renderDir();
-}
-
-/* ══ CENTER DROPDOWN POPULATE ══ */
-function populateCenterDropdown(){
-  const cEl = document.getElementById("fCenter");
-  if(!cEl) return;
-  const dist   = document.getElementById("fDist").value;
-  const mandal = document.getElementById("fMandal").value;
-  const filtered = ALL.filter(d=>{
-    if(dist   && d.District !== dist)   return false;
-    if(mandal && d.Mandal   !== mandal) return false;
-    return true;
-  });
-  const names = [...new Set(filtered.map(d=>d.Name).filter(Boolean))].sort();
-  cEl.innerHTML = '<option value="">అన్ని Centers</option>';
-  names.forEach(n=>{ cEl.innerHTML += `<option value="${n}">${n}</option>`; });
 }
 
 /* ══ RENDER DIRECTORY ══ */
@@ -1538,229 +1520,68 @@ function renderDir(){
 }
 
 /* ══ PROFILE ══ */
-
-// Gallery state
-let _galIdx = 0, _galSlides = [];
-
 function openProfile(id){
-  const d = ALL.find(x=>x.id===id); if(!d) return;
-  PP_D = d;
-  document.getElementById("ppTitle").textContent = d.Name;
-  const tr  = d.Trusted==="true"||d.Trusted===true;
-  const vr  = d.Verified==="true"||d.Verified===true;
-  const rt  = parseFloat(d.Rating)||0;
-  const lat = parseFloat(d.Lat), lng = parseFloat(d.Lng), hasMap = lat&&lng;
-  const svcs = (d.Services||"").split(",").map(s=>s.trim()).filter(Boolean);
-
-  // ── Build gallery slides ──
-  // Supports: d.Photos (comma-sep URLs), d.Videos (comma-sep YT IDs), d.Photo (legacy single)
-  _galSlides = [];
-  const photos = (d.Photos||d.Photo||"").split(",").map(s=>s.trim()).filter(Boolean);
-  const ytIds  = (d.Videos||"").split(",").map(s=>s.trim()).filter(Boolean);
-  photos.forEach(p => _galSlides.push({type:"img", src:p}));
-  ytIds.forEach(v  => _galSlides.push({type:"yt",  id:v}));
-  if(!_galSlides.length) _galSlides.push({type:"av", letter:(d.Name||"?").charAt(0)});
-  _galIdx = 0;
-
-  const galHTML = buildGallery(_galSlides, tr, rt, vr);
-
-  // ── Offers ──
-  const offers = parseOffers(d.Offers||"");
-  const offersHTML = offers.length ? `
-    <div style="margin-bottom:18px">
-      <div class="pp-sec-t">🎁 ప్రత్యేక ఆఫర్లు</div>
-      ${offers.map(o=>`
-        <div class="offer-card">
-          <div class="offer-card-ico">${o.emoji}</div>
-          <div style="flex:1">
-            <div class="offer-card-title">${o.title}</div>
-            ${o.desc?`<div class="offer-card-desc">${o.desc}</div>`:""}
-            ${o.exp?`<div class="offer-card-exp">⏰ Valid till: ${o.exp}</div>`:""}
-          </div>
-        </div>`).join("")}
-    </div>` : "";
-
-  // ── UPI ──
-  const upiId  = (d.UPI||"").trim();
-  const upiQR  = (d.UPIID||d.QRCode||"").trim(); // QR image URL
-  const upiName= (d.UPIName||d.Name||"").trim();
-  const upiHTML = upiId ? `
-    <div style="margin-bottom:18px">
-      <div class="pp-sec-t">💸 Payment / UPI</div>
-      <div class="upi-box">
-        ${upiQR?`<div class="upi-qr"><img src="${upiQR}" alt="QR Code" onerror="this.parentElement.style.display='none'"></div>`:`<div style="font-size:42px;margin-bottom:10px">📱</div>`}
-        <div class="upi-id">${upiId}</div>
-        <div class="upi-name">${upiName}</div>
-        <button class="upi-copy" onclick="copyUPI('${upiId}')">📋 UPI ID Copy చేయండి</button>
+  const d=ALL.find(x=>x.id===id);if(!d)return;
+  PP_D=d;
+  document.getElementById("ppTitle").textContent=d.Name;
+  const tr=d.Trusted==="true"||d.Trusted===true;
+  const vr=d.Verified==="true"||d.Verified===true;
+  const rt=parseFloat(d.Rating)||0;
+  const lat=parseFloat(d.Lat),lng=parseFloat(d.Lng),hasMap=lat&&lng;
+  const svcs=(d.Services||"").split(",").map(s=>s.trim()).filter(Boolean);
+  document.getElementById("ppContent").innerHTML=`
+    <div class="pp-hero">
+      ${d.Photo?`<img src="${d.Photo}" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block" onerror="this.style.display='none'">`:""}
+      <div class="pp-hero-av" style="${d.Photo?"display:none":""}">${(d.Name||"?").charAt(0)}</div>
+      <div class="pp-hbdgs">
+        ${tr?`<div class="pbdg-t"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Trusted</div>`:""}
+        ${rt>0?`<div class="pbdg-r">★ ${rt}</div>`:""}
+        ${vr?`<div class="pbdg-v">✓ Verified</div>`:""}
       </div>
-    </div>` : "";
-
-  document.getElementById("ppContent").innerHTML = `
-    ${galHTML}
+    </div>
     <div class="pp-body">
       <div class="pp-name">${d.Name}</div>
       <div class="pp-tags">
         <span class="pp-tag"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${d.Village||""}</span>
         <span class="pp-tag">🏛️ ${d.Mandal}</span>
-        <span class="pp-tag">📍 ${(d.District||"").split(" ")[0]}</span>
-        ${rt>0?`<span class="pp-tag" style="background:var(--gld3);border-color:var(--gld2);color:var(--gld)">★ ${rt}/5</span>`:""}
-        ${tr?`<span class="pp-tag" style="background:var(--grn3);border-color:var(--grn2);color:var(--grn)">✅ Trusted</span>`:""}
-        ${vr?`<span class="pp-tag" style="background:#eff6ff;border-color:#93c5fd;color:var(--blue)">✓ Verified</span>`:""}
+        <span class="pp-tag">📍 ${d.District||""}</span>
+        ${rt>0?`<span class="pp-tag" style="background:var(--gld3);border-color:var(--gld2);color:var(--gld)">★ ${rt} / 5</span>`:""}
       </div>
-
-      ${offersHTML}
-
       <div class="pp-sec-t">సంప్రదించండి</div>
       <div class="pp-row">
         <div class="pp-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
         <div class="pp-val"><div class="v1">${d.Phone}</div><div class="v2">Phone నంబర్</div></div>
       </div>
       ${d.WhatsApp?`<div class="pp-row"><div class="pp-ico g"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="pp-val"><div class="v1">${d.WhatsApp}</div><div class="v2">WhatsApp</div></div></div>`:""}
-      <div class="pp-row">
-        <div class="pp-ico"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-        <div class="pp-val"><div class="v1">${d.Address||""}</div><div class="v2">${d.Village||""}, ${d.Mandal}, ${d.District}</div></div>
-      </div>
+      <div class="pp-row"><div class="pp-ico"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="pp-val"><div class="v1">${d.Address||""}</div><div class="v2">${d.Village||""}, ${d.Mandal}, ${d.District}</div></div></div>
       ${d.Hours?`<div class="pp-row"><div class="pp-ico gld"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="pp-val"><div class="v1">${d.Hours}</div><div class="v2">పని వేళలు</div></div></div>`:""}
-      ${d.Email?`<div class="pp-row"><div class="pp-ico pur"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="pp-val"><div class="v1">${d.Email}</div><div class="v2">Email</div></div></div>`:""}
-      ${d.Website?`<div class="pp-row"><div class="pp-ico pur"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div><div class="pp-val"><div class="v1"><a href="${d.Website}" target="_blank" style="color:var(--saf2);text-decoration:none">${d.Website}</a></div><div class="v2">Website</div></div></div>`:""}
-
-      ${upiHTML}
-
-      ${svcs.length?`<div style="margin-bottom:18px"><div class="pp-sec-t">అందించే సేవలు (${svcs.length})</div><div class="svc-wrap">${svcs.map(s=>`<div class="svc-chip">✓ ${s}</div>`).join("")}</div></div>`:""}
-
-      ${d.Description?`<div style="margin-bottom:18px"><div class="pp-sec-t">గురించి</div><p style="font-size:13.5px;color:var(--t2);line-height:1.75">${d.Description}</p></div>`:""}
-
-      <div style="margin-bottom:18px">
+      ${svcs.length?`<div style="margin-bottom:16px"><div class="pp-sec-t">అందించే సేవలు (${svcs.length})</div><div class="svc-wrap">${svcs.map(s=>`<div class="svc-chip">✓ ${s}</div>`).join("")}</div></div>`:""}
+      ${d.Description?`<div style="margin-bottom:16px"><div class="pp-sec-t">గురించి</div><p style="font-size:13.5px;color:var(--t2);line-height:1.75">${d.Description}</p></div>`:""}
+      <div style="margin-bottom:16px">
         <div class="pp-sec-t">Rating ఇవ్వండి</div>
         <div class="star-row" id="starRow">
           ${[1,2,3,4,5].map(i=>`<svg class="star${i<=rt?" on":""}" viewBox="0 0 24 24" onclick="rateC(${d.id},${i})"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`).join("")}
           <span class="rate-lbl">${rt>0?rt+" / 5":"Rate this center"}</span>
         </div>
       </div>
-
       ${hasMap?`<div style="margin-bottom:4px"><div class="pp-sec-t">లొకేషన్ మ్యాప్</div><div class="pp-map" id="ppMapEl"></div></div>`:""}
     </div>`;
-
-  // ── Footer actions ──
-  document.getElementById("ppFoot").style.display = "flex";
-  document.getElementById("ppFoot").innerHTML = `
+  document.getElementById("ppFoot").style.display="flex";
+  document.getElementById("ppFoot").innerHTML=`
     <button class="pp-btn-c" data-tel="${d.Phone}">
       <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>కాల్ చేయండి</button>
     ${d.WhatsApp?`<button class="pp-btn-w" data-wa="${d.WhatsApp}">
-      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</button>`:""}
-    ${upiId?`<button class="pp-btn-upi" onclick="scrollToUPI()">💸 Pay</button>`:""}`;
-
-  document.getElementById("profilePg").className = "profile on";
-  document.getElementById("profilePg").scrollTop = 0;
-
-  // Init map
-  if(hasMap){ setTimeout(()=>{
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</button>`:""}`;
+  document.getElementById("profilePg").className="profile on";
+  document.getElementById("profilePg").scrollTop=0;
+  if(hasMap){setTimeout(()=>{
     if(PP_M){PP_M.remove();PP_M=null;}
-    PP_M = L.map("ppMapEl").setView([lat,lng],15);
+    PP_M=L.map("ppMapEl").setView([lat,lng],15);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OSM"}).addTo(PP_M);
     L.marker([lat,lng],{icon:L.divIcon({html:`<div style="background:var(--saf2);color:#fff;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(200,75,10,.4)">${(d.Name||"?").charAt(0)}</div>`,className:"",iconSize:[34,34],iconAnchor:[17,17]})})
       .addTo(PP_M).bindPopup(`<b>${d.Name}</b><br>${d.Address}`).openPopup();
   },160);}
 }
-
-/* ── Gallery builder ── */
-function buildGallery(slides, tr, rt, vr){
-  if(slides.length===1 && slides[0].type==="av"){
-    return `<div class="pp-gallery" style="position:relative">
-      <div class="pp-gallery-av">${slides[0].letter}</div>
-      <div class="pp-hbdgs">
-        ${tr?`<div class="pbdg-t"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Trusted</div>`:""}
-        ${rt>0?`<div class="pbdg-r">★ ${rt}</div>`:""}
-        ${vr?`<div class="pbdg-v">✓ Verified</div>`:""}
-      </div>
-    </div>`;
-  }
-  const slidesHTML = slides.map((s,i)=>{
-    if(s.type==="img") return `<div class="pp-gallery-slide"><img src="${s.src}" loading="lazy" onclick="openLightbox('${s.src}')" style="cursor:zoom-in" onerror="this.parentElement.style.display='none'"><div class="pp-gal-type">📷 PHOTO</div></div>`;
-    if(s.type==="yt")  return `<div class="pp-gallery-slide"><iframe class="pp-yt" src="https://www.youtube.com/embed/${s.id}?rel=0&modestbranding=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe><div class="pp-gal-type">▶ VIDEO</div></div>`;
-    return `<div class="pp-gallery-slide"><div class="pp-gallery-av">${s.letter}</div></div>`;
-  }).join("");
-  const dotsHTML = slides.length>1 ? `<div class="pp-gal-dots">${slides.map((_,i)=>`<button class="pp-gal-dot${i===0?" on":""}" onclick="galTo(${i})"></button>`).join("")}</div>` : "";
-  const arrowsHTML = slides.length>1 ? `
-    <button class="pp-gal-prev" onclick="galMove(-1)"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
-    <button class="pp-gal-next" onclick="galMove(1)"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>` : "";
-  return `<div class="pp-gallery" id="ppGallery">
-    <div class="pp-gallery-track" id="ppGalTrack">${slidesHTML}</div>
-    ${arrowsHTML}${dotsHTML}
-    <div class="pp-hbdgs">
-      ${tr?`<div class="pbdg-t"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Trusted</div>`:""}
-      ${rt>0?`<div class="pbdg-r">★ ${rt}</div>`:""}
-      ${vr?`<div class="pbdg-v">✓ Verified</div>`:""}
-    </div>
-  </div>`;
-}
-
-function galMove(dir){
-  _galIdx = (_galIdx + dir + _galSlides.length) % _galSlides.length;
-  galTo(_galIdx);
-}
-function galTo(idx){
-  _galIdx = idx;
-  const track = document.getElementById("ppGalTrack");
-  if(track) track.style.transform = `translateX(-${idx*100}%)`;
-  document.querySelectorAll(".pp-gal-dot").forEach((d,i)=>d.className="pp-gal-dot"+(i===idx?" on":""));
-}
-
-/* ── Offers parser ── */
-// Format: "🎉 Title|Desc|Valid:31 Dec; 🔥 Next|Desc|Valid:..."
-function parseOffers(raw){
-  if(!raw.trim()) return [];
-  return raw.split(";").map(s=>s.trim()).filter(Boolean).map(o=>{
-    const parts = o.split("|").map(p=>p.trim());
-    const titlePart = parts[0]||"";
-    // extract leading emoji
-    const emojiMatch = titlePart.match(/^([\u{1F300}-\u{1FAFF}🎁🎉🔥💥⚡🏷️✨🌟💯🆓]+)/u);
-    const emoji = emojiMatch ? emojiMatch[1] : "🎁";
-    const title = emojiMatch ? titlePart.slice(emoji.length).trim() : titlePart;
-    const desc  = parts[1]||"";
-    const expRaw = parts.find(p=>/valid/i.test(p))||"";
-    const exp   = expRaw.replace(/valid\s*:/i,"").trim();
-    return {emoji, title, desc, exp};
-  });
-}
-
-/* ── UPI helpers ── */
-function copyUPI(upi){
-  if(navigator.clipboard){ navigator.clipboard.writeText(upi).then(()=>showToast("✅ UPI ID copied: "+upi)); }
-  else { showToast("UPI: "+upi); }
-}
-function scrollToUPI(){
-  const el = document.querySelector(".upi-box");
-  if(el) el.scrollIntoView({behavior:"smooth",block:"center"});
-}
-
-/* ── Lightbox ── */
-function openLightbox(src){
-  const lb = document.getElementById("ppLightbox");
-  document.getElementById("ppLightboxImg").src = src;
-  lb.classList.add("on");
-}
-function closeLightbox(){
-  document.getElementById("ppLightbox").classList.remove("on");
-}
-
-/* ── Touch swipe on gallery ── */
-let _gsx=0;
-document.getElementById("profilePg").addEventListener("touchstart",e=>{
-  _gsx = e.touches[0].clientX;
-  _sx  = e.touches[0].clientX; // also for swipe-back
-},{passive:true});
-document.getElementById("profilePg").addEventListener("touchend",e=>{
-  const dx = e.changedTouches[0].clientX - _gsx;
-  const track = document.getElementById("ppGalTrack");
-  if(track && Math.abs(dx)>40){
-    galMove(dx<0?1:-1);
-    return;
-  }
-  // swipe-back from left edge
-  if(_sx<30 && dx>70) closeProf();
-},{passive:true});
-
 function closeProf(){document.getElementById("profilePg").className="profile";if(PP_M){PP_M.remove();PP_M=null;}PP_D=null;}
 function shareC(){
   if(!PP_D)return;
@@ -1875,58 +1696,59 @@ function submitJoin(){
   const village = document.getElementById("jf_village").value.trim();
   const addr    = document.getElementById("jf_addr").value.trim();
 
-  // Validation
-  if(!name)   { showToast("⚠️ Operator పేరు enter చేయండి"); return; }
-  if(!phone)  { showToast("⚠️ Phone number enter చేయండి"); return; }
-  if(!/^\d{10}$/.test(phone)){ showToast("⚠️ Valid 10-digit phone number enter చేయండి"); return; }
-  if(!center) { showToast("⚠️ Center పేరు enter చేయండి"); return; }
-  if(!dist)   { showToast("⚠️ జిల్లా select చేయండి"); return; }
-  if(!mandal) { showToast("⚠️ మండలం select చేయండి"); return; }
-  if(!village){ showToast("⚠️ గ్రామం / ప్రాంతం enter చేయండి"); return; }
-  if(!addr)   { showToast("⚠️ పూర్తి చిరునామా enter చేయండి"); return; }
+  if(!name)  {showToast("⚠️ Operator పేరు enter చేయండి");return;}
+  if(!phone) {showToast("⚠️ Phone number enter చేయండి");return;}
+  if(!/^\d{10}$/.test(phone)){showToast("⚠️ Valid 10-digit phone enter చేయండి");return;}
+  if(!center){showToast("⚠️ Center పేరు enter చేయండి");return;}
+  if(!dist)  {showToast("⚠️ జిల్లా select చేయండి");return;}
+  if(!mandal){showToast("⚠️ మండలం select చేయండి");return;}
+  if(!village){showToast("⚠️ గ్రామం enter చేయండి");return;}
+  if(!addr)  {showToast("⚠️ చిరునామా enter చేయండి");return;}
 
-  const checkedSvcs = [...document.querySelectorAll("#svcCatWrap input:checked")].map(x=>x.value);
-  const allSvcs = [...checkedSvcs, ...customServices];
-  const hours  = document.getElementById("jf_hours").value.trim();
-  const wa     = document.getElementById("jf_wa").value.trim();
-  const photos = document.getElementById("jf_photos") ? document.getElementById("jf_photos").value.trim() : "";
-  const videos = document.getElementById("jf_videos") ? document.getElementById("jf_videos").value.trim() : "";
-  const upi    = document.getElementById("jf_upi")    ? document.getElementById("jf_upi").value.trim()    : "";
-  const offers = document.getElementById("jf_offers") ? document.getElementById("jf_offers").value.trim() : "";
+  const checkedSvcs=[...document.querySelectorAll("#svcCatWrap input:checked")].map(x=>x.value);
+  const allSvcs=[...checkedSvcs,...customServices];
+  const hours=document.getElementById("jf_hours").value.trim();
+  const wa=document.getElementById("jf_wa").value.trim();
+  const addedAt=new Date().toLocaleDateString("te-IN");
 
-  const entry = {name,phone,center,dist,mandal,village,addr,wa,svcs:allSvcs,hours,photos,videos,upi,offers,ts:Date.now(),status:"pending"};
-  const p = JSON.parse(localStorage.getItem("ms_pend")||"[]");
+  const entry={name,phone,center,dist,mandal,village,addr,wa,svcs:allSvcs,hours,addedAt,ts:Date.now(),status:"pending"};
+
+  // 1️⃣ Save to localStorage pending
+  const p=JSON.parse(localStorage.getItem("ms_pend")||"[]");
   p.push(entry);
-  localStorage.setItem("ms_pend", JSON.stringify(p));
+  localStorage.setItem("ms_pend",JSON.stringify(p));
 
-  // WhatsApp message to admin
-  const waMsg = encodeURIComponent(
-    `🆕 *New MeeSeva Listing Request*\n\n`+
+  // 2️⃣ Submit to Google Form (Sheet లో save అవుతుంది)
+  submitToGoogleForm(entry);
+
+  // 3️⃣ WhatsApp to admin
+  const waMsg=encodeURIComponent(
+    `🆕 *New MeeSeva Listing*\n\n`+
     `👤 *Operator:* ${name}\n`+
     `📞 *Phone:* ${phone}\n`+
     `🏛️ *Center:* ${center}\n`+
     `📍 *Location:* ${village}, ${mandal}, ${dist}\n`+
-    `🕒 *Hours:* ${hours||"Not specified"}\n`+
-    `🛠️ *Services (${allSvcs.length}):* ${allSvcs.join(", ")||"Not specified"}\n\n`+
+    `🕒 *Hours:* ${hours||"—"}\n`+
+    `🛠️ *Services (${allSvcs.length}):* ${allSvcs.slice(0,5).join(", ")}${allSvcs.length>5?"...":""}\n`+
     `📌 *Address:* ${addr}\n\n`+
-    `_via LISTNLIVE MeeSeva Directory_`
+    `_via మీసేవ డైరెక్టరీ App_`
   );
 
   document.getElementById("joinFormWrap").innerHTML=`
     <div style="text-align:center;padding:50px 20px 30px">
       <div style="font-size:64px;margin-bottom:16px">✅</div>
       <div style="font-size:19px;font-weight:700;color:var(--t1);margin-bottom:8px">Successfully Submitted!</div>
-      <div style="font-size:14px;color:var(--t2);line-height:1.8;margin-bottom:8px">
+      <div style="font-size:14px;color:var(--t2);line-height:1.8;margin-bottom:14px">
         మీ application review చేసి<br><b style="color:var(--t1)">24 గంటల్లో</b> contact చేస్తాం.
       </div>
-      <div style="background:var(--grn3);border:1px solid var(--grn2);border-radius:var(--r);padding:12px;margin:14px 0;text-align:left">
+      <div style="background:var(--grn3);border:1px solid var(--grn2);border-radius:var(--r);padding:12px;margin:0 0 16px;text-align:left">
         <div style="font-size:11px;color:var(--grn);font-weight:700;margin-bottom:6px">✅ Selected Services (${allSvcs.length}):</div>
         <div style="font-size:12px;color:var(--t2);line-height:1.8">${allSvcs.length?allSvcs.map(s=>`• ${s}`).join("<br>"):"No services selected"}</div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:9px;margin-top:14px">
+      <div style="display:flex;flex-direction:column;gap:9px">
         <a href="https://wa.me/919948770651?text=${waMsg}" target="_blank"
           style="display:flex;align-items:center;justify-content:center;gap:8px;background:#1da84f;border:none;color:#fff;border-radius:var(--r2);padding:13px;font-size:14px;font-weight:700;text-decoration:none">
-          💬 WhatsApp లో Confirm చేయండి
+          💬 Admin కి WhatsApp చేయండి
         </a>
         <button onclick="location.reload()" style="background:var(--bg3);border:1px solid var(--line2);color:var(--t2);border-radius:var(--r2);padding:11px;font-size:14px;cursor:pointer;font-family:inherit">
           Home కి వెళ్ళండి
@@ -1936,13 +1758,183 @@ function submitJoin(){
     </div>`;
 }
 
+/* ══ GOOGLE FORM SUBMIT ══ */
+async function submitToGoogleForm(entry){
+  if(GFORM_URL==="YOUR_GOOGLE_FORM_URL_HERE") return; // not configured
+
+  const body = new URLSearchParams();
+  body.append(GFORM_FIELDS.name,    entry.name);
+  body.append(GFORM_FIELDS.center,  entry.center);
+  body.append(GFORM_FIELDS.phone,   entry.phone);
+  body.append(GFORM_FIELDS.wa,      entry.wa||"");
+  body.append(GFORM_FIELDS.dist,    entry.dist);
+  body.append(GFORM_FIELDS.mandal,  entry.mandal);
+  body.append(GFORM_FIELDS.village, entry.village||"");
+  body.append(GFORM_FIELDS.addr,    entry.addr||"");
+  body.append(GFORM_FIELDS.hours,   entry.hours||"");
+  body.append(GFORM_FIELDS.svcs,    Array.isArray(entry.svcs)?entry.svcs.join(", "):entry.svcs||"");
+
+  try{
+    await fetch(GFORM_URL, {
+      method: "POST",
+      mode:   "no-cors", // Google Forms CORS bypass
+      body:   body,
+    });
+    console.log("[Form] Submitted to Google Sheet ✅");
+  }catch(e){
+    console.warn("[Form] Google Form submit failed:", e);
+  }
+}
+
+
+/* ══════════════════════════════════════════
+   PUSH NOTIFICATIONS — OneSignal
+══════════════════════════════════════════ */
+
+// Subscribe user when app is opened
+async function initPushNotifications(){
+  if(ONESIGNAL_APP_ID==="YOUR_ONESIGNAL_APP_ID_HERE") return;
+  try{
+    window.OneSignalDeferred = window.OneSignalDeferred||[];
+    OneSignalDeferred.push(async function(OS){
+      const isSubscribed = await OS.User.PushSubscription.optedIn;
+      if(!isSubscribed){
+        // Show subscribe prompt after 3 seconds
+        setTimeout(()=> showPushPrompt(), 3000);
+      }
+    });
+  }catch(e){ console.warn("OneSignal init error:", e); }
+}
+
+function showPushPrompt(){
+  // Only show if not dismissed before
+  if(localStorage.getItem("ms_push_dismissed")) return;
+  const banner = document.createElement("div");
+  banner.id = "pushPrompt";
+  banner.style.cssText = `
+    position:fixed;top:0;left:50%;transform:translateX(-50%);
+    width:100%;max-width:440px;
+    background:linear-gradient(135deg,#b8390a,#c94b0a);
+    padding:12px 14px;z-index:400;
+    display:flex;align-items:center;gap:10px;
+    box-shadow:0 4px 20px rgba(200,75,10,.4);
+  `;
+  banner.innerHTML=`
+    <div style="font-size:22px;flex-shrink:0">🔔</div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:700;color:#fff">Notifications Enable చేయండి!</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.8)">Jobs, Schemes, News alerts పొందండి</div>
+    </div>
+    <button onclick="enablePush()" style="background:#fff;color:#c94b0a;border:none;border-radius:7px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">Enable</button>
+    <button onclick="dismissPushPrompt()" style="background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:6px;width:28px;height:28px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
+  `;
+  document.body.appendChild(banner);
+}
+
+async function enablePush(){
+  const prompt = document.getElementById("pushPrompt");
+  if(prompt) prompt.remove();
+  try{
+    OneSignalDeferred.push(async function(OS){
+      await OS.Notifications.requestPermission();
+      const optedIn = await OS.User.PushSubscription.optedIn;
+      if(optedIn){
+        showToast("🔔 Notifications enabled! ధన్యవాదాలు 🎉");
+        localStorage.setItem("ms_push_enabled","1");
+      }else{
+        showToast("Notifications enable కాలేదు — Settings లో allow చేయండి");
+      }
+    });
+  }catch(e){
+    showToast("Browser notifications support చేయట్లేదు");
+  }
+}
+
+function dismissPushPrompt(){
+  const prompt = document.getElementById("pushPrompt");
+  if(prompt) prompt.remove();
+  localStorage.setItem("ms_push_dismissed","1");
+}
+
+// Admin: Send Push Notification via OneSignal REST API
+async function sendPushNotification(){
+  const title = document.getElementById("pn-title").value.trim();
+  const msg   = document.getElementById("pn-msg").value.trim();
+  const type  = document.getElementById("pn-type").value;
+  const statusEl = document.getElementById("pn-status");
+
+  if(!title){ showToast("⚠️ Title enter చేయండి"); return; }
+  if(!msg)  { showToast("⚠️ Message enter చేయండి"); return; }
+
+  if(ONESIGNAL_APP_ID==="YOUR_ONESIGNAL_APP_ID_HERE"){
+    showToast("⚠️ OneSignal App ID configure చేయండి");
+    statusEl.innerHTML=`<span style="color:var(--red)">⚠️ ONESIGNAL_APP_ID set చేయండి</span>`;
+    return;
+  }
+
+  const icons = {job:"💼",scheme:"🏛️",news:"📰",alert:"🚨",general:"📢"};
+  statusEl.innerHTML=`<span style="color:var(--t3)">📤 Sending...</span>`;
+
+  // NOTE: Production లో REST API key backend లో ఉండాలి
+  // ఇక్కడ OneSignal dashboard నుండి send చేయాలి security కోసం
+  // OR Vercel serverless function use చేయండి
+
+  try{
+    const res = await fetch("https://onesignal.com/api/v1/notifications", {
+      method: "POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Basic YOUR_ONESIGNAL_REST_API_KEY" // Backend లో ఉండాలి
+      },
+      body: JSON.stringify({
+        app_id:             ONESIGNAL_APP_ID,
+        included_segments:  ["All"], // All subscribed users కి
+        headings:           {en: `${icons[type]||"📢"} ${title}`},
+        contents:           {en: msg},
+        url:                window.location.href,
+        web_push_topic:     type,
+      }),
+    });
+    const data = await res.json();
+    if(data.id){
+      statusEl.innerHTML=`<span style="color:var(--grn)">✅ Sent to ${data.recipients||"all"} subscribers!</span>`;
+      document.getElementById("pn-title").value="";
+      document.getElementById("pn-msg").value="";
+      showToast(`✅ Notification sent successfully!`);
+    }else{
+      statusEl.innerHTML=`<span style="color:var(--red)">❌ Failed: ${JSON.stringify(data.errors||data)}</span>`;
+    }
+  }catch(e){
+    // Fallback: Open OneSignal Dashboard
+    statusEl.innerHTML=`<span style="color:var(--t3)">Dashboard నుండి send చేయండి →</span>`;
+    window.open(`https://app.onesignal.com/apps/${ONESIGNAL_APP_ID}/notifications/new`,"_blank");
+    showToast("OneSignal Dashboard తెరుచుకుంది — అక్కడ send చేయండి");
+  }
+}
+
+async function checkSubscribers(){
+  if(ONESIGNAL_APP_ID==="YOUR_ONESIGNAL_APP_ID_HERE"){
+    showToast("⚠️ OneSignal App ID configure చేయండి");return;
+  }
+  window.open(`https://app.onesignal.com/apps/${ONESIGNAL_APP_ID}`,"_blank");
+}
+
 /* ══ ADMIN ══ */
 function adminLogin(){
   if(document.getElementById("adminPwd").value===ADMIN_PWD){
     document.getElementById("adminLock").style.display="none";
     document.getElementById("adminDash").style.display="block";
+    // Set Google Sheet link
+    const sheetLink = document.getElementById("gform-sheet-link");
+    if(sheetLink && SHEET_URL && !SHEET_URL.includes("YOUR_")){
+      const sheetId = SHEET_URL.match(/spreadsheets\/d\/([^\/]+)/);
+      if(sheetId) sheetLink.href = `https://docs.google.com/spreadsheets/d/${sheetId[1]}/edit`;
+    }
     renderAdminList();
-  }else{showToast("❌ Incorrect password!");}
+  }else{
+    showToast("❌ Incorrect password!");
+    document.getElementById("adminPwd").value="";
+  }
 }
 function renderAdminList(){
   const pend     = JSON.parse(localStorage.getItem("ms_pend")||"[]");
@@ -1968,8 +1960,8 @@ function renderAdminList(){
           <div style="font-size:10px;color:var(--t3);white-space:nowrap">${p.addedAt||""}</div>
         </div>
         <div class="adm-btns">
-          <button class="adm-a" style="flex:1;padding:8px" data-approve="${i}">✅ Approve — Directory లో Add చేయి</button>
-          <button class="adm-r" data-reject="${i}">❌ Reject</button>
+          <button class="adm-a" style="flex:1;padding:8px" onclick="approvePend(${i})">✅ Approve — Directory లో Add చేయి</button>
+          <button class="adm-r" onclick="rejectPend(${i})">❌ Reject</button>
         </div>
       </div>`).join("");
   }
@@ -2001,7 +1993,6 @@ function saveApprovedListings(arr){
 }
 
 function approvePend(i){
-  try {
   const pend = JSON.parse(localStorage.getItem("ms_pend")||"[]");
   const entry = pend[i];
   if(!entry){ showToast("❌ Entry not found"); return; }
@@ -2023,11 +2014,6 @@ function approvePend(i){
     Photo:       "",
     Services:    Array.isArray(entry.svcs) ? entry.svcs.join(",") : (entry.svcs||""),
     Hours:       entry.hours || "9am–6pm",
-    Photos:      entry.photos || "",
-    Videos:      entry.videos || "",
-    UPI:         entry.upi   || "",
-    UPIName:     entry.center,
-    Offers:      entry.offers || "",
     Rating:      "0",
     Trusted:     "false",
     Verified:    "true",
@@ -2045,39 +2031,28 @@ function approvePend(i){
 
   // Immediately add to live data & refresh directory
   ALL.push(newListing);
-  populateCenterDropdown();
   applyF();
+
+  // ✅ Google Sheet కి push చేయి
+  pushToSheet(newListing);
 
   showToast(`✅ "${entry.center}" approved! Directory లో live అయింది 🎉`);
   renderAdminList();
 
   // Update stats
-  const stC = document.getElementById("stC");
-  const aT  = document.getElementById("aT");
-  const aP  = document.getElementById("aP");
-  if(stC) stC.textContent = ALL.length;
-  if(aT)  aT.textContent  = ALL.length;
-  if(aP)  aP.textContent  = pend.length;
-  } catch(err) {
-    console.error("approvePend error:", err);
-    showToast("❌ Approve చేయడంలో error వచ్చింది. Console చూడండి.");
-  }
+  document.getElementById("stC").textContent = ALL.length;
+  document.getElementById("aT").textContent  = ALL.length;
+  document.getElementById("aP").textContent  = pend.length;
 }
 
 function rejectPend(i){
-  try {
   const pend = JSON.parse(localStorage.getItem("ms_pend")||"[]");
   const name = pend[i]?.center || "Entry";
   pend.splice(i,1);
   localStorage.setItem("ms_pend", JSON.stringify(pend));
   showToast(`❌ "${name}" rejected`);
   renderAdminList();
-  const aP = document.getElementById("aP");
-  if(aP) aP.textContent = pend.length;
-  } catch(err) {
-    console.error("rejectPend error:", err);
-    showToast("❌ Reject చేయడంలో error వచ్చింది.");
-  }
+  document.getElementById("aP").textContent = pend.length;
 }
 function removeFromDir(id){
   if(!confirm("ఈ listing directory నుండి remove చేయాలా?")) return;
@@ -2152,9 +2127,6 @@ function resetAdvFilters(){
   document.getElementById("fDist").value      = "";
   document.getElementById("fMandal").value    = "";
   document.getElementById("dq").value         = "";
-  const fCenter = document.getElementById("fCenter");
-  if(fCenter) fCenter.value = "";
-  populateCenterDropdown();
   applyF();
   renderAPills();
 }
@@ -2248,7 +2220,6 @@ function getFilt(){
   const q       = (document.getElementById("dq").value||"").toLowerCase().trim();
   const dist    = document.getElementById("fDist").value || document.getElementById("af-dist").value;
   const mandal  = document.getElementById("fMandal").value || document.getElementById("af-mandal").value;
-  const centerF = document.getElementById("fCenter") ? document.getElementById("fCenter").value : "";
   const village = (document.getElementById("af-village").value||"").toLowerCase().trim();
   const trust   = document.getElementById("af-trust").value;
   const minRat  = parseFloat(document.getElementById("af-rating").value)||0;
@@ -2259,9 +2230,8 @@ function getFilt(){
       (d.Mandal||"").toLowerCase().includes(q)||
       (d.Services||"").toLowerCase().includes(q)
     )) return false;
-    if(dist    && d.District !== dist)   return false;
-    if(mandal  && d.Mandal   !== mandal) return false;
-    if(centerF && d.Name     !== centerF) return false;
+    if(dist   && d.District !== dist)  return false;
+    if(mandal && d.Mandal   !== mandal) return false;
     if(village && !(d.Village||"").toLowerCase().includes(village)) return false;
     if(trust==="trusted"  && !(d.Trusted ==="true"||d.Trusted ===true)) return false;
     if(trust==="verified" && !(d.Verified==="true"||d.Verified===true)) return false;
@@ -2365,6 +2335,42 @@ function closeDetail(){
   document.getElementById("ddDrawer").classList.remove("on");
 }
 
+/* ══ SHEET PUSH ══ */
+async function pushToSheet(listing) {
+  if (!APPS_SCRIPT_URL) return;
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      mode:   "no-cors",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        action:      "add_center",
+        key:         APPS_SECRET,
+        Name:        listing.Name        || "",
+        District:    listing.District    || "",
+        Mandal:      listing.Mandal      || "",
+        Village:     listing.Village     || "",
+        Phone:       listing.Phone       || "",
+        WhatsApp:    listing.WhatsApp    || "",
+        Address:     listing.Address     || "",
+        Services:    listing.Services    || "",
+        Hours:       listing.Hours       || "",
+        Photos:      listing.Photos      || "",
+        Videos:      listing.Videos      || "",
+        UPI:         listing.UPI         || "",
+        Offers:      listing.Offers      || "",
+        Rating:      listing.Rating      || "0",
+        Trusted:     listing.Trusted     || "false",
+        Verified:    listing.Verified    || "true",
+        Description: listing.Description || "",
+      })
+    });
+    console.log("✅ Sheet కి pushed:", listing.Name);
+  } catch(e) {
+    console.warn("⚠️ Sheet push failed:", e);
+  }
+}
+
 function goScreen(s){
   // Hide ticker on non-home screens
   const ticker = document.getElementById("tickerWrap");
@@ -2401,13 +2407,6 @@ function showToast(msg,d=2600){
   setTimeout(()=>{t.className="toast";},d);
 }
 
-document.getElementById("pendingList").addEventListener("click", e => {
-  const approveBtn = e.target.closest("[data-approve]");
-  if(approveBtn){ approvePend(+approveBtn.dataset.approve); return; }
-  const rejectBtn = e.target.closest("[data-reject]");
-  if(rejectBtn){ rejectPend(+rejectBtn.dataset.reject); return; }
-});
-
 /* ══ EVENT DELEGATION ══ */
 document.getElementById("lstWrap").addEventListener("click",e=>{
   const tel=e.target.closest("[data-tel]");if(tel){window.open("tel:"+tel.dataset.tel);return;}
@@ -2419,6 +2418,11 @@ document.getElementById("ppFoot").addEventListener("click",e=>{
   const tel=e.target.closest("[data-tel]");if(tel){window.open("tel:"+tel.dataset.tel);return;}
   const wa=e.target.closest("[data-wa]");if(wa){window.open("https://wa.me/91"+wa.dataset.wa);return;}
 });
+
+/* ══ SWIPE BACK on PROFILE ══ */
+let _sx=0;
+document.getElementById("profilePg").addEventListener("touchstart",e=>{_sx=e.touches[0].clientX;},{passive:true});
+document.getElementById("profilePg").addEventListener("touchend",e=>{if(_sx<30&&e.changedTouches[0].clientX-_sx>70)closeProf();},{passive:true});
 
 /* ══ TRIPLE-TAP LOGO → ADMIN ══ */
 let _at=0;
