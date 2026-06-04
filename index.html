@@ -7,50 +7,39 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>మీసేవ డైరెక్టరీ — Telangana</title>
-
 <link rel="manifest" href="manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="మీసేవ">
 <meta name="application-name" content="మీసేవ డైరెక్టరీ">
 <meta name="msapplication-TileColor" content="#c94b0a">
-<meta name="msapplication-TileImage" content="icons/icon-144x144.png">
-
-<link rel="apple-touch-icon" href="icons/icon-152x152.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-
 <style>
 /* ═══════════════════════════════════════════
    ROOT — MeeSeva Saffron+Green+Gold Theme
 ═══════════════════════════════════════════ */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --saf:#c94b0a; --saf2:#e8610e; --saf3:#fde8d8; --saf4:#fff2ea;
-  --grn:#1a7a3e; --grn2:#22a050; --grn3:#d4f0e1; --grn4:#edf9f3;
-  --gld:#d4880a; --gld2:#f5a623; --gld3:#fef3cd;
-  --bg:#fffcf8; --bg2:#fff7f0; --bg3:#fef0e3; --card:#ffffff;
-  --line:#f0e4d8; --line2:#e2cdb8; --line3:#cdb090;
-  --t1:#1a0f05; --t2:#4a3525; --t3:#8a6a55; --t4:#b89a85;
-  --red:#dc2626; --redbg:#fef2f2; --blue:#1d4ed8; --bluebg:#eff6ff;
-  --r:13px; --r2:9px; --r3:6px;
+  --saf:#c94b0a;--saf2:#e8610e;--saf3:#fde8d8;--saf4:#fff2ea;
+  --grn:#1a7a3e;--grn2:#22a050;--grn3:#d4f0e1;--grn4:#edf9f3;
+  --gld:#d4880a;--gld2:#f5a623;--gld3:#fef3cd;
+  --bg:#fffcf8;--bg2:#fff7f0;--bg3:#fef0e3;--card:#ffffff;
+  --line:#f0e4d8;--line2:#e2cdb8;--line3:#cdb090;
+  --t1:#1a0f05;--t2:#4a3525;--t3:#8a6a55;--t4:#b89a85;
+  --red:#dc2626;--redbg:#fef2f2;--blue:#1d4ed8;--bluebg:#eff6ff;
+  --r:13px;--r2:9px;--r3:6px;
 }
 html,body{height:100%;overflow:hidden;background:var(--bg)}
 body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(--t1);line-height:1.5}
-
 /* APP SHELL */
 #app{display:flex;flex-direction:column;height:100dvh;max-width:440px;margin:0 auto;background:var(--bg);overflow:hidden;position:relative;box-shadow:0 0 60px rgba(200,75,10,.1)}
-
 /* SCREENS */
 .screen{display:none;flex-direction:column;flex:1;overflow:hidden}
 .screen.on{display:flex;animation:fadeIn .15s ease}
 @keyframes fadeIn{from{opacity:.5}to{opacity:1}}
-
 /* NEWS TICKER */
 .ticker-wrap{background:var(--grn);display:flex;align-items:center;overflow:hidden;flex-shrink:0;height:28px}
 .ticker-label{background:var(--saf2);color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.8px;padding:0 10px;height:100%;display:flex;align-items:center;white-space:nowrap;flex-shrink:0}
@@ -60,7 +49,6 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .ticker-item{font-size:11px;color:#fff;padding:0 18px;display:inline-flex;align-items:center;gap:6px;height:28px;border-right:1px solid rgba(255,255,255,.2)}
 .ticker-item::before{content:'●';font-size:7px;color:var(--gld2)}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
 /* TOP BAR */
 .top-bar{background:linear-gradient(135deg,#b8390a 0%,#c94b0a 55%,#d85f10 100%);padding:10px 14px 9px;flex-shrink:0;box-shadow:0 2px 14px rgba(200,75,10,.3)}
 .tb-r1{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
@@ -77,12 +65,10 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .tb-srch svg{width:14px;height:14px;stroke:rgba(255,255,255,.8);fill:none;stroke-width:2;flex-shrink:0}
 .tb-srch input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:13px;padding:8px 0;font-family:inherit}
 .tb-srch input::placeholder{color:rgba(255,255,255,.55)}
-
 /* SCROLL BODY */
 .scroll-body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:90px}
 .scroll-body::-webkit-scrollbar{width:2px}
 .scroll-body::-webkit-scrollbar-thumb{background:var(--line2)}
-
 /* VISITOR BANNER */
 .vis-banner{background:linear-gradient(90deg,var(--grn) 0%,var(--grn2) 100%);padding:9px 14px;display:flex;align-items:center;justify-content:space-between}
 .vb-l{display:flex;align-items:center;gap:9px}
@@ -93,7 +79,6 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .vb-r{text-align:right}
 .vb-rt{font-size:10px;color:rgba(255,255,255,.65)}
 .vb-rv{font-size:12px;color:#fff;font-weight:600;margin-top:2px}
-
 /* STATS ROW */
 .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:11px 11px 0}
 .stat-c{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:10px 8px;text-align:center;box-shadow:0 1px 5px rgba(200,75,10,.06)}
@@ -101,24 +86,20 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .stat-n.g{color:var(--grn)}
 .stat-n.gold{color:var(--gld)}
 .stat-l{font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
-
 /* SECTION HEADER */
 .sec{padding:14px 12px 0}
 .sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .sec-title{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:700;color:var(--t1)}
 .sec-bar{width:4px;height:18px;background:var(--saf2);border-radius:4px}
 .sec-more{font-size:12px;color:var(--saf2);cursor:pointer;font-weight:500}
-
 /* QUICK CATEGORY GRID */
 .qcat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px}
 .qcat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:11px 6px;text-align:center;cursor:pointer;transition:.13s;box-shadow:0 1px 4px rgba(0,0,0,.04)}
 .qcat:active{transform:scale(.94)}
 .qcat-em{font-size:23px;margin-bottom:4px}
 .qcat-lb{font-size:10.5px;color:var(--t2);font-weight:500;line-height:1.2}
-
 .hor-scroll{display:flex;gap:9px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
 .hor-scroll::-webkit-scrollbar{display:none}
-
 /* DETAIL DRAWER */
 .detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;opacity:0;pointer-events:none;transition:opacity .25s}
 .detail-overlay.on{opacity:1;pointer-events:all}
@@ -130,7 +111,6 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .dd-badge{display:inline-block;font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:20px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
 .dd-badge.news{background:var(--saf3);color:var(--saf)}
 .dd-badge.notif{background:var(--redbg);color:var(--red)}
-.dd-badge.notif-a{background:#eff6ff;color:#1d4ed8}
 .dd-badge.scheme{background:var(--grn3);color:var(--grn)}
 .dd-badge.video{background:#ffecec;color:#cc0000}
 .dd-title{font-size:16px;font-weight:700;color:var(--t1);line-height:1.35;margin-bottom:4px}
@@ -146,12 +126,11 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .dd-info-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
 .dd-info-ico{font-size:17px;width:22px;flex-shrink:0;margin-top:2px}
 .dd-info-main{font-size:13.5px;color:var(--t1);line-height:1.45;flex:1}
-.dd-info-sub{font-size:11.5px;color:var(--t3);margin-top:1px}
 .dd-actions{padding:12px 16px calc(env(safe-area-inset-bottom,0px)+14px);border-top:1px solid var(--line);display:flex;gap:8px;flex-shrink:0}
 .dd-btn-p{flex:1;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:13px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
 .dd-btn-p.green{background:var(--grn)}
 .dd-btn-s{background:var(--bg2);border:1.5px solid var(--line2);color:var(--t2);border-radius:var(--r2);padding:13px 16px;font-size:13px;cursor:pointer}
-
+/* NOTIF CARD */
 .notif-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;min-width:175px;cursor:pointer;flex-shrink:0;border-left:3px solid var(--saf2);box-shadow:0 1px 5px rgba(0,0,0,.05);transition:transform .12s}
 .notif-card:active{transform:scale(.97)}
 .notif-card.grn{border-left-color:var(--grn2)}
@@ -159,7 +138,6 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .nc-type{font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;font-weight:600}
 .nc-title{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:4px;line-height:1.3}
 .nc-date{font-size:11px;color:var(--t3)}
-
 /* SCHEME CARD */
 .scheme-card{background:linear-gradient(135deg,var(--grn) 0%,#1a6a32 100%);border-radius:var(--r);padding:13px 14px;margin-bottom:9px;cursor:pointer;display:flex;align-items:center;gap:12px;box-shadow:0 2px 10px rgba(26,122,62,.2);transition:.15s}
 .scheme-card:active{transform:scale(.99)}
@@ -168,7 +146,6 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .sc-desc{font-size:11.5px;color:rgba(255,255,255,.8)}
 .sc-arr{margin-left:auto;color:rgba(255,255,255,.5);flex-shrink:0}
 .sc-arr svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2}
-
 /* NEWS CARD */
 .news-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:10px;cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,.05);transition:.13s}
 .news-card:active{transform:scale(.99)}
@@ -183,21 +160,18 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .nc-ttl{font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:4px;line-height:1.4}
 .nc-desc2{font-size:12.5px;color:var(--t2);margin-bottom:5px;line-height:1.6}
 .nc-dt{font-size:11px;color:var(--t3)}
-
 /* CONTACT STRIP */
 .contact-strip{background:linear-gradient(90deg,#b8390a,#c94b0a);margin:12px;border-radius:var(--r);padding:13px;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 3px 14px rgba(200,75,10,.2)}
 .cs-ico{width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .cs-ico svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:1.8}
 .cs-lbl{font-size:10px;color:rgba(255,255,255,.7);margin-bottom:2px}
 .cs-val{font-size:13.5px;font-weight:700;color:#fff}
-
 /* PAGE HEADER */
 .page-hdr{background:var(--bg2);border-bottom:1px solid var(--line);padding:11px 13px;flex-shrink:0;display:flex;align-items:center;gap:10px}
 .ph-ico{width:36px;height:36px;background:var(--saf3);border:1px solid var(--line2);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .ph-ico svg{width:18px;height:18px;stroke:var(--saf2);fill:none;stroke-width:1.8;stroke-linecap:round}
 .ph-title{font-size:15px;font-weight:700;color:var(--t1)}
 .ph-sub{font-size:11px;color:var(--t3);margin-top:1px}
-
 /* DIRECTORY FILTERS */
 .dir-top{background:var(--bg2);border-bottom:1px solid var(--line);padding:10px 12px;flex-shrink:0}
 .dir-srch{display:flex;align-items:center;gap:8px;background:var(--card);border:1.5px solid var(--line2);border-radius:var(--r2);padding:0 12px;margin-bottom:9px}
@@ -207,15 +181,12 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .dir-f2{display:flex;gap:7px}
 .df-sel{flex:1;background:var(--card);border:1.5px solid var(--line2);color:var(--t2);border-radius:var(--r3);padding:7px 9px;font-size:12.5px;font-family:inherit;outline:none;appearance:none}
 .df-sel:focus{border-color:var(--saf2)}
-
 /* FILTER PILLS */
 .fpills{display:flex;gap:5px;padding:7px 12px 0;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
 .fpills::-webkit-scrollbar{display:none}
 .fpill{display:inline-flex;align-items:center;gap:4px;background:var(--card);border:1px solid var(--line2);color:var(--t3);border-radius:20px;padding:4px 11px;font-size:11.5px;cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0}
 .fpill svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
 .fpill.act{background:var(--saf3);border-color:var(--saf2);color:var(--saf);font-weight:500}
-.fpill.act::after{content:' ✕';font-size:9.5px;color:var(--saf)}
-
 /* RESULTS BAR */
 .res-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px 4px;flex-shrink:0}
 .rc{font-size:12px;color:var(--t3)}
@@ -224,21 +195,18 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .vt{width:28px;height:28px;background:var(--card);border:1px solid var(--line2);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t3)}
 .vt svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
 .vt.on{background:var(--saf3);border-color:var(--saf2);color:var(--saf2)}
-
-/* LISTINGS BODY */
-.lst-body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:160px;}
+/* LISTINGS */
+.lst-body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:160px}
 .lst-body::-webkit-scrollbar{width:2px}
 .lst-body::-webkit-scrollbar-thumb{background:var(--line2)}
-
 /* FAB */
-.dir-fab{position:fixed;bottom:calc(62px + env(safe-area-inset-bottom,0px) + 12px);right:16px;z-index:190;background:var(--saf2);color:#fff;border:none;border-radius:50px;padding:13px 18px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:7px;box-shadow:0 4px 20px rgba(200,75,10,.4);transition:transform .15s;white-space:nowrap;}
+.dir-fab{position:fixed;bottom:calc(62px + env(safe-area-inset-bottom,0px) + 12px);right:16px;z-index:190;background:var(--saf2);color:#fff;border:none;border-radius:50px;padding:13px 18px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:7px;box-shadow:0 4px 20px rgba(200,75,10,.4);transition:transform .15s;white-space:nowrap}
 .dir-fab:active{transform:scale(.95)}
 .dir-fab svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;flex-shrink:0}
-
-/* DRAWERS GENERAL CSS */
+/* ADVANCED FILTER DRAWER */
 .adv-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:210;opacity:0;pointer-events:none;transition:opacity .25s}
 .adv-overlay.on{opacity:1;pointer-events:all}
-.adv-drawer{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(102%);width:100%;max-width:440px;background:var(--card);border-radius:20px 20px 0 0;border-top:1.5px solid var(--line2);padding:0 16px calc(env(safe-area-inset-bottom,0px) + 24px);z-index:220;transition:transform .32s cubic-bezier(.32,0,.2,1);max-height:88dvh;overflow-y:auto;}
+.adv-drawer{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(102%);width:100%;max-width:440px;background:var(--card);border-radius:20px 20px 0 0;border-top:1.5px solid var(--line2);padding:0 16px calc(env(safe-area-inset-bottom,0px) + 24px);z-index:220;transition:transform .32s cubic-bezier(.32,0,.2,1);max-height:88dvh;overflow-y:auto}
 .adv-drawer::-webkit-scrollbar{display:none}
 .adv-drawer.on{transform:translateX(-50%) translateY(0)}
 .adv-lbl{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.6px;text-transform:uppercase;margin-bottom:5px}
@@ -246,9 +214,7 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .adv-sel:focus{border-color:var(--saf2)}
 .adv-inp{width:100%;background:var(--bg2);border:1.5px solid var(--line2);color:var(--t1);border-radius:var(--r2);padding:10px 12px;font-size:13.5px;font-family:inherit;outline:none}
 .adv-inp:focus{border-color:var(--saf2)}
-.ms-card.custom-card{border-color:var(--saf2);border-width:1.5px}
-
-/* GRID & LIST CARDS DISPLAY */
+/* GRID & LIST */
 .ms-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:4px 10px}
 .ms-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .15s,transform .12s;box-shadow:0 1px 6px rgba(0,0,0,.06)}
 .ms-card:hover{border-color:var(--saf2);box-shadow:0 3px 14px rgba(200,75,10,.12)}
@@ -257,18 +223,14 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .mc-img img{width:100%;height:100%;object-fit:cover;display:block}
 .mc-av{font-size:30px;font-weight:800;color:var(--saf);width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
 .mc-trusted{position:absolute;top:6px;left:6px;background:var(--grn);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;display:flex;align-items:center;gap:3px}
-.mc-trusted svg{width:9px;height:9px;fill:#fff;stroke:none}
 .mc-rated{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);color:var(--gld2);font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px}
-.mc-verified{position:absolute;bottom:6px;right:6px;background:var(--blue);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
 .mc-body{padding:8px 9px 8px}
 .mc-name{font-size:12.5px;font-weight:700;color:var(--t1);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mc-mandal{font-size:11px;color:var(--grn);font-weight:600;margin-bottom:2px}
-.mc-dist{font-size:10.5px;color:var(--t3);margin-bottom:7px;display:flex;align-items:center;gap:3px;white-space:nowrap;overflow:hidden}
-.mc-dist svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
+.mc-dist{font-size:10.5px;color:var(--t3);margin-bottom:7px;display:flex;align-items:center;gap:3px}
 .mc-btns{display:flex;gap:5px}
 .mc-call{flex:1;background:var(--saf3);border:1px solid var(--saf2);color:var(--saf);border-radius:6px;padding:6px 0;font-size:10.5px;cursor:pointer;font-family:inherit;text-align:center;font-weight:600}
 .mc-wa{flex:1;background:var(--grn3);border:1px solid var(--grn2);color:var(--grn);border-radius:6px;padding:6px 0;font-size:10.5px;cursor:pointer;font-family:inherit;text-align:center;font-weight:600}
-
 .ms-list{display:flex;flex-direction:column;gap:8px;padding:4px 10px}
 .ml-item{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:.13s;box-shadow:0 1px 4px rgba(0,0,0,.05)}
 .ml-item:active{transform:scale(.99)}
@@ -280,20 +242,16 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .ml-loc{font-size:11px;color:var(--t3)}
 .ml-call{background:var(--saf3);border:1px solid var(--saf2);color:var(--saf);border-radius:8px;padding:8px 10px;cursor:pointer;flex-shrink:0}
 .ml-call svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;display:block}
-
 .bdg-t{background:var(--grn3);color:var(--grn);border:1px solid var(--grn2);font-size:9px;padding:1px 6px;border-radius:4px;font-weight:600;display:inline-flex;align-items:center;gap:2px}
-.bdg-t svg{width:8px;height:8px;fill:var(--grn);stroke:none}
 .bdg-r{background:var(--gld3);color:var(--gld);border:1px solid var(--gld2);font-size:9px;padding:1px 6px;border-radius:4px;font-weight:600}
 .bdg-v{background:var(--bluebg);color:var(--blue);border:1px solid #93c5fd;font-size:9px;padding:1px 6px;border-radius:4px;font-weight:600}
-
-/* LOADING & EMPTY STATES */
+/* LOADING & EMPTY */
 .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:10px;text-align:center}
 .empty-state .ei{width:58px;height:58px;background:var(--bg3);border:1px solid var(--line2);border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:27px;margin-bottom:4px}
 .empty-state p{font-size:14px;color:var(--t2);font-weight:500}
 .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:12px}
 .spin{width:28px;height:28px;border:2.5px solid var(--line2);border-top-color:var(--saf2);border-radius:50%;animation:sp .7s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-
 /* PROFILE PAGE */
 .profile{position:fixed;inset:0;max-width:440px;margin:0 auto;background:var(--bg);z-index:80;transform:translateX(100%);transition:transform .3s cubic-bezier(.32,0,.2,1);overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column}
 .profile.on{transform:translateX(0)}
@@ -302,32 +260,30 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .pp-back,.pp-shr{width:32px;height:32px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;flex-shrink:0}
 .pp-back svg,.pp-shr svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
 .pp-nav-title{flex:1;font-size:14px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
+/* GALLERY */
 .pp-gallery{position:relative;overflow:hidden;background:#000;flex-shrink:0}
 .pp-gallery-track{display:flex;transition:transform .35s cubic-bezier(.32,0,.2,1)}
 .pp-gallery-slide{min-width:100%;position:relative;background:#111}
 .pp-gallery-slide img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
 .pp-gallery-slide .pp-yt{width:100%;aspect-ratio:16/9;display:block;border:none}
 .pp-gallery-av{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,var(--saf3),var(--bg3));display:flex;align-items:center;justify-content:center;font-size:70px;font-weight:800;color:var(--saf2)}
-.pp-gal-prev,.pp-gal-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.45);backdrop-filter:blur(6px);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;}
+.pp-gal-prev,.pp-gal-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.45);backdrop-filter:blur(6px);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3}
 .pp-gal-prev{left:8px}
 .pp-gal-next{right:8px}
 .pp-gal-prev svg,.pp-gal-next svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.5}
 .pp-gal-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:3}
-.pp-gal-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.45);border:none;cursor:pointer;}
+.pp-gal-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.45);border:none;cursor:pointer}
 .pp-gal-dot.on{background:#fff;width:16px;border-radius:4px}
 .pp-gal-type{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);color:#fff;font-size:9px;font-weight:700;padding:3px 7px;border-radius:5px;z-index:3}
 .pp-hbdgs{position:absolute;bottom:28px;left:10px;display:flex;gap:5px;flex-wrap:wrap;z-index:3}
 .pbdg-t{background:var(--grn);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;display:flex;align-items:center;gap:3px}
-.pbdg-t svg{width:10px;height:10px;fill:#fff;stroke:none}
 .pbdg-r{background:rgba(0,0,0,.6);backdrop-filter:blur(4px);color:var(--gld2);font-size:11px;font-weight:700;padding:3px 9px;border-radius:5px}
 .pbdg-v{background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px}
-
+/* PROFILE BODY */
 .pp-body{padding:14px 14px 130px;flex:1}
 .pp-name{font-size:21px;font-weight:800;color:var(--t1);margin-bottom:6px;line-height:1.2}
 .pp-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
 .pp-tag{display:inline-flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--line2);color:var(--t2);border-radius:20px;padding:3px 10px;font-size:11.5px}
-.pp-tag svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
 .pp-sec-t{font-size:9.5px;color:var(--t3);font-weight:700;letter-spacing:1px;text-transform:uppercase;padding-bottom:8px;margin-bottom:12px;border-bottom:2px solid var(--line)}
 .pp-row{display:flex;align-items:flex-start;gap:11px;margin-bottom:13px}
 .pp-ico{width:34px;height:34px;background:var(--saf3);border:1px solid var(--line2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -337,55 +293,44 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .svc-wrap{display:flex;flex-wrap:wrap;gap:6px}
 .svc-chip{background:var(--bg2);border:1px solid var(--line2);color:var(--t2);border-radius:20px;padding:4px 11px;font-size:12px}
 .pp-map{height:190px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line2)}
-.star-row{display:flex;align-items:center;gap:3px;margin-bottom:5px}
-.star{width:20px;height:20px;cursor:pointer;fill:var(--line2);stroke:none}
-.star.on{fill:var(--gld2)}
-.rate-lbl{font-size:12px;color:var(--t3);margin-left:5px}
-
-/* OFFERS BOX */
+/* OFFER CARD */
 .offer-card{background:linear-gradient(135deg,#fff7ed,#fef3cd);border:1.5px solid var(--gld2);border-radius:var(--r);padding:12px 14px;margin-bottom:9px;display:flex;align-items:flex-start;gap:10px}
 .offer-card-ico{font-size:22px;flex-shrink:0}
 .offer-card-title{font-size:13.5px;font-weight:700;color:var(--t1);margin-bottom:3px}
 .offer-card-desc{font-size:12px;color:var(--t2);line-height:1.5}
 .offer-card-exp{font-size:10.5px;color:var(--gld);font-weight:600;margin-top:4px}
-
-/* UPI PAY BOX */
+/* UPI BOX */
 .upi-box{background:var(--card);border:1.5px solid var(--line2);border-radius:var(--r);padding:14px;text-align:center;margin-bottom:14px}
-.upi-qr{width:140px;height:140px;margin:0 auto 10px;background:var(--bg2);border:1px solid var(--line2);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.upi-qr img{width:100%;height:100%;object-fit:contain}
 .upi-id{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px}
 .upi-name{font-size:12px;color:var(--t3)}
 .upi-copy{background:var(--saf3);border:1px solid var(--saf2);color:var(--saf2);border-radius:6px;padding:6px 16px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px}
-
+/* PROFILE ACTIONS */
 .pp-acts{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;background:rgba(255,252,248,.97);backdrop-filter:blur(14px);border-top:1px solid var(--line2);padding:11px 14px calc(env(safe-area-inset-bottom,0px) + 10px);display:flex;gap:9px;z-index:9}
 .pp-btn-c{flex:1;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:13px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 3px 12px rgba(232,97,14,.3)}
 .pp-btn-c svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2}
 .pp-btn-w{flex:1;background:#1da84f;border:none;color:#fff;border-radius:var(--r2);padding:13px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 3px 12px rgba(29,168,79,.3)}
 .pp-btn-w svg{width:17px;height:17px;fill:#fff}
-
-/* TOOLS SCREEN */
+/* TOOLS */
 .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:12px}
 .tool-c{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 11px;text-align:center;cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,.05)}
 .tool-em{font-size:28px;margin-bottom:7px}
 .tool-name{font-size:13px;font-weight:600;color:var(--t1)}
 .tool-desc{font-size:11px;color:var(--t3)}
 .form-list{padding:0 12px}
-.form-item{background:var(--card);border:1px solid var(--line);border-radius:var(--r2);padding:12px 13px;display:flex;align-items:center;gap:11px;margin-bottom:8px;cursor:pointer}
+.form-item{background:var(--card);border:1px solid var(--line);border-radius:var(--r2);padding:12px 13px;display:flex;align-items:center;gap:11px;margin-bottom:8px;cursor:pointer;transition:.13s}
 .form-item:hover{border-color:var(--saf2);background:var(--saf4)}
 .fi-ico{width:38px;height:38px;background:var(--saf3);border:1px solid var(--line2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
 .fi-name{font-size:13px;font-weight:600;color:var(--t1)}
 .fi-sub{font-size:11px;color:var(--t3)}
 .fi-arr{color:var(--t4);margin-left:auto;flex-shrink:0}
 .fi-arr svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
-
 /* NEWS TABS */
 .news-tabs{display:flex;background:var(--card);border-bottom:2px solid var(--line);flex-shrink:0}
 .n-tab{flex:1;padding:10px 4px;text-align:center;font-size:12px;font-weight:500;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent}
 .n-tab.on{color:var(--saf2);border-bottom-color:var(--saf2);font-weight:700}
 .news-panel{display:none;flex:1;overflow-y:auto;padding:10px 12px 74px}
 .news-panel.on{display:block}
-
-/* JOIN FORM SCREEN */
+/* JOIN FORM */
 .join-scroll-wrap{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:90px}
 .join-hero{background:linear-gradient(135deg,#b8390a 0%,#c94b0a 60%,#d85f10 100%);padding:24px 18px 22px;text-align:center}
 .jh-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:20px;padding:4px 13px;font-size:11px}
@@ -403,10 +348,10 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .jf-group{margin-bottom:13px}
 .jf-label{font-size:10.5px;font-weight:700;color:var(--t2);text-transform:uppercase;margin-bottom:5px}
 .jf-inp,.jf-sel,.jf-area{width:100%;background:var(--card);border:1.5px solid var(--line2);color:var(--t1);border-radius:var(--r2);padding:10px 12px;font-size:14px;font-family:inherit;outline:none}
+.jf-inp:focus,.jf-sel:focus,.jf-area:focus{border-color:var(--saf2)}
 .jf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .btn-sub{width:100%;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:15px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 18px rgba(232,97,14,.35)}
-
-/* ADMIN DASHBOARD UI */
+/* ADMIN */
 .admin-lock{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;gap:14px;text-align:center}
 .al-ico{width:64px;height:64px;background:var(--saf3);border:2px solid var(--saf2);border-radius:18px;display:flex;align-items:center;justify-content:center}
 .al-ico svg{width:30px;height:30px;stroke:var(--saf2);fill:none;stroke-width:1.8}
@@ -415,7 +360,6 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .admin-dash{padding:0 12px 74px;display:none}
 .adm-stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
 .adm-stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:13px;display:flex;align-items:center;gap:11px}
-.adm-stat-ico{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px}
 .adm-stat-n{font-size:20px;font-weight:800;color:var(--t1)}
 .adm-stat-l{font-size:10px;color:var(--t3)}
 .adm-sec{font-size:13px;font-weight:700;color:var(--t1);margin:14px 0 9px}
@@ -426,21 +370,19 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 .adm-a,.adm-r{background:none;border:1px solid;border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-weight:600}
 .adm-a{background:var(--grn3);border-color:var(--grn2);color:var(--grn)}
 .adm-r{background:var(--redbg);border-color:#fca5a5;color:var(--red)}
-
 .push-panel-box{background:var(--saf4);border:1.5px solid var(--saf2);border-radius:var(--r);padding:14px;margin-bottom:14px}
-
-/* FIXED BOT NAV */
+/* BOTTOM NAV */
 .bot-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:200;background:rgba(255,252,248,.97);backdrop-filter:blur(16px);border-top:1.5px solid var(--line2);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -2px 16px rgba(200,75,10,.08)}
 .bnav{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 10px;cursor:pointer;color:var(--t4);border:none;background:none;font-family:inherit}
 .bnav svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.7}
 .bnav span{font-size:9.5px;font-weight:500}
 .bnav.on{color:var(--saf2)}
-
+/* TOAST & OFFLINE */
 .toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:var(--t1);color:#fff;border-radius:9px;padding:10px 18px;font-size:13px;font-weight:500;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none;max-width:85vw;text-align:center}
 .toast.show{opacity:1}
-.offline-bar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;background:#dc2626;color:#fff;text-align:center;padding:8px 14px;font-size:12px;font-weight:600;z-index:200;display:none}
+.offline-bar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;background:#dc2626;color:#fff;text-align:center;padding:8px 14px;font-size:12px;font-weight:600;z-index:9999;display:none}
 .offline-bar.show{display:block}
-
+/* SPLASH */
 .pwa-splash{position:fixed;inset:0;background:linear-gradient(160deg,#b8390a 0%,#c94b0a 50%,#1a7a3e 100%);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .5s ease}
 .pwa-splash.hide{opacity:0;pointer-events:none}
 .splash-logo{width:80px;height:80px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);border-radius:22px;display:flex;align-items:center;justify-content:center;animation:pulse 1.5s ease infinite}
@@ -452,6 +394,7 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 </head>
 <body>
 
+<!-- PWA SPLASH -->
 <div class="pwa-splash" id="pwaSplash">
   <div class="splash-logo">
     <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
@@ -464,11 +407,18 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 
 <div id="app">
 
+  <!-- TICKER -->
   <div class="ticker-wrap" id="tickerWrap">
     <div class="ticker-label">📢 LIVE</div>
-    <div class="ticker-scroll"><div class="ticker-inner" id="tickerInner"></div></div>
+    <div class="ticker-scroll"><div class="ticker-inner" id="tickerInner">
+      <div class="ticker-item">మీసేవ డైరెక్టరీ కి స్వాగతం — Telangana అన్ని 33 జిల్లాలు</div>
+      <div class="ticker-item">మీ మీసేవ కేంద్రాన్ని ఫ్రీగా లిస్ట్ చేయండి</div>
+      <div class="ticker-item">మీసేవ డైరెక్టరీ కి స్వాగతం — Telangana అన్ని 33 జిల్లాలు</div>
+      <div class="ticker-item">మీ మీసేవ కేంద్రాన్ని ఫ్రీగా లిస్ట్ చేయండి</div>
+    </div></div>
   </div>
 
+  <!-- ═══ HOME SCREEN ═══ -->
   <div class="screen on" id="s-home">
     <div class="top-bar">
       <div class="tb-r1">
@@ -477,7 +427,10 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
           <div><div class="ms-n1">మీసేవ డైరెక్టరీ</div><div class="ms-n2">Telangana · All 33 Districts</div></div>
         </div>
         <div class="tb-icons">
-          <div class="tb-ico" onclick="goScreen('s-notif')"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18z"/></svg><div class="notif-dot"></div></div>
+          <div class="tb-ico" onclick="goScreen('s-notif')">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18z"/><line x1="12" y1="22" x2="12" y2="22" stroke-width="2"/></svg>
+            <div class="notif-dot"></div>
+          </div>
         </div>
       </div>
       <div class="tb-srch" onclick="goScreen('s-dir')">
@@ -485,11 +438,10 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
         <input placeholder="మీసేవ కేంద్రం వెతకండి..." readonly>
       </div>
     </div>
-
     <div class="scroll-body">
       <div class="vis-banner">
         <div class="vb-l">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
           <div>
             <div class="vb-label">నేటి Visitors</div>
             <div class="vb-num" id="visCount">—</div>
@@ -498,47 +450,40 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
         </div>
         <div class="vb-r"><div class="vb-rt">Last sync</div><div class="vb-rv" id="visTime"></div></div>
       </div>
-
       <div class="stats-row">
         <div class="stat-c"><div class="stat-n" id="stC">—</div><div class="stat-l">Centers</div></div>
         <div class="stat-c"><div class="stat-n g">33</div><div class="stat-l">Districts</div></div>
         <div class="stat-c"><div class="stat-n gold" id="stV">—</div><div class="stat-l">Trusted</div></div>
       </div>
-
       <div class="sec">
         <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>మీసేవ సేవలు</div><div class="sec-more" onclick="goScreen('s-tools')">అన్నీ →</div></div>
         <div class="qcat-grid">
-          <div class="qcat" onclick="goCat('income')"><div class="qcat-em">💰</div><div class="qcat-lb">Income Cert</div></div>
-          <div class="qcat" onclick="goCat('caste')"><div class="qcat-em">📋</div><div class="qcat-lb">Caste Cert</div></div>
-          <div class="qcat" onclick="goCat('aadhaar')"><div class="qcat-em">🪪</div><div class="qcat-lb">Aadhaar</div></div>
-          <div class="qcat" onclick="goCat('ration')"><div class="qcat-em">🃏</div><div class="qcat-lb">Ration Card</div></div>
-          <div class="qcat" onclick="goCat('pension')"><div class="qcat-em">👴</div><div class="qcat-lb">Pension</div></div>
-          <div class="qcat" onclick="goCat('land')"><div class="qcat-em">🏡</div><div class="qcat-lb">Pahani</div></div>
+          <div class="qcat" onclick="goCat('Income Certificate')"><div class="qcat-em">💰</div><div class="qcat-lb">Income Cert</div></div>
+          <div class="qcat" onclick="goCat('Caste Certificate')"><div class="qcat-em">📋</div><div class="qcat-lb">Caste Cert</div></div>
+          <div class="qcat" onclick="goCat('Aadhaar')"><div class="qcat-em">🪪</div><div class="qcat-lb">Aadhaar</div></div>
+          <div class="qcat" onclick="goCat('Ration Card')"><div class="qcat-em">🃏</div><div class="qcat-lb">Ration Card</div></div>
+          <div class="qcat" onclick="goCat('Pension')"><div class="qcat-em">👴</div><div class="qcat-lb">Pension</div></div>
+          <div class="qcat" onclick="goCat('Pahani')"><div class="qcat-em">🏡</div><div class="qcat-lb">Pahani</div></div>
           <div class="qcat" onclick="goScreen('s-notif')"><div class="qcat-em">💼</div><div class="qcat-lb">Jobs</div></div>
           <div class="qcat" onclick="goScreen('s-tools')"><div class="qcat-em">📂</div><div class="qcat-lb">All Forms</div></div>
         </div>
       </div>
-
       <div class="sec">
         <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>నోటిఫికేషన్లు</div><div class="sec-more" onclick="goScreen('s-notif')">అన్నీ →</div></div>
         <div class="hor-scroll" id="homeNotifs"></div>
       </div>
-
       <div class="sec">
         <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>ప్రభుత్వ పథకాలు</div></div>
         <div id="schemesList"></div>
       </div>
-
       <div class="sec">
         <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>తాజా వార్తలు</div><div class="sec-more" onclick="goScreen('s-news')">అన్నీ →</div></div>
         <div id="homeNews"></div>
       </div>
-
       <div class="sec">
         <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>మీసేవ కేంద్రాలు</div><div class="sec-more" onclick="goScreen('s-dir')">అన్నీ →</div></div>
         <div class="hor-scroll" id="homeRecent"></div>
       </div>
-
       <div class="contact-strip" onclick="window.open('tel:9948770651')">
         <div class="cs-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
         <div><div class="cs-lbl">Helpline · సహాయవాణి</div><div class="cs-val">📞 9948770651 · Hyderabad</div></div>
@@ -546,6 +491,7 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
     </div>
   </div>
 
+  <!-- ═══ DIRECTORY SCREEN ═══ -->
   <div class="screen" id="s-dir">
     <div class="dir-top">
       <div class="dir-srch">
@@ -561,102 +507,82 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
         <select id="fCenter" class="df-sel" onchange="applyF()"><option value="">అన్ని Centers</option></select>
       </div>
     </div>
-
     <div class="fpills" id="fpills">
       <button class="fpill" onclick="openAdvDrawer()">
         <svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>Advanced Filter
       </button>
       <div id="aPills" style="display:contents"></div>
     </div>
-
     <div class="res-bar">
       <div class="rc" id="dirC">0 centers</div>
       <div class="vt-row">
         <button class="vt on" id="vgb" onclick="setV('grid')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
-        <button class="vt" id="vlb" onclick="setV('list')"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/></svg></button>
+        <button class="vt" id="vlb" onclick="setV('list')"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/></svg></button>
       </div>
     </div>
-
     <div class="lst-body" id="lstBody">
       <div class="loading" id="dirLoader"><div class="spin"></div></div>
       <div id="lstWrap" style="display:none"></div>
       <div style="height:140px"></div>
     </div>
-
     <button class="dir-fab" onclick="goScreen('s-join')">
-      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Add Center</span>
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span>Add Center</span>
     </button>
   </div>
 
+  <!-- ADVANCED FILTER DRAWER -->
   <div class="adv-overlay" id="advOverlay" onclick="closeAdvDrawer()"></div>
   <div class="adv-drawer" id="advDrawer">
     <div style="width:36px;height:4px;background:var(--line2);border-radius:4px;margin:12px auto 16px"></div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-      <div style="font-size:15px;font-weight:700;color:var(--t1)">Advanced Filters Parameters</div>
-      <button onclick="closeAdvDrawer()" style="background:var(--bg3);border:none;border-radius:7px;width:28px;height:28px;cursor:pointer;">✕</button>
+      <div style="font-size:15px;font-weight:700;color:var(--t1)">Advanced Filters</div>
+      <button onclick="closeAdvDrawer()" style="background:var(--bg3);border:none;border-radius:7px;width:28px;height:28px;cursor:pointer;font-size:16px;">✕</button>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-      <div>
-        <div class="adv-lbl">జిల్లా</div>
-        <select id="af-dist" class="adv-sel" onchange="onAdvDist()"><option value="">అన్ని జిల్లాలు</option></select>
-      </div>
-      <div>
-        <div class="adv-lbl">మండలం</div>
-        <select id="af-mandal" class="adv-sel" onchange="syncAdvToMain();applyF()"><option value="">అన్ని మండలాలు</option></select>
-      </div>
-      <div>
-        <div class="adv-lbl">Trusted Centers</div>
+      <div><div class="adv-lbl">జిల్లా</div><select id="af-dist" class="adv-sel" onchange="onAdvDist()"><option value="">అన్ని జిల్లాలు</option></select></div>
+      <div><div class="adv-lbl">మండలం</div><select id="af-mandal" class="adv-sel" onchange="syncAdvToMain();applyF()"><option value="">అన్ని మండలాలు</option></select></div>
+      <div><div class="adv-lbl">Trusted Centers</div>
         <select id="af-trust" class="adv-sel" onchange="applyF()">
           <option value="">అన్నీ</option>
           <option value="trusted">✅ Trusted మాత్రమే</option>
         </select>
       </div>
-      <div>
-        <div class="adv-lbl">Rating Filter</div>
+      <div><div class="adv-lbl">Rating Filter</div>
         <select id="af-rating" class="adv-sel" onchange="applyF()">
           <option value="">అన్నీ</option>
           <option value="4.5">★ 4.5+</option>
         </select>
       </div>
-      <div style="grid-column:1/-1">
-        <div class="adv-lbl">Village / ప్రాంతం</div>
-        <input class="adv-inp" id="af-village" placeholder="గ్రామం పేరు type చేయండి..." oninput="applyF()">
-      </div>
+      <div style="grid-column:1/-1"><div class="adv-lbl">Village / ప్రాంతం</div><input class="adv-inp" id="af-village" placeholder="గ్రామం పేరు type చేయండి..." oninput="applyF()"></div>
     </div>
     <div style="display:flex;gap:8px;margin-top:14px">
-      <button onclick="applyF();closeAdvDrawer()" style="flex:1;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:12px;font-weight:700;">వెతకండి</button>
-      <button onclick="resetAdvFilters()" style="background:none;border:1.5px solid var(--line2);color:var(--t2);border-radius:var(--r2);padding:12px 16px;">Reset</button>
+      <button onclick="applyF();closeAdvDrawer()" style="flex:1;background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:12px;font-weight:700;cursor:pointer;">వెతకండి</button>
+      <button onclick="resetAdvFilters()" style="background:none;border:1.5px solid var(--line2);color:var(--t2);border-radius:var(--r2);padding:12px 16px;cursor:pointer;">Reset</button>
     </div>
   </div>
 
+  <!-- ═══ TOOLS SCREEN ═══ -->
   <div class="screen" id="s-tools">
     <div class="page-hdr">
-      <div class="ph-ico"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77z"/></svg></div>
-      <div><div class="ph-title">Tools & Forms</div><div class="ph-sub">Free Sub-Tools · Checklists Node</div></div>
+      <div class="ph-ico"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77z"/><path d="M4 20l6.37-6.37A5 5 0 0014 15a5 5 0 005-5 5 5 0 00-5-5 5 5 0 00-5 5 5 5 0 00.37 1.63L3 18"/></svg></div>
+      <div><div class="ph-title">Tools & Forms</div><div class="ph-sub">Free Sub-Tools · Documents Checklist</div></div>
     </div>
     <div class="scroll-body">
-      <div style="padding:12px 12px 4px;font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">Calculators Engine</div>
+      <div style="padding:12px 12px 4px;font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">Calculators & Tools</div>
       <div class="tools-grid" id="toolsGrid"></div>
-      <div style="padding:0 12px 4px;font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;margin-top:4px">Required Documents Map</div>
+      <div style="padding:0 12px 4px;font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;margin-top:4px">Required Documents</div>
       <div class="form-list" id="formsList"></div>
-      <div class="sec">
-        <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>💼 Jobs Board</div></div>
-        <div id="jobList"></div>
-      </div>
-      <div class="sec">
-        <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>🎓 Admissions Open</div></div>
-        <div id="admList"></div>
-      </div>
-      <div class="sec">
-        <div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>📊 Board Results</div></div>
-        <div id="resultsList"></div>
-      </div>
+      <div class="sec"><div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>💼 Jobs Board</div></div><div class="form-list" id="jobList"></div></div>
+      <div class="sec"><div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>🎓 Admissions Open</div></div><div class="form-list" id="admList"></div></div>
+      <div class="sec"><div class="sec-hd"><div class="sec-title"><div class="sec-bar"></div>📊 Board Results</div></div><div class="form-list" id="resultsList"></div></div>
     </div>
   </div>
 
+  <!-- ═══ NEWS SCREEN ═══ -->
   <div class="screen" id="s-news">
     <div class="page-hdr">
-      <div class="ph-ico"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8z"/></svg></div>
+      <div class="ph-ico"><svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8z"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
       <div><div class="ph-title">మీసేవ వార్తలు</div><div class="ph-sub">Daily Bulletins Feed</div></div>
     </div>
     <div class="news-tabs">
@@ -671,19 +597,21 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
     <div class="news-panel" id="np-scheme"></div>
   </div>
 
+  <!-- ═══ NOTIFICATIONS SCREEN ═══ -->
   <div class="screen" id="s-notif">
     <div class="page-hdr">
-      <div class="ph-ico"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18z"/></svg></div>
+      <div class="ph-ico"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18z"/><line x1="12" y1="22" x2="12" y2="22" stroke-width="2"/></svg></div>
       <div><div class="ph-title">నోటిఫికేషన్లు</div><div class="ph-sub">Live Broadcast Streams</div></div>
     </div>
     <div class="scroll-body" id="notifBody"></div>
   </div>
 
+  <!-- ═══ JOIN FORM SCREEN ═══ -->
   <div class="screen" id="s-join">
     <div class="join-scroll-wrap">
       <div class="join-hero">
         <div class="jh-badge">✨ Open Free Listing</div>
-        <div class="jh-title">మీ Center List చేయండి</div>
+        <div class="jh-title" style="margin-top:8px">మీ Center List చేయండి</div>
         <div class="jh-sub">మీ మీసేవ కేంద్రాన్ని ఈ డైరెక్టరీ లో ఫ్రీగా యాడ్ చేయండి</div>
       </div>
       <div id="joinFormWrap">
@@ -700,12 +628,11 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
           <div class="jf-group"><div class="jf-label">గ్రామం / ప్రాంతం *</div><input class="jf-inp" id="jf_village" placeholder="గ్రామం లేదా వార్డు పేరు"></div>
           <div class="jf-group"><div class="jf-label">WhatsApp (optional)</div><input class="jf-inp" id="jf_wa" type="tel" placeholder="WhatsApp Number"></div>
           <div class="jf-group"><div class="jf-label">పూర్తి చిరునామా *</div><textarea class="jf-area" id="jf_addr" rows="2" placeholder="షాప్ నంబర్, రోడ్డు, ల్యాండ్‌మార్క్..."></textarea></div>
-          
           <div class="jf-group">
             <div class="jf-label">అందించే సేవలు</div>
             <div id="svcCatWrap"></div>
             <div style="margin-top:10px;background:var(--bg2);border:1px solid var(--line2);border-radius:var(--r2);padding:10px 12px">
-              <div style="font-size:11px;color:var(--t3);font-weight:600;margin-bottom:7px;text-transform:uppercase;">➕ Custom సేవ యాడ్ చేయండి</div>
+              <div style="font-size:11px;color:var(--t3);font-weight:600;margin-bottom:7px;text-transform:uppercase">➕ Custom సేవ యాడ్ చేయండి</div>
               <div style="display:flex;gap:7px">
                 <input class="jf-inp" id="customSvc" placeholder="Caste Validity, Entry etc..." style="margin:0">
                 <button onclick="addCustomSvc()" style="background:var(--saf2);border:none;color:#fff;border-radius:var(--r2);padding:0 14px;font-weight:600;cursor:pointer;">Add</button>
@@ -714,61 +641,66 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
             </div>
             <div style="margin-top:8px;font-size:12px;color:var(--grn);font-weight:500" id="svcSelectedCount">0 సేవలు సెలెక్ట్ చేయబడ్డాయి</div>
           </div>
-
           <div class="jf-group"><div class="jf-label">పని వేళలు</div><input class="jf-inp" id="jf_hours" placeholder="e.g. 9am – 6pm, Mon-Sat"></div>
-          <div class="jf-group"><div class="jf-label">Shop Photo URLs</div><input class="jf-inp" id="jf_photos" placeholder="https://image-link.com"></div>
-          <div class="jf-group"><div class="jf-label">YouTube Video IDs</div><input class="jf-inp" id="jf_videos" placeholder="e.g. dQw4w9WgXcQ"></div>
+          <div class="jf-group"><div class="jf-label">Shop Photo URL</div><input class="jf-inp" id="jf_photos" placeholder="https://image-link.com (comma separated)"></div>
+          <div class="jf-group"><div class="jf-label">YouTube Video IDs</div><input class="jf-inp" id="jf_videos" placeholder="e.g. dQw4w9WgXcQ (comma separated)"></div>
           <div class="jf-group"><div class="jf-label">UPI ID</div><input class="jf-inp" id="jf_upi" placeholder="yourname@upi"></div>
-          <div class="jf-group"><div class="jf-label">ప్రత్యేక ఆఫర్లు</div><textarea class="jf-area" id="jf_offers" rows="2" placeholder="🎁 Combo Offer|Aadhaar + PAN Card together ₹50 off"></textarea></div>
-
-          <button class="btn-sub" onclick="submitJoinFormSecure()">Submit చేయండి — List Now!</button>
+          <div class="jf-group"><div class="jf-label">ప్రత్యేక ఆఫర్లు</div><textarea class="jf-area" id="jf_offers" rows="2" placeholder="🎁 Title|Description&#10;Combo Offer|Aadhaar + PAN ₹50 off"></textarea></div>
+          <button class="btn-sub" onclick="submitJoinFormSecure()">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="#fff" fill="none" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+            Submit చేయండి — List Now!
+          </button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ═══ ADMIN SCREEN ═══ -->
   <div class="screen" id="s-admin">
     <div class="page-hdr">
       <div class="ph-ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
-      <div><div class="ph-title">Cloud Secure Admin Gate</div><div class="ph-sub">Encrypted Validation Protocol</div></div>
+      <div><div class="ph-title">Secure Admin Gate</div><div class="ph-sub">Encrypted Validation Protocol</div></div>
     </div>
     <div class="scroll-body">
       <div class="admin-lock" id="adminLock">
         <div class="al-ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
         <div class="al-title">Cloud Crypt Vault</div>
         <div class="al-sub">మాస్టర్ పాస్‌వర్డ్ ఇవ్వండి</div>
-        <input class="adv-inp" style="text-align:center; letter-spacing:4px;" id="adminPwd" type="password" placeholder="••••••">
-        <button class="btn-sub" style="margin-top:10px;" onclick="verifyAdminIdentityProxy()">Authenticate Node Key</button>
+        <input class="adv-inp" style="text-align:center;letter-spacing:4px;max-width:240px" id="adminPwd" type="password" placeholder="••••••" onkeydown="if(event.key==='Enter')verifyAdmin()">
+        <button class="btn-sub" style="margin-top:10px;max-width:240px" onclick="verifyAdmin()">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="white" fill="none" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Authenticate
+        </button>
       </div>
-
       <div class="admin-dash" id="adminDash">
         <div class="push-panel-box">
-          <div class="adv-lbl" style="color:var(--saf); margin-bottom:6px;">📢 OneSignal App Push Messaging Array</div>
-          <input type="text" id="pushTitle" class="adv-inp" placeholder="Notification Banner Header" style="margin-bottom:8px;">
-          <textarea id="pushMessage" class="jf-area" rows="2" placeholder="మెసేజ్ వివరాలు ఇక్కడ టైప్ చేయండి..." style="margin-bottom:8px; resize:none;"></textarea>
-          <button class="btn-sub" onclick="triggerOneSignalBroadcastBlast()">📢 Broadcast Launch Now</button>
+          <div class="adv-lbl" style="color:var(--saf);margin-bottom:6px">📢 Push Notification Broadcaster</div>
+          <input type="text" id="pushTitle" class="adv-inp" placeholder="Notification Title" style="margin-bottom:8px">
+          <textarea id="pushMessage" class="jf-area" rows="2" placeholder="మెసేజ్ వివరాలు..." style="margin-bottom:8px;resize:none"></textarea>
+          <button class="btn-sub" onclick="triggerBroadcast()">📢 Broadcast Launch Now</button>
         </div>
-
         <div class="adm-stats">
-          <div class="adm-stat">📝 <div style="margin-left:8px;"><div class="adm-stat-n" id="aT">0</div><div class="adm-stat-l">Live Centers</div></div></div>
-          <div class="adm-stat">🏅 <div style="margin-left:8px;"><div class="adm-stat-n" id="aV">0</div><div class="adm-stat-l">Trusted Nodes</div></div></div>
+          <div class="adm-stat"><span style="font-size:24px">📝</span><div style="margin-left:8px"><div class="adm-stat-n" id="aT">0</div><div class="adm-stat-l">Live Centers</div></div></div>
+          <div class="adm-stat"><span style="font-size:24px">🏅</span><div style="margin-left:8px"><div class="adm-stat-n" id="aV">0</div><div class="adm-stat-l">Trusted Nodes</div></div></div>
         </div>
-        <div class="adm-sec">⏳ System Matrix Master Control</div>
+        <div class="adm-sec">⚙️ Center Management</div>
         <div id="allCList"></div>
       </div>
     </div>
   </div>
 
+  <!-- ═══ PROFILE PAGE (Full Screen Slide) ═══ -->
   <div class="profile" id="profilePg">
     <div class="pp-nav">
       <button class="pp-back" onclick="closeProf()"><svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
       <div class="pp-nav-title" id="ppTitle"></div>
-      <button class="pp-shr" onclick="shareC()"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/></svg></button>
+      <button class="pp-shr" onclick="shareC()"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
     </div>
     <div id="ppContent"></div>
     <div id="ppFoot" class="pp-acts" style="display:none"></div>
   </div>
 
+  <!-- DETAIL DRAWER -->
   <div class="detail-overlay" id="ddOverlay" onclick="closeDetail()"></div>
   <div class="detail-drawer" id="ddDrawer">
     <div class="dd-handle"></div>
@@ -785,431 +717,862 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
     <div class="dd-actions" id="ddActions"></div>
   </div>
 
-</div>
+</div><!-- end #app -->
 
+<!-- BOTTOM NAV -->
 <nav class="bot-nav" id="botNav">
-  <button class="bnav on" id="bn-home" onclick="goScreen('s-home')"><span>హోమ్</span></button>
-  <button class="bnav" id="bn-dir" onclick="goScreen('s-dir')"><span>Directory</span></button>
-  <button class="bnav" id="bn-tools" onclick="goScreen('s-tools')"><span>Tools</span></button>
-  <button class="bnav" id="bn-news" onclick="goScreen('s-news')"><span>వార్తలు</span></button>
-  <button class="bnav" id="bn-admin" onclick="goScreen('s-admin')"><span>🔒 Admin</span></button>
+  <button class="bnav on" id="bn-home" onclick="goScreen('s-home')">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>హోమ్</span>
+  </button>
+  <button class="bnav" id="bn-dir" onclick="goScreen('s-dir')">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <span>Directory</span>
+  </button>
+  <button class="bnav" id="bn-tools" onclick="goScreen('s-tools')">
+    <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77z"/><path d="M4 20l6.37-6.37A5 5 0 0014 15a5 5 0 005-5 5 5 0 00-5-5 5 5 0 00.37 1.63L3 18"/></svg>
+    <span>Tools</span>
+  </button>
+  <button class="bnav" id="bn-news" onclick="goScreen('s-news')">
+    <svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8L4 5z"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    <span>వార్తలు</span>
+  </button>
+  <button class="bnav" id="bn-admin" onclick="goScreen('s-admin')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    <span>🔒 Admin</span>
+  </button>
 </nav>
 
 <div class="toast" id="toast"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-// ═══════════════════════════════════════════
-// 🔒 ENGINE CONTROLLER CORE JAVA-SCRIPT (REALTIME CLOUD SYNC)
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// 🔒 MEESEVA DIRECTORY — COMPLETE + SECURE ENGINE
+// ═══════════════════════════════════════════════════════════════
 
-// Firebase Realtime DB Bootloader Endpoint Initialization
+// ── Firebase Initialization ──
 const firebaseConfig = { databaseURL: "https://meeseva-directory-default-rtdb.firebaseio.com/" };
 firebase.initializeApp(firebaseConfig);
 const rtdb = firebase.database();
 
-// Server Apps Script Mid-way Proxy Link Gateway Address Routing Node
+// ── Cloud Proxy (Google Apps Script) ──
 const CLOUD_PROXY_GATEWAY_URL = "https://script.google.com/macros/s/AKfycbyAfxC_Zg_9iAg-Cjfzo31v5zB9uOHvXcU03TzhGLes03Y3204kh5ivXEyZaCrE8msY/exec";
 
-// App Core Dynamic State Array Matrix (🔥 Fixes variable mismatch logs)
-let ALL_NODES_DATA = [], SYSTEM_VIEW_LAYOUT = "grid", MAP_INSTANCE_LEAFLET = null, SECURE_SESSION_HANDSHAKE_TOKEN = null;
+// ── App State ──
+let ALL_NODES_DATA = [], SYSTEM_VIEW_LAYOUT = "grid";
+let MAP_INSTANCE_LEAFLET = null, SECURE_SESSION_TOKEN = null;
 let NEWS_RECORDS = [], NOTIF_RECORDS = [], SCHEMES_RECORDS = [];
 let customServices = [];
+let _galCurrent = 0, _galTotal = 0, _galSlides = [];
+let _submitLock = false, _brandTaps = 0, _brandTimer = null;
 
+// ── Detail Item Store (XSS-safe alternative to inline JSON) ──
+const DETAIL_STORE = {};
+let _detailKey = 0;
+function storeDetail(item) {
+  const k = 'dk' + (_detailKey++);
+  DETAIL_STORE[k] = item;
+  return k;
+}
+
+// ── Security: HTML Escape ──
+const esc = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+// ── Phone Validation ──
+const isValidPhone = p => /^[6-9]\d{9}$/.test(String(p).replace(/\s/g,''));
+
+// ── All 33 Telangana Districts with Mandals ──
 const TGD = {
-  "హైదరాబాద్":["అంబర్‌పేట","ఖైరతాబాద్","నాంపల్లి","సికింద్రాబాద్"],
-  "యాదాద్రి భువనగిరి":["భువనగిరి","ఆలేరు","చౌటుప్పల్","යාദගිරිగుట్ట"],
-  "నల్గొండ":["నల్గొండ","మిర్యాలగూడ","దేవరకొండ","హుజూర్‌నగర్"],
-  "రంగారెడ్డి":["శంషాబాద్","మహేశ్వరం","ఇబ్రహీంపట్నం","రాజేంద్రనగర్"]
+  "హైదరాబాద్":["అంబర్‌పేట","ఖైరతాబాద్","నాంపల్లి","సికింద్రాబాద్","చార్మినార్","గోల్కొండ","బంజారాహిల్స్"],
+  "రంగారెడ్డి":["శంషాబాద్","మహేశ్వరం","ఇబ్రహీంపట్నం","రాజేంద్రనగర్","బండ్లగూడ","బాలాపూర్","మేడ్చల్"],
+  "మేడ్చల్-మల్కాజ్‌గిరి":["మేడ్చల్","మల్కాజ్‌గిరి","కీసర","ఘట్‌కేసర్","బాఘ్‌అంబర్‌పేట","కొంపల్లి"],
+  "యాదాద్రి భువనగిరి":["భువనగిరి","ఆలేరు","చౌటుప్పల్","యాదగిరిగుట్ట","రాజాపేట","తుర్కయాంజాల్"],
+  "నల్గొండ":["నల్గొండ","మిర్యాలగూడ","దేవరకొండ","హుజూర్‌నగర్","నకిరేకల్","చండూర్"],
+  "సూర్యాపేట":["సూర్యాపేట","కోదాడ","నేరేడుచర్ల","తుంగతుర్తి","హాలియా"],
+  "ఖమ్మం":["ఖమ్మం","కొత్తగూడెం","పాల్వంచ","మధిర","ఇల్లందు","సత్తుపల్లి"],
+  "భద్రాద్రి కొత్తగూడెం":["కొత్తగూడెం","మణుగూరు","పాల్వంచ","బూర్గంపాడు","అశ్వారావుపేట"],
+  "వరంగల్":["వరంగల్","హన్మకొండ","పర్కాల్","నర్సంపేట","ఖానాపూర్","మహబూబాబాద్"],
+  "హన్మకొండ":["హన్మకొండ","కాజీపేట","వర్ధన్నపేట","గీసుగొండ"],
+  "జనగాం":["జనగాం","గీసుగొండ","తొర్రూర్","లింగాల గనగర్"],
+  "సిద్దిపేట":["సిద్దిపేట","దుబ్బాక","హుస్నాబాద్","గజ్వేల్","చేగుంట"],
+  "మేడక్":["మేడక్","నారాయణఖేడ్","తూప్రాన్","జహీరాబాద్","నర్సాపూర్"],
+  "సంగారెడ్డి":["సంగారెడ్డి","జహీరాబాద్","పటాన్‌చెరు","నార్సాపూర్","మన్నెగూడ"],
+  "కరీంనగర్":["కరీంనగర్","హుజురాబాద్","మంథని","మేటపల్లి","చొప్పదండి"],
+  "జగిత్యాల":["జగిత్యాల","మేటపల్లి","పెగడపల్లి","ధర్మపురి","కోరుట్ల"],
+  "రాజన్న సిర్సిల్ల":["సిర్సిల్ల","వేముల్‌వాడ","ఇల్లందుకుంట","రైపోల్"],
+  "పెద్దపల్లి":["పెద్దపల్లి","రామగుండం","మంథని","సుల్తానాబాద్","ఔటుమూరు"],
+  "మంచిర్యాల":["మంచిర్యాల","బెల్లంపల్లి","కాగజ్‌నగర్","లక్సెట్టిపేట"],
+  "ఆదిలాబాద్":["ఆదిలాబాద్","భైంసా","నిర్మల్","ఖానాపూర్","ఉట్నూర్"],
+  "నిర్మల్":["నిర్మల్","మాందమర్రి","లోకేశ్వరం","భైంసా"],
+  "కుమురంభీం ఆసిఫాబాద్":["ఆసిఫాబాద్","కాగజ్‌నగర్","వంకిడి","జైనూర్"],
+  "నిజామాబాద్":["నిజామాబాద్","ఆర్మూర్","బోధన్","కామారెడ్డి","బాల్కొండ"],
+  "కామారెడ్డి":["కామారెడ్డి","బిచ్కుంద","నాందేప్పల్లి","మాకల్"],
+  "మహబూబ్‌నగర్":["మహబూబ్‌నగర్","నారాయణపేట","గద్వాల్","కొల్లాపూర్","షాద్‌నగర్"],
+  "వనపర్తి":["వనపర్తి","గద్వాల్","అలంపూర్","కొల్లాపూర్","పెబ్బేర్"],
+  "జోగులాంబ గద్వాల్":["గద్వాల్","అలంపూర్","కర్నూలు రోడ్","మల్దకల్"],
+  "నారాయణపేట":["నారాయణపేట","మహబూబాబాద్","నర్వ","కొసిగి"],
+  "మహబూబాబాద్":["మహబూబాబాద్","నర్సంపేట","కేసముద్రం","దొర్నకల్"],
+  "వికారాబాద్":["వికారాబాద్","తాండూర్","పడ్కల్","దోమ","పూడూర్"],
+  "నాగర్‌కర్నూల్":["నాగర్‌కర్నూల్","కొల్లాపూర్","ఆచంపేట","అమ్రాబాద్"],
+  "ములుగు":["ములుగు","ఎట్నూర్","వేంకటాపూర్","తాడ్వాయి"],
+  "జయశంకర్ భూపాలపల్లి":["భూపాలపల్లి","మహాదేవపూర్","మల్లారెడ్డి","మోత్కూర్"]
 };
 
+// ── Service Categories ──
 const SVC_CATS = {
-  "📜 Certificates": ["Income Certificate","Caste Certificate","Residence Certificate","Date of Birth Certificate"],
-  "🪪 Identity & Docs": ["Aadhaar Services","PAN Card","Passport","Voter ID","Ration Card"],
-  "🏡 Revenue Matrix": ["Land Records (Pahani)","Mutation (Daakhal)","Encumbrance Certificate"]
+  "📜 Certificates": ["Income Certificate","Caste Certificate","Residence Certificate","Date of Birth Certificate","Character Certificate"],
+  "🪪 Identity & Documents": ["Aadhaar Services","PAN Card","Passport","Voter ID","Ration Card","Driving License"],
+  "🏡 Revenue & Land": ["Land Records (Pahani)","Mutation (Daakhal)","Encumbrance Certificate","Patta"],
+  "📱 Digital Services": ["e-Seva","Online Applications","EPDS","CFMS","HRMS Portal"],
+  "🏦 Banking & Finance": ["Bank Account Opening","Passbook Update","PMJDY","Insurance"]
 };
 
+// ── Document Checklist Data ──
 const FORMS = [
-  {name:"Income Certificate",em:"💰",docs:["Aadhaar Card","Ration Card","VRO Local Verification Note"]},
-  {name:"Caste Certificate Records",em:"📋",docs:["Aadhaar Card","Old Land Caste Records","Ration Card"]}
+  {name:"Income Certificate",em:"💰",docs:["Aadhaar Card","Ration Card","VRO Letter","Self Declaration"]},
+  {name:"Caste Certificate",em:"📋",docs:["Aadhaar Card","Old Land Records","Ration Card","Community Certificate"]},
+  {name:"Residence Certificate",em:"🏠",docs:["Aadhaar Card","Ration Card","Electricity Bill"]},
+  {name:"Aadhaar Enrollment",em:"🪪",docs:["DOB Proof","Address Proof","Photo ID"]},
+  {name:"Pahani (Land Record)",em:"🏡",docs:["Patta Passbook","Survey Number","Owner ID Proof"]},
+  {name:"Ration Card",em:"🃏",docs:["Aadhaar Card","Income Certificate","Family Photo","Electricity Bill"]}
 ];
 
+// ════════════════════════════
+// INIT
+// ════════════════════════════
 async function init() {
-  setupDynamicCounterTelemetry();
-  
-  // Realtime Live Stream Hooks from Firebase Database Nodes
-  rtdb.ref("centers").on("value", snapshot => {
-    const data = snapshot.val();
-    let cacheList = [];
-    if(data) {
-      Object.keys(data).forEach(k => { cacheList.push({id: k, ...data[k]}); });
-    }
-    ALL_NODES_DATA = cacheList.length ? cacheList : fetchLocalFallbackBackupData();
-    refreshApplicationViewMatrix();
-  });
+  setupTelemetry();
+  populateDistrictDropdowns();
+  renderCheckboxGrid();
+  renderCalculators();
+  renderDocsForms();
 
-  // REST API Client Streaming Proxy Layer Nodes (గూగుల్ షీట్స్ లింకులు దాచబడ్డాయి)
-  fetchCloudSecureFeeds("news", (text) => { NEWS_RECORDS = parseCSVEngine(text); renderNewsFeedUI(); });
-  fetchCloudSecureFeeds("notif", (text) => { NOTIF_RECORDS = parseCSVEngine(text); renderGlobalNotificationsUI(); });
-  fetchCloudSecureFeeds("schemes", (text) => { SCHEMES_RECORDS = parseCSVEngine(text); renderSchemesLayoutGrid(); });
+  // Firebase live listener
+  rtdb.ref("centers").on("value", snap => {
+    const data = snap.val();
+    let list = [];
+    if(data) Object.keys(data).forEach(k => list.push({id:k, ...data[k]}));
+    ALL_NODES_DATA = list.length ? list : fallbackData();
+    refreshMatrix();
+  }, () => { ALL_NODES_DATA = fallbackData(); refreshMatrix(); });
 
-  // Render Select Fields
-  const dEl = document.getElementById("fDist"), jEl = document.getElementById("jf_dist"), afEl = document.getElementById("af-dist");
-  Object.keys(TGD).forEach(d => {
-    dEl.innerHTML += `<option value="${d}">${d}</option>`;
-    jEl.innerHTML += `<option value="${d}">${d}</option>`;
-    if(afEl) afEl.innerHTML += `<option value="${d}">${d}</option>`;
-  });
+  // Cloud data feeds
+  fetchFeed("news",    txt => { NEWS_RECORDS    = parseCSV(txt); renderNewsFeed(); renderHomeNews(); });
+  fetchFeed("notif",  txt => { NOTIF_RECORDS   = parseCSV(txt); renderNotifications(); renderHomeNotifs(); populateTicker(); });
+  fetchFeed("schemes",txt => { SCHEMES_RECORDS = parseCSV(txt); renderSchemes(); renderSchemesNewsTab(); });
 
-  renderCheckboxesServicesGrid();
-  renderCalculatorsToolbox();
-  renderRequiredDocsGrid();
-  populateCenterDropdown();
-  
-  // Clear Splash Screen Layer safely
   setTimeout(() => document.getElementById("pwaSplash").classList.add("hide"), 1200);
 }
 
-async function fetchCloudSecureFeeds(target, callback) {
+// ── Cloud Feed Fetcher ──
+async function fetchFeed(target, cb) {
   try {
-    const response = await fetch(`${CLOUD_PROXY_GATEWAY_URL}?action=fetchSecureData&target=${target}`);
-    const text = await response.text();
-    callback(text);
-  } catch(e) { console.error("Cloud Node Network Stream Interrupt."); }
+    const r = await fetch(`${CLOUD_PROXY_GATEWAY_URL}?action=fetchSecureData&target=${target}`);
+    cb(await r.text());
+  } catch(e) { /* offline – silently skip */ }
 }
 
-function parseCSVEngine(text) {
+// ── CSV Parser (handles basic CSV) ──
+function parseCSV(text) {
   const lines = text.split("\n").filter(l => l.trim());
   if(lines.length <= 1) return [];
   const headers = lines[0].split(",").map(h => h.trim().replace(/"/g,""));
   return lines.slice(1).map(l => {
     const bits = l.split(",");
-    let obj = {};
-    headers.forEach((h, i) => { obj[h] = (bits[i] || "").trim().replace(/"/g,""); });
-    return obj;
+    let o = {};
+    headers.forEach((h,i) => { o[h] = (bits[i]||"").trim().replace(/"/g,""); });
+    return o;
   });
 }
 
-function refreshApplicationViewMatrix() {
+// ── Refresh Matrix ──
+function refreshMatrix() {
   document.getElementById("stC").textContent = ALL_NODES_DATA.length;
-  document.getElementById("stV").textContent = ALL_NODES_DATA.filter(n => n.Trusted === "true" || n.Trusted === true).length;
+  document.getElementById("stV").textContent = ALL_NODES_DATA.filter(n => n.Trusted==="true").length;
   applyF();
-  renderHomeRecentHorizontalScroller();
+  renderHomeRecent();
+  populateCenterDropdown();
 }
 
-// 🔒 CLOUD SERVER IDENTITY PROTECTED NODE GATEWAY VALIDATION
-async function verifyAdminIdentityProxy() {
-  const code = document.getElementById("adminPwd").value.trim();
-  if(!code) return showToast("⚠️ Password enter చేయాలి!");
-
-  showToast("🔐 Connecting secure identity node...");
-
-  try {
-    const response = await fetch(`${CLOUD_PROXY_GATEWAY_URL}?action=adminLogin&password=${encodeURIComponent(code)}`);
-    const status = await response.json();
-
-    if(status.status === "success" || status.token) {
-      SECURE_SESSION_HANDSHAKE_TOKEN = status.token;
-      rtdb.ref("admin_sessions/" + status.token).set({ authorization: "granted", clock: Date.now() });
-
-      document.getElementById("adminLock").style.display = "none";
-      document.getElementById("adminDash").style.display = "block";
-      showToast("✓ Identity Validated. Management Node Activated.");
-      renderAdminDashboardMatrixGrid();
-    } else {
-      showToast("❌ Access Denied. తప్పు పాస్‌వర్డ్!");
-    }
-  } catch(e) { showToast("⚠️ Cloud synchronization network timeout."); }
+// ════════════════════════════
+// DISTRICT DROPDOWN HELPERS
+// ════════════════════════════
+function populateDistrictDropdowns() {
+  const dists = Object.keys(TGD);
+  ["fDist","jf_dist","af-dist"].forEach(id => {
+    const el = document.getElementById(id); if(!el) return;
+    dists.forEach(d => el.innerHTML += `<option value="${esc(d)}">${esc(d)}</option>`);
+  });
+}
+function onDist() {
+  const dist = document.getElementById("fDist").value;
+  const mEl = document.getElementById("fMandal");
+  mEl.innerHTML = '<option value="">అన్ని మండలాలు</option>';
+  (TGD[dist]||[]).forEach(m => mEl.innerHTML += `<option value="${esc(m)}">${esc(m)}</option>`);
+  populateCenterDropdown(); applyF();
+}
+function onJDist() {
+  const dist = document.getElementById("jf_dist").value;
+  const mEl = document.getElementById("jf_mandal");
+  mEl.innerHTML = '<option value="">మండలం ఎంచుకోండి</option>';
+  (TGD[dist]||[]).forEach(m => mEl.innerHTML += `<option value="${esc(m)}">${esc(m)}</option>`);
+}
+function onAdvDist() {
+  const dist = document.getElementById("af-dist").value;
+  const mEl = document.getElementById("af-mandal");
+  mEl.innerHTML = '<option value="">అన్ని మండలాలు</option>';
+  (TGD[dist]||[]).forEach(m => mEl.innerHTML += `<option value="${esc(m)}">${esc(m)}</option>`);
+  syncAdvToMain(); applyF();
+}
+function syncAdvToMain() {
+  const dist = document.getElementById("af-dist").value;
+  const mandal = document.getElementById("af-mandal").value;
+  if(dist) document.getElementById("fDist").value = dist;
+  if(mandal) document.getElementById("fMandal").value = mandal;
+}
+function resetAdvFilters() {
+  ["af-dist","af-mandal","af-trust","af-rating"].forEach(id => { const el=document.getElementById(id); if(el) el.value=""; });
+  document.getElementById("af-village").value = "";
+  applyF();
+}
+function populateCenterDropdown() {
+  const el = document.getElementById("fCenter"); if(!el) return;
+  el.innerHTML = '<option value="">అన్ని Centers</option>';
+  ALL_NODES_DATA.forEach(n => el.innerHTML += `<option value="${esc(n.Name)}">${esc(n.Name)}</option>`);
 }
 
-// 📢 BROADCAST PUSH BLASTER NODE VIA ONESIGNAL AGENT LAYER
-async function triggerOneSignalBroadcastBlast() {
-  if(!SECURE_SESSION_HANDSHAKE_TOKEN) return showToast("⚠️ Management token node handshake lost.");
-  const t = document.getElementById("pushTitle").value.trim();
-  const m = document.getElementById("pushMessage").value.trim();
-
-  if(!t || !m) return showToast("⚠️ Header Title & Body message నింపండి!");
-
-  showToast("📡 Contacting server broadcast array nodes...");
-  try {
-    await fetch(CLOUD_PROXY_GATEWAY_URL, {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify({ action: "sendPushNotification", token: SECURE_SESSION_HANDSHAKE_TOKEN, title: t, message: m })
-    });
-    showToast("🚀 Notification array blasting complete across mobile apps!");
-    document.getElementById("pushTitle").value = "";
-    document.getElementById("pushMessage").value = "";
-  } catch(e) { showToast("❌ Multi-cast relay route connection error."); }
-}
-
-function getFilt() {
-  const q = (document.getElementById("dq").value||"").toLowerCase().trim();
-  const dist = document.getElementById("fDist").value || document.getElementById("af-dist").value;
-  const mandal = document.getElementById("fMandal").value || document.getElementById("af-mandal").value;
-  const centerF = document.getElementById("fCenter") ? document.getElementById("fCenter").value : "";
+// ════════════════════════════
+// DIRECTORY FILTER & RENDER
+// ════════════════════════════
+function getFiltered() {
+  const q       = (document.getElementById("dq").value||"").toLowerCase().trim();
+  const dist    = document.getElementById("fDist").value || document.getElementById("af-dist").value;
+  const mandal  = document.getElementById("fMandal").value || document.getElementById("af-mandal").value;
+  const centerF = (document.getElementById("fCenter")||{}).value || "";
   const village = (document.getElementById("af-village").value||"").toLowerCase().trim();
-  const trust = document.getElementById("af-trust").value;
-
+  const trust   = document.getElementById("af-trust").value;
   return ALL_NODES_DATA.filter(d => {
-    if(q && !((d.Name||"").toLowerCase().includes(q) || (d.Mandal||"").toLowerCase().includes(q))) return false;
-    if(dist && d.District !== dist) return false;
-    if(mandal && d.Mandal !== mandal) return false;
-    if(centerF && d.Name !== centerF) return false;
-    if(village && !((d.Village||"").toLowerCase().includes(village))) return false;
-    if(trust === "trusted" && d.Trusted !== "true") return false;
+    if(q && !((d.Name||"").toLowerCase().includes(q)||(d.Mandal||"").toLowerCase().includes(q)||(d.Village||"").toLowerCase().includes(q))) return false;
+    if(dist && d.District!==dist) return false;
+    if(mandal && d.Mandal!==mandal) return false;
+    if(centerF && d.Name!==centerF) return false;
+    if(village && !(d.Village||"").toLowerCase().includes(village)) return false;
+    if(trust==="trusted" && d.Trusted!=="true") return false;
     return true;
   });
 }
 
 function applyF() {
-  const data = getFilt();
+  const data = getFiltered();
   document.getElementById("dirC").innerHTML = `<b>${data.length}</b> కేంద్రాలు దొరికాయి`;
   const wrap = document.getElementById("lstWrap");
   wrap.style.display = "block";
   document.getElementById("dirLoader").style.display = "none";
-
-  if(!data.length) {
-    wrap.innerHTML = `<div class="empty-state"><div class="ei">🔍</div><p>కేంద్రాలు లభించలేదు</p></div>`; return;
-  }
+  if(!data.length) { wrap.innerHTML=`<div class="empty-state"><div class="ei">🔍</div><p>కేంద్రాలు లభించలేదు</p></div>`; return; }
 
   if(SYSTEM_VIEW_LAYOUT === "grid") {
-    wrap.innerHTML = `<div class="ms-grid">${data.map(d => `
-      <div class="ms-card" onclick="openProfileMapViewer('${d.id}')">
+    wrap.innerHTML = `<div class="ms-grid">${data.map(d=>`
+      <div class="ms-card" onclick="openProfile('${esc(d.id)}')">
         <div class="mc-img">
-          <div class="mc-av">${(d.Name||"M").charAt(0)}</div>
-          ${d.Trusted==="true"?`<div class="mc-trusted">Trusted</div>`:""}
-          <div class="mc-rated">★ 4.7</div>
+          ${d.Photos ? `<img src="${esc(d.Photos.split(',')[0].trim())}" loading="lazy">` : `<div class="mc-av">${esc((d.Name||"M").charAt(0))}</div>`}
+          ${d.Trusted==="true"?`<div class="mc-trusted">✓ Trusted</div>`:""}
+          <div class="mc-rated">★ ${d.Rating||"4.7"}</div>
         </div>
         <div class="mc-body">
-          <div class="mc-name">${d.Name}</div>
-          <div class="mc-mandal">${d.Mandal}</div>
-          <div class="mc-dist">${d.Village || "Main Area"}</div>
+          <div class="mc-name">${esc(d.Name)}</div>
+          <div class="mc-mandal">${esc(d.Mandal)}</div>
+          <div class="mc-dist">${esc(d.Village||"Main Area")}</div>
           <div class="mc-btns">
-            <button class="mc-call" onclick="event.stopPropagation(); window.open('tel:${d.Phone}')">📞 కాల్</button>
+            <button class="mc-call" onclick="event.stopPropagation();window.open('tel:${esc(d.Phone)}')">📞 కాల్</button>
+            ${d.WhatsApp?`<button class="mc-wa" onclick="event.stopPropagation();window.open('https://wa.me/91${esc(d.WhatsApp)}')">💬 WA</button>`:""}
           </div>
         </div>
       </div>`).join("")}</div>`;
   } else {
-    wrap.innerHTML = `<div class="ms-list">${data.map(d => `
-      <div class="ml-item" onclick="openProfileMapViewer('${d.id}')">
-        <div class="ml-av">${(d.Name||"M").charAt(0)}</div>
+    wrap.innerHTML = `<div class="ms-list">${data.map(d=>`
+      <div class="ml-item" onclick="openProfile('${esc(d.id)}')">
+        <div class="ml-av">${d.Photos?`<img src="${esc(d.Photos.split(',')[0].trim())}" loading="lazy">`:`${esc((d.Name||"M").charAt(0))}`}</div>
         <div class="ml-info">
-          <div class="ml-name">${d.Name}</div>
-          <div class="ml-loc">📍 ${d.Mandal}, ${d.District}</div>
+          <div class="ml-name">${esc(d.Name)}</div>
+          <div class="ml-bdgs">${d.Trusted==="true"?`<span class="bdg-t">✓ Trusted</span>`:""}<span class="bdg-r">★ ${d.Rating||"4.7"}</span></div>
+          <div class="ml-loc">📍 ${esc(d.Mandal)}, ${esc(d.District)}</div>
         </div>
-        <button class="ml-call" onclick="event.stopPropagation(); window.open('tel:${d.Phone}')">📞</button>
+        <button class="ml-call" onclick="event.stopPropagation();window.open('tel:${esc(d.Phone)}')">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72z"/></svg>
+        </button>
       </div>`).join("")}</div>`;
   }
 }
 
-function openProfileMapViewer(id) {
-  const d = ALL_NODES_DATA.find(x => x.id == id); if(!d) return;
+function goCat(svc) {
+  goScreen('s-dir');
+  document.getElementById('dq').value = svc;
+  applyF();
+}
+function setV(v) {
+  SYSTEM_VIEW_LAYOUT = v;
+  document.getElementById("vgb").className = v==="grid"?"vt on":"vt";
+  document.getElementById("vlb").className = v==="list"?"vt on":"vt";
+  applyF();
+}
+
+// ════════════════════════════
+// PROFILE PAGE (Full Gallery)
+// ════════════════════════════
+function openProfile(id) {
+  const d = ALL_NODES_DATA.find(x => String(x.id) === String(id));
+  if(!d) return;
   document.getElementById("ppTitle").textContent = d.Name;
+
+  // Build gallery slides
+  let slides = [];
+  if(d.Photos) d.Photos.split(",").filter(Boolean).forEach(u => slides.push({type:"photo",url:u.trim()}));
+  if(d.Videos) d.Videos.split(",").filter(Boolean).forEach(v => slides.push({type:"video",vid:v.trim()}));
+  if(!slides.length) slides.push({type:"avatar",letter:(d.Name||"M").charAt(0)});
+
+  const galSlides = slides.map(s => {
+    if(s.type==="photo") return `<div class="pp-gallery-slide"><img src="${esc(s.url)}" loading="lazy"></div>`;
+    if(s.type==="video") return `<div class="pp-gallery-slide"><iframe class="pp-yt" src="https://www.youtube.com/embed/${esc(s.vid)}" allowfullscreen></iframe></div>`;
+    return `<div class="pp-gallery-slide"><div class="pp-gallery-av">${esc(s.letter)}</div></div>`;
+  }).join("");
+
+  const galNav = slides.length > 1 ? `
+    <button class="pp-gal-prev" onclick="galNav(-1)"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="pp-gal-next" onclick="galNav(1)"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <div class="pp-gal-dots">${slides.map((_,i)=>`<button class="pp-gal-dot ${i===0?"on":""}" onclick="galGo(${i})"></button>`).join("")}</div>` : "";
+
   const svcs = (d.Services||"").split(",").filter(Boolean);
 
   document.getElementById("ppContent").innerHTML = `
-    <div class="pp-gallery"><div class="pp-gallery-av">${(d.Name||"M").charAt(0)}</div></div>
+    <div class="pp-gallery">
+      <div class="pp-gallery-track" id="galTrack">${galSlides}</div>
+      ${galNav}
+      <div class="pp-gal-type" id="galTypeLabel">${slides[0].type==="video"?"📹 VIDEO":"📷 PHOTO"}</div>
+      <div class="pp-hbdgs">
+        ${d.Trusted==="true"?`<div class="pbdg-t">✓ Trusted</div>`:""}
+        <div class="pbdg-r">★ ${d.Rating||"4.7"}</div>
+        ${d.Verified==="true"?`<div class="pbdg-v">✓ Verified</div>`:""}
+      </div>
+    </div>
     <div class="pp-body">
-      <div class="pp-name">${d.Name}</div>
-      <div class="pp-tags"><span class="pp-tag">🏛️ ${d.Mandal}</span><span class="pp-tag">📍 ${d.District}</span></div>
-      
-      ${d.UPI ? `
-      <div class="upi-box">
-        <div style="font-size:42px;margin-bottom:10px;">📱</div>
-        <div class="upi-id">${d.UPI}</div>
-        <div class="upi-name">${d.Name}</div>
-        <button class="upi-copy" onclick="navigator.clipboard.writeText('${d.UPI}'); showToast('✅ UPI ID Copied!')">📋 UPI ID Copy చేయండి</button>
-      </div>` : ''}
-
+      <div class="pp-name">${esc(d.Name)}</div>
+      <div class="pp-tags">
+        <span class="pp-tag">🏛️ ${esc(d.Mandal)}</span>
+        <span class="pp-tag">📍 ${esc(d.District)}</span>
+        ${d.Hours?`<span class="pp-tag">⏰ ${esc(d.Hours)}</span>`:""}
+        ${d.WhatsApp?`<span class="pp-tag">💬 WhatsApp</span>`:""}
+      </div>
+      ${d.Offers ? buildOffers(d.Offers) : ""}
+      ${d.UPI ? buildUPI(d) : ""}
       <div class="pp-sec-t">అందించే సేవలు</div>
-      <div class="svc-wrap" style="margin-bottom:15px;">${svcs.map(s=>`<div class="svc-chip">✓ ${s}</div>`).join("")}</div>
-
+      <div class="svc-wrap" style="margin-bottom:16px">
+        ${svcs.length ? svcs.map(s=>`<div class="svc-chip">✓ ${esc(s)}</div>`).join("") : `<span style="font-size:12px;color:var(--t3)">సేవల వివరాలు అందుబాటులో లేవు</span>`}
+      </div>
       <div class="pp-sec-t">సమాచారం</div>
-      <div class="pp-row"><div class="pp-val"><div class="v1">${d.Phone}</div><div class="v2">మొబైల్ నెంబర్</div></div></div>
-      <div class="pp-row"><div class="pp-val"><div class="v1">${d.Address || "Shop Node, Road Area"}</div><div class="v2">చిరునామా</div></div></div>
+      <div class="pp-row">
+        <div class="pp-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+        <div class="pp-val"><div class="v1">${esc(d.Phone)}</div><div class="v2">మొబైల్ నెంబర్</div></div>
+      </div>
+      ${d.Address?`<div class="pp-row"><div class="pp-ico"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="pp-val"><div class="v1">${esc(d.Address)}</div><div class="v2">చిరునామా</div></div></div>`:""}
+      ${d.Hours?`<div class="pp-row"><div class="pp-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="pp-val"><div class="v1">${esc(d.Hours)}</div><div class="v2">పని వేళలు</div></div></div>`:""}
       <div class="pp-sec-t">లొకేషన్ మ్యాప్</div>
       <div class="pp-map" id="ppMapEl"></div>
     </div>`;
 
-  document.getElementById("ppFoot").style.display = "flex";
-  document.getElementById("ppFoot").innerHTML = `<button class="pp-btn-c" onclick="window.open('tel:${d.Phone}')">📞 కాల్ చేయండి</button>`;
-  document.getElementById("profilePg").classList.add("on");
+  const foot = document.getElementById("ppFoot");
+  foot.style.display = "flex";
+  foot.innerHTML = `
+    <button class="pp-btn-c" onclick="window.open('tel:${esc(d.Phone)}')">
+      <svg viewBox="0 0 24 24" fill="white" width="17" height="17"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      📞 కాల్ చేయండి
+    </button>
+    ${d.WhatsApp?`<button class="pp-btn-w" onclick="window.open('https://wa.me/91${esc(d.WhatsApp)}')">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </button>`:""}`;
 
-  setTimeout(() => {
-    if(MAP_INSTANCE_LEAFLET) { MAP_INSTANCE_LEAFLET.remove(); }
-    const lat = parseFloat(d.Lat) || 17.385, lng = parseFloat(d.Lng) || 78.486;
-    MAP_INSTANCE_LEAFLET = L.map("ppMapEl").setView([lat, lng], 14);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(MAP_INSTANCE_LEAFLET);
-    L.marker([lat, lng]).addTo(MAP_INSTANCE_LEAFLET).bindPopup(d.Name).openPopup();
-  }, 260);
+  document.getElementById("profilePg").classList.add("on");
+  _galCurrent = 0; _galTotal = slides.length; _galSlides = slides;
+  setTimeout(() => initMap(d), 300);
 }
 
-function renderCheckboxesServicesGrid() {
-  const wrap = document.getElementById("svcCatWrap"); if(!wrap) return; wrap.innerHTML = "";
-  Object.entries(SVC_CATS).forEach(([cat, services]) => {
-    wrap.innerHTML += `<div class="svc-cat-title">${cat}</div><div class="svc-chk-grid">${services.map(s=>`
-      <label class="svc-chk" onclick="toggleCheckboxFieldNode(this)"><input type="checkbox" value="${s}" style="pointer-events:none"> ${s}</label>
-    `).join("")}</div>`;
+// Gallery navigation
+function galNav(dir) { galGo((_galCurrent + dir + _galTotal) % _galTotal); }
+function galGo(idx) {
+  _galCurrent = idx;
+  const t = document.getElementById("galTrack");
+  if(t) t.style.transform = `translateX(-${idx*100}%)`;
+  document.querySelectorAll(".pp-gal-dot").forEach((d,i) => d.className = "pp-gal-dot"+(i===idx?" on":""));
+  const lbl = document.getElementById("galTypeLabel");
+  if(lbl && _galSlides[idx]) lbl.textContent = _galSlides[idx].type==="video"?"📹 VIDEO":"📷 PHOTO";
+}
+
+function initMap(d) {
+  if(MAP_INSTANCE_LEAFLET) { MAP_INSTANCE_LEAFLET.remove(); MAP_INSTANCE_LEAFLET=null; }
+  const el = document.getElementById("ppMapEl"); if(!el) return;
+  const lat = parseFloat(d.Lat)||17.385, lng = parseFloat(d.Lng)||78.486;
+  MAP_INSTANCE_LEAFLET = L.map("ppMapEl").setView([lat,lng],14);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OpenStreetMap"}).addTo(MAP_INSTANCE_LEAFLET);
+  L.marker([lat,lng]).addTo(MAP_INSTANCE_LEAFLET).bindPopup(d.Name).openPopup();
+}
+
+function buildOffers(offers) {
+  return "<div style='margin-bottom:14px'>" + offers.split("|").filter(Boolean).map(o => {
+    const [t,desc] = o.split(":");
+    return `<div class="offer-card"><div class="offer-card-ico">🎁</div><div><div class="offer-card-title">${esc(t||o)}</div>${desc?`<div class="offer-card-desc">${esc(desc)}</div>`:""}
+    <div class="offer-card-exp">Limited Period Offer</div></div></div>`;
+  }).join("") + "</div>";
+}
+function buildUPI(d) {
+  return `<div class="upi-box" style="margin-bottom:14px">
+    <div style="font-size:38px;margin-bottom:8px">📱</div>
+    <div class="upi-id">${esc(d.UPI)}</div>
+    <div class="upi-name">${esc(d.Name)}</div>
+    <button class="upi-copy" onclick="navigator.clipboard.writeText('${esc(d.UPI)}').then(()=>showToast('✅ UPI ID Copied!'))">📋 UPI ID Copy చేయండి</button>
+  </div>`;
+}
+function shareC() {
+  const name = document.getElementById("ppTitle").textContent;
+  if(navigator.share) navigator.share({title:name,text:`${name} - మీసేవ కేంద్రం`,url:location.href});
+  else { navigator.clipboard.writeText(location.href); showToast("🔗 Link Copied!"); }
+}
+function closeProf() {
+  document.getElementById("profilePg").classList.remove("on");
+  if(MAP_INSTANCE_LEAFLET) { MAP_INSTANCE_LEAFLET.remove(); MAP_INSTANCE_LEAFLET=null; }
+}
+
+// ════════════════════════════
+// NEWS FEED
+// ════════════════════════════
+function renderNewsCard(n, key) {
+  const isVid = (n.Type||"").toLowerCase()==="video";
+  return `<div class="news-card" onclick="openDetailById('${key}')">
+    <div class="nc-thumb">
+      ${n.Thumb?`<img src="${esc(n.Thumb)}" loading="lazy">`:`<span style="font-size:42px">📰</span>`}
+      ${isVid?`<div class="nc-play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="rgba(255,255,255,.9)"/></svg></div>`:""}
+      <div class="nc-badge ${isVid?"video":""}">${esc((n.Type||"NEWS").toUpperCase())}</div>
+    </div>
+    <div class="nc-body">
+      <div class="nc-cat">${esc(n.Category||"మీసేవ")}</div>
+      <div class="nc-ttl">${esc(n.Title||"")}</div>
+      ${n.Description?`<div class="nc-desc2">${esc((n.Description||"").slice(0,100))}...</div>`:""}
+      <div class="nc-dt">${esc(n.Date||"")}</div>
+    </div>
+  </div>`;
+}
+
+function renderNewsFeed() {
+  // np-all: all items
+  const allEl = document.getElementById("np-all");
+  if(allEl) allEl.innerHTML = NEWS_RECORDS.map(n => renderNewsCard(n, storeDetail({...n,_type:"news"}))).join("") || emptyState("📰","వార్తలు లేవు");
+  // np-video: videos
+  const vidEl = document.getElementById("np-video");
+  if(vidEl) { const vids=NEWS_RECORDS.filter(n=>(n.Type||"").toLowerCase()==="video"); vidEl.innerHTML = vids.map(n=>renderNewsCard(n,storeDetail({...n,_type:"news"}))).join("") || emptyState("📹","Videos లేవు"); }
+}
+function renderHomeNews() {
+  const el = document.getElementById("homeNews"); if(!el) return;
+  el.innerHTML = NEWS_RECORDS.slice(0,3).map(n => renderNewsCard(n, storeDetail({...n,_type:"news"}))).join("");
+}
+
+// ════════════════════════════
+// NOTIFICATIONS
+// ════════════════════════════
+function renderNotifications() {
+  // Full screen
+  const el = document.getElementById("notifBody"); if(!el) return;
+  el.innerHTML = `<div style="padding:8px 10px 74px">${
+    NOTIF_RECORDS.length ? NOTIF_RECORDS.map((n,i) => {
+      const key = storeDetail({...n,_type:"notif"});
+      const accent = [""," grn"," gld"][i%3];
+      return `<div class="notif-card${accent}" style="width:auto;min-width:unset;margin-bottom:10px" onclick="openDetailById('${key}')">
+        <div class="nc-type">${esc(n.Type||"BOARD")}</div>
+        <div class="nc-title">${esc(n.Title||"")}</div>
+        <div class="nc-date">${esc(n.Date||n.SubTitle||"")}</div>
+      </div>`;
+    }).join("") : emptyState("🔔","నోటిఫికేషన్లు లేవు")
+  }</div>`;
+  // np-notice tab
+  const nEl = document.getElementById("np-notice"); if(nEl) nEl.innerHTML = document.getElementById("notifBody").innerHTML;
+}
+function renderHomeNotifs() {
+  const el = document.getElementById("homeNotifs"); if(!el) return;
+  el.innerHTML = NOTIF_RECORDS.slice(0,6).map((n,i) => {
+    const key = storeDetail({...n,_type:"notif"});
+    const accent = [""," grn"," gld"][i%3];
+    return `<div class="notif-card${accent}" onclick="openDetailById('${key}')">
+      <div class="nc-type">${esc(n.Type||"BOARD")}</div>
+      <div class="nc-title">${esc(n.Title||"")}</div>
+      <div class="nc-date">${esc(n.Date||n.SubTitle||"")}</div>
+    </div>`;
+  }).join("");
+}
+function populateTicker() {
+  const inner = document.getElementById("tickerInner"); if(!inner) return;
+  if(!NOTIF_RECORDS.length) return;
+  const items = NOTIF_RECORDS.slice(0,10).map(n=>`<div class="ticker-item">${esc(n.Title||"")}</div>`).join("");
+  inner.innerHTML = items + items;
+}
+
+// ════════════════════════════
+// SCHEMES
+// ════════════════════════════
+function renderSchemes() {
+  const el = document.getElementById("schemesList"); if(!el) return;
+  el.innerHTML = SCHEMES_RECORDS.length ? SCHEMES_RECORDS.map(s => {
+    const key = storeDetail({...s,_type:"scheme"});
+    return `<div class="scheme-card" onclick="openDetailById('${key}')">
+      <div class="sc-ico">🏛️</div>
+      <div style="flex:1"><div class="sc-name">${esc(s.Name||"")}</div><div class="sc-desc">${esc(s.Description||"")}</div></div>
+      <div class="sc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>`;
+  }).join("") : emptyState("🏛️","పథకాలు లేవు");
+}
+function renderSchemesNewsTab() {
+  const el = document.getElementById("np-scheme"); if(!el) return;
+  el.innerHTML = SCHEMES_RECORDS.map(s => {
+    const key = storeDetail({...s,_type:"scheme"});
+    return `<div class="scheme-card" onclick="openDetailById('${key}')">
+      <div class="sc-ico">🏛️</div>
+      <div style="flex:1"><div class="sc-name">${esc(s.Name||"")}</div><div class="sc-desc">${esc(s.Description||"")}</div></div>
+      <div class="sc-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>`;
+  }).join("") || emptyState("🏛️","పథకాలు లేవు");
+}
+
+// ════════════════════════════
+// HOME RECENT CENTERS
+// ════════════════════════════
+function renderHomeRecent() {
+  const el = document.getElementById("homeRecent"); if(!el) return;
+  el.innerHTML = ALL_NODES_DATA.slice(0,5).map(d=>`
+    <div class="notif-card" onclick="openProfile('${esc(d.id)}')">
+      <div class="nc-type">${esc(d.Mandal||"")}</div>
+      <div class="nc-title">${esc(d.Name)}</div>
+      <div class="nc-date">${esc(d.District||"")}</div>
+    </div>`).join("");
+}
+
+// ════════════════════════════
+// DETAIL DRAWER
+// ════════════════════════════
+function openDetailById(key) {
+  const item = DETAIL_STORE[key]; if(!item) return;
+  const type = item._type||"news";
+  document.getElementById("ddBadge").className = `dd-badge ${type}`;
+  document.getElementById("ddBadge").textContent = (item.Type||type).toUpperCase();
+  document.getElementById("ddTitle").textContent = item.Title||item.Name||"";
+  document.getElementById("ddDate").textContent  = item.Date||item.SubTitle||"";
+  const media = document.getElementById("ddMedia");
+  if(item.VideoID) media.innerHTML = `<div class="dd-video-outer"><iframe src="https://www.youtube.com/embed/${esc(item.VideoID)}" allowfullscreen></iframe></div>`;
+  else if(item.Thumb) media.innerHTML = `<div class="dd-thumb"><img src="${esc(item.Thumb)}" loading="lazy"></div>`;
+  else media.innerHTML = "";
+  document.getElementById("ddDesc").textContent = item.Description||item.SubTitle||"";
+  document.getElementById("ddExtra").innerHTML = "";
+  const acts = document.getElementById("ddActions");
+  acts.innerHTML = item.Link ? `<button class="dd-btn-p" onclick="window.open('${esc(item.Link)}')">🔗 వివరాలు చదవండి</button>` : "";
+  document.getElementById("ddOverlay").classList.add("on");
+  document.getElementById("ddDrawer").classList.add("on");
+}
+function closeDetail() {
+  document.getElementById("ddOverlay").classList.remove("on");
+  document.getElementById("ddDrawer").classList.remove("on");
+}
+
+// ════════════════════════════
+// TOOLS SCREEN
+// ════════════════════════════
+function renderCalculators() {
+  document.getElementById("toolsGrid").innerHTML = `
+    <div class="tool-c" onclick="showToast('🧮 Fee Calculator లోడ్ అవుతోంది...')">
+      <div class="tool-em">🧮</div><div class="tool-name">Fee Calculator</div><div class="tool-desc">Service fees estimate</div>
+    </div>
+    <div class="tool-c" onclick="showToast('🔍 Status Tracker లోడ్ అవుతోంది...')">
+      <div class="tool-em">🔍</div><div class="tool-name">Check Status</div><div class="tool-desc">Application track</div>
+    </div>
+    <div class="tool-c" onclick="showToast('📅 Appointment booking!')">
+      <div class="tool-em">📅</div><div class="tool-name">Appointment</div><div class="tool-desc">Book time slot</div>
+    </div>
+    <div class="tool-c" onclick="goScreen('s-dir')">
+      <div class="tool-em">🗺️</div><div class="tool-name">Find Center</div><div class="tool-desc">Near me</div>
+    </div>`;
+}
+function renderDocsForms() {
+  document.getElementById("formsList").innerHTML = FORMS.map(f=>`
+    <div class="form-item" onclick="showDocsAlert('${esc(f.name)}','${esc(f.docs.join("||"))}')">
+      <div class="fi-ico">${f.em}</div>
+      <div><div class="fi-name">${esc(f.name)}</div><div class="fi-sub">${f.docs.length} పత్రాలు అవసరం</div></div>
+      <div class="fi-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>`).join("");
+  // Jobs/Admissions/Results — populated from NOTIF_RECORDS when available, else placeholder
+  renderToolsExtras();
+}
+function renderToolsExtras() {
+  const mkEmpty = (ico,lbl) => `<div class="empty-state"><div class="ei">${ico}</div><p>${lbl}</p></div>`;
+  const mkItem  = (n,key) => `<div class="form-item" onclick="openDetailById('${key}')">
+    <div class="fi-ico">${n._icon||"📌"}</div>
+    <div><div class="fi-name">${esc(n.Title||n.Name||"")}</div><div class="fi-sub">${esc(n.SubTitle||n.Date||"")}</div></div>
+    <div class="fi-arr"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+  </div>`;
+  const jobs    = NOTIF_RECORDS.filter(n=>(n.Type||"").toLowerCase().includes("job"));
+  const adm     = NOTIF_RECORDS.filter(n=>(n.Type||"").toLowerCase().includes("adm"));
+  const results = NOTIF_RECORDS.filter(n=>(n.Type||"").toLowerCase().includes("result"));
+  document.getElementById("jobList").innerHTML     = jobs.length    ? jobs.map(n=>mkItem({...n,_icon:"💼"},storeDetail({...n,_type:"notif"}))).join("") : mkEmpty("💼","Jobs లేవు — త్వరలో వస్తాయి");
+  document.getElementById("admList").innerHTML     = adm.length     ? adm.map(n=>mkItem({...n,_icon:"🎓"},storeDetail({...n,_type:"notif"}))).join("") : mkEmpty("🎓","Admissions లేవు");
+  document.getElementById("resultsList").innerHTML = results.length ? results.map(n=>mkItem({...n,_icon:"📊"},storeDetail({...n,_type:"notif"}))).join("") : mkEmpty("📊","Results లేవు");
+}
+function showDocsAlert(name, docs) {
+  const list = docs.split("||").map((d,i)=>`${i+1}. ${d}`).join("\n");
+  alert(`📋 ${name}\n\nకావాల్సిన పత్రాలు:\n${list}`);
+}
+
+// ════════════════════════════
+// NEWS TABS
+// ════════════════════════════
+function setNTab(tab, el) {
+  document.querySelectorAll(".n-tab").forEach(t=>t.classList.remove("on"));
+  el.classList.add("on");
+  document.querySelectorAll(".news-panel").forEach(p=>p.classList.remove("on"));
+  document.getElementById("np-"+tab).classList.add("on");
+}
+
+// ════════════════════════════
+// JOIN FORM (Services Grid)
+// ════════════════════════════
+function renderCheckboxGrid() {
+  const wrap = document.getElementById("svcCatWrap"); if(!wrap) return;
+  wrap.innerHTML = "";
+  Object.entries(SVC_CATS).forEach(([cat,svcs]) => {
+    wrap.innerHTML += `<div class="svc-cat-title">${cat}</div><div class="svc-chk-grid">${svcs.map(s=>`
+      <label class="svc-chk" onclick="toggleSvc(this)"><input type="checkbox" value="${esc(s)}" style="pointer-events:none"> ${esc(s)}</label>`).join("")}</div>`;
   });
 }
-function toggleCheckboxFieldNode(label) {
-  const chk = label.querySelector("input"); chk.checked = !chk.checked;
+function toggleSvc(label) {
+  const chk = label.querySelector("input");
+  chk.checked = !chk.checked;
   label.className = chk.checked ? "svc-chk checked" : "svc-chk";
-  const checked = document.querySelectorAll("#svcCatWrap input:checked").length;
-  document.getElementById("svcSelectedCount").textContent = `${checked + customServices.length} సేవలు సెలెక్ట్ చేయబడ్డాయి`;
+  updateSvcCount();
+}
+function updateSvcCount() {
+  const n = document.querySelectorAll("#svcCatWrap input:checked").length;
+  document.getElementById("svcSelectedCount").textContent = `${n + customServices.length} సేవలు సెలెక్ట్ చేయబడ్డాయి`;
 }
 function addCustomSvc() {
   const val = document.getElementById("customSvc").value.trim(); if(!val) return;
   customServices.push(val);
-  document.getElementById("customSvcList").innerHTML += `<span class="custom-tag">${val}</span>`;
+  const tag = document.createElement("span");
+  tag.className = "custom-tag";
+  tag.innerHTML = `${esc(val)} <button onclick="removeCustomSvc(this,'${esc(val)}')">✕</button>`;
+  document.getElementById("customSvcList").appendChild(tag);
   document.getElementById("customSvc").value = "";
-  const checked = document.querySelectorAll("#svcCatWrap input:checked").length;
-  document.getElementById("svcSelectedCount").textContent = `${checked + customServices.length} సేవలు సెలెక్ట్ చేయబడ్డాయి`;
+  updateSvcCount();
+}
+function removeCustomSvc(btn, val) {
+  customServices = customServices.filter(s=>s!==val);
+  btn.parentElement.remove();
+  updateSvcCount();
 }
 
+// ── Form Submission (Secure) ──
 async function submitJoinFormSecure() {
-  const name = document.getElementById("jf_name").value.trim();
-  const phone = document.getElementById("jf_phone").value.trim();
-  const center = document.getElementById("jf_center").value.trim();
-  const dist = document.getElementById("jf_dist").value;
-  const mandal = document.getElementById("jf_mandal").value;
-  const village = document.getElementById("jf_village").value.trim();
-  const addr = document.getElementById("jf_addr").value.trim();
-
-  if(!name || !phone || !center || !dist || !mandal || !village || !addr) return showToast("⚠️ దయచేసి అన్ని నక్షత్ర గుర్తు గల ఫీల్డ్స్ నింపండి!");
-
-  showToast("⏳ క్లౌడ్ గేట్‌వే లో రిజిస్ట్రేషన్ ప్రాసెస్ అవుతోంది...");
-  const chks = [...document.querySelectorAll("#svcCatWrap input:checked")].map(x => x.value);
-  const totalSvcString = [...chks, ...customServices].join(",");
-
-  const payload = {
-    action: "add_center", key: "JSK@Secret#2025", Name: center, District: dist, Mandal: mandal,
-    Village: village, Phone: phone, Address: addr, Services: totalSvcString,
-    WhatsApp: document.getElementById("jf_wa").value.trim(), Photos: document.getElementById("jf_photos").value.trim(),
-    Videos: document.getElementById("jf_videos").value.trim(), UPI: document.getElementById("jf_upi").value.trim(),
-    Offers: document.getElementById("jf_offers").value.trim()
+  if(_submitLock) return showToast("⚠️ Please wait...");
+  const f = {
+    name:   document.getElementById("jf_name").value.trim(),
+    phone:  document.getElementById("jf_phone").value.trim(),
+    center: document.getElementById("jf_center").value.trim(),
+    dist:   document.getElementById("jf_dist").value,
+    mandal: document.getElementById("jf_mandal").value,
+    village:document.getElementById("jf_village").value.trim(),
+    addr:   document.getElementById("jf_addr").value.trim()
   };
+  if(!f.name||!f.phone||!f.center||!f.dist||!f.mandal||!f.village||!f.addr)
+    return showToast("⚠️ అన్ని * ఫీల్డ్స్ నింపండి!");
+  if(!isValidPhone(f.phone))
+    return showToast("⚠️ సరైన 10-అంకెల ఫోన్ నంబర్ ఇవ్వండి!");
 
+  _submitLock = true;
+  showToast("⏳ Submitting...");
+
+  const svcs = [...document.querySelectorAll("#svcCatWrap input:checked")].map(x=>x.value);
+  const payload = {
+    action:"add_center", key:"JSK@Secret#2025",
+    Name:f.center, District:f.dist, Mandal:f.mandal, Village:f.village,
+    Phone:f.phone, Address:f.addr,
+    Services:[...svcs,...customServices].join(","),
+    WhatsApp: document.getElementById("jf_wa").value.trim(),
+    Photos:   document.getElementById("jf_photos").value.trim(),
+    Videos:   document.getElementById("jf_videos").value.trim(),
+    UPI:      document.getElementById("jf_upi").value.trim(),
+    Offers:   document.getElementById("jf_offers").value.trim(),
+    Hours:    document.getElementById("jf_hours").value.trim()
+  };
   try {
-    await fetch(CLOUD_PROXY_GATEWAY_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) });
-    rtdb.ref("centers/" + phone).set({ Name: center, District: dist, Mandal: mandal, Village: village, Phone: phone, Address: addr, Services: totalSvcString, Trusted:"false" });
-    document.getElementById("joinFormWrap").innerHTML = `<div style="text-align:center;padding:40px;"><h2 style="color:var(--grn)">✓ Submission Successful!</h2><p style="margin-top:10px;">మీ మీసేవ కేంద్రం లైవ్ క్లౌడ్ డేటాబేస్ కు అనుసంధానించబడింది.</p></div>`;
-  } catch(e) { showToast("Submission system pipe error."); }
+    // POST to Apps Script
+    await fetch(CLOUD_PROXY_GATEWAY_URL, {method:"POST",mode:"no-cors",body:JSON.stringify(payload)});
+    // Also write to Firebase
+    rtdb.ref("centers/"+f.phone).set({
+      Name:f.center, District:f.dist, Mandal:f.mandal, Village:f.village,
+      Phone:f.phone, Address:f.addr, Services:payload.Services,
+      WhatsApp:payload.WhatsApp, Photos:payload.Photos, Videos:payload.Videos,
+      UPI:payload.UPI, Offers:payload.Offers, Hours:payload.Hours, Trusted:"false"
+    });
+    document.getElementById("joinFormWrap").innerHTML = `
+      <div style="text-align:center;padding:50px 20px">
+        <div style="font-size:56px;margin-bottom:16px">🎉</div>
+        <h2 style="color:var(--grn);margin-bottom:8px">Submission Successful!</h2>
+        <p style="color:var(--t2)">మీ మీసేవ కేంద్రం డేటాబేస్ కు అనుసంధానించబడింది. Admin verification తర్వాత live అవుతుంది.</p>
+        <button class="btn-sub" style="margin-top:20px;max-width:220px" onclick="goScreen('s-home')">🏠 Home కు వెళ్ళండి</button>
+      </div>`;
+  } catch(e) { showToast("❌ Submission error. Try again."); }
+  setTimeout(()=>_submitLock=false, 5000);
 }
 
-function renderAdminDashboardMatrixGrid() {
+// ════════════════════════════
+// ADMIN (Secure)
+// ════════════════════════════
+async function verifyAdmin() {
+  const code = document.getElementById("adminPwd").value.trim();
+  if(!code) return showToast("⚠️ Password enter చేయాలి!");
+  showToast("🔐 Verifying...");
+  try {
+    // POST-based auth (Apps Script doPost must handle this)
+    const r = await fetch(CLOUD_PROXY_GATEWAY_URL, {
+      method:"POST", mode:"cors",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({action:"adminLogin", password:code})
+    });
+    const data = await r.json().catch(()=>null);
+    if(data && (data.status==="success"||data.token)) {
+      SECURE_SESSION_TOKEN = data.token || "admin-" + Date.now();
+      document.getElementById("adminLock").style.display = "none";
+      document.getElementById("adminDash").style.display = "block";
+      showToast("✅ Authenticated. Admin Unlocked.");
+      renderAdminDash();
+    } else {
+      showToast("❌ Access Denied. తప్పు పాస్‌వర్డ్!");
+      document.getElementById("adminPwd").value = "";
+    }
+  } catch(e) {
+    // Fallback GET for simpler Apps Script setups
+    try {
+      const r2 = await fetch(`${CLOUD_PROXY_GATEWAY_URL}?action=adminLogin&password=${encodeURIComponent(code)}`);
+      const data2 = await r2.json();
+      if(data2.status==="success"||data2.token) {
+        SECURE_SESSION_TOKEN = data2.token||"admin-"+Date.now();
+        document.getElementById("adminLock").style.display="none";
+        document.getElementById("adminDash").style.display="block";
+        showToast("✅ Authenticated.");
+        renderAdminDash();
+      } else showToast("❌ Invalid credentials!");
+    } catch(e2) { showToast("⚠️ Network error. Retry."); }
+  }
+}
+
+function renderAdminDash() {
   document.getElementById("aT").textContent = ALL_NODES_DATA.length;
-  document.getElementById("aV").textContent = ALL_NODES_DATA.filter(n => n.Trusted === "true").length;
-  const list = document.getElementById("allCList");
-  list.innerHTML = ALL_NODES_DATA.map(d => `
+  document.getElementById("aV").textContent = ALL_NODES_DATA.filter(n=>n.Trusted==="true").length;
+  document.getElementById("allCList").innerHTML = ALL_NODES_DATA.map(d=>`
     <div class="adm-item">
-      <div style="flex:1;"><div class="adm-item-name">${d.Name}</div><div class="adm-item-sub">${d.Mandal} · Phone: ${d.Phone}</div></div>
+      <div style="flex:1">
+        <div class="adm-item-name">${esc(d.Name)}</div>
+        <div class="adm-item-sub">${esc(d.Mandal)} · ${esc(d.Phone)}</div>
+      </div>
       <div class="adm-btns">
-        <button class="adm-a" onclick="executeCloudDashboardSyncAction('toggle_trusted', '${d.Phone}')">🏅 Badge</button>
-        <button class="adm-r" onclick="executeCloudDashboardSyncAction('remove_center', '${d.Phone}')">🗑️ Remove</button>
+        <button class="adm-a" onclick="adminAction('toggle_trusted','${esc(d.Phone)}')">🏅 Badge</button>
+        <button class="adm-r" onclick="if(confirm('Remove ${esc(d.Name)}?'))adminAction('remove_center','${esc(d.Phone)}')">🗑️</button>
       </div>
     </div>`).join("");
 }
 
-async function executeCloudDashboardSyncAction(action, phone) {
-  if(!SECURE_SESSION_HANDSHAKE_TOKEN) return;
-  showToast("⚙️ Syncing parameters with secure database pool...");
-  await fetch(CLOUD_PROXY_GATEWAY_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify({ action: action, token: SECURE_SESSION_HANDSHAKE_TOKEN, Phone: phone })
-  });
-  showToast("✓ Database synchronization operation successful!");
+async function adminAction(action, phone) {
+  if(!SECURE_SESSION_TOKEN) return showToast("⚠️ Session expired. Re-login.");
+  showToast("⚙️ Syncing...");
+  try {
+    await fetch(CLOUD_PROXY_GATEWAY_URL,{method:"POST",mode:"no-cors",body:JSON.stringify({action,token:SECURE_SESSION_TOKEN,Phone:phone})});
+    // Local state toggle for immediate feedback
+    if(action==="toggle_trusted") {
+      const node = ALL_NODES_DATA.find(n=>n.Phone===phone);
+      if(node) { node.Trusted = node.Trusted==="true"?"false":"true"; rtdb.ref("centers/"+phone+"/Trusted").set(node.Trusted); }
+    } else if(action==="remove_center") {
+      rtdb.ref("centers/"+phone).remove();
+    }
+    showToast("✅ Done!");
+    setTimeout(renderAdminDash, 500);
+  } catch(e) { showToast("❌ Error."); }
 }
 
-function setupDynamicCounterTelemetry() {
-  const mockCount = Math.floor(Math.random() * 110) + 420;
-  document.getElementById("visCount").textContent = mockCount;
-  document.getElementById("visTotal").textContent = (mockCount * 17).toLocaleString();
-  document.getElementById("visTime").textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+async function triggerBroadcast() {
+  if(!SECURE_SESSION_TOKEN) return showToast("⚠️ Not authenticated.");
+  const t = document.getElementById("pushTitle").value.trim();
+  const m = document.getElementById("pushMessage").value.trim();
+  if(!t||!m) return showToast("⚠️ Title & Message నింపండి!");
+  showToast("📡 Broadcasting...");
+  try {
+    await fetch(CLOUD_PROXY_GATEWAY_URL,{method:"POST",mode:"no-cors",body:JSON.stringify({action:"sendPushNotification",token:SECURE_SESSION_TOKEN,title:t,message:m})});
+    showToast("🚀 Broadcast Sent!");
+    document.getElementById("pushTitle").value="";
+    document.getElementById("pushMessage").value="";
+  } catch(e) { showToast("❌ Broadcast error."); }
 }
 
+// ════════════════════════════
+// NAVIGATION
+// ════════════════════════════
 function goScreen(s) {
-  document.querySelectorAll(".screen").forEach(el => el.classList.remove("on"));
+  document.querySelectorAll(".screen").forEach(el=>el.classList.remove("on"));
   document.getElementById(s).classList.add("on");
-  document.querySelectorAll(".bnav").forEach(b => b.classList.remove("on"));
-  const mapping = {"s-home":"bn-home","s-dir":"bn-dir","s-tools":"bn-tools","s-news":"bn-news","s-admin":"bn-admin"};
-  if(mapping[s]) document.getElementById(mapping[s]).classList.add("on");
-  document.getElementById("tickerWrap").style.display = s === "s-home" ? "flex" : "none";
+  document.querySelectorAll(".bnav").forEach(b=>b.classList.remove("on"));
+  const map = {s_home:"bn-home","s-home":"bn-home","s-dir":"bn-dir","s-tools":"bn-tools","s-news":"bn-news","s-admin":"bn-admin","s-join":"bn-dir","s-notif":"bn-news"};
+  if(map[s]) document.getElementById(map[s])?.classList.add("on");
+  document.getElementById("tickerWrap").style.display = s==="s-home"?"flex":"none";
 }
-function closeProf() { document.getElementById("profilePg").classList.remove("on"); }
-function showToast(m) { const t = document.getElementById("toast"); t.textContent = m; t.className = "toast show"; setTimeout(()=>t.className="toast", 2500); }
-function setV(v) { SYSTEM_VIEW_LAYOUT = v; document.getElementById("vgb").className = v==="grid"?"vt on":"vt"; document.getElementById("vlb").className = v==="list"?"vt on":"vt"; applyF(); }
-function closeDetail() { document.getElementById("ddOverlay").classList.remove("on"); document.getElementById("ddDrawer").classList.remove("on"); }
-function openAdvDrawer() { document.getElementById("advOverlay").className = "adv-overlay on"; document.getElementById("advDrawer").classList.add("on"); }
-function closeAdvDrawer() { document.getElementById("advOverlay").className = "adv-overlay"; document.getElementById("advDrawer").classList.remove("on"); }
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.className = "toast show";
+  setTimeout(()=>t.className="toast", 2800);
+}
+function openAdvDrawer() { document.getElementById("advOverlay").className="adv-overlay on"; document.getElementById("advDrawer").classList.add("on"); }
+function closeAdvDrawer() { document.getElementById("advOverlay").className="adv-overlay"; document.getElementById("advDrawer").classList.remove("on"); }
+function emptyState(ico,txt) { return `<div class="empty-state"><div class="ei">${ico}</div><p>${txt}</p></div>`; }
 
-function onDist() {
-  const dist = document.getElementById("fDist").value;
-  const mEl = document.getElementById("fMandal"); mEl.innerHTML = '<option value="">అన్ని మండలాలు</option>';
-  if(TGD[dist]) TGD[dist].forEach(m => mEl.innerHTML += `<option value="${m}">${m}</option>`);
-  populateCenterDropdown(); applyF();
-}
-function onJDist() {
-  const dist = document.getElementById("jf_dist").value;
-  const mEl = document.getElementById("jf_mandal"); mEl.innerHTML = '<option value="">మండలం ఎంచుకోండి</option>';
-  if(TGD[dist]) TGD[dist].forEach(m => mEl.innerHTML += `<option value="${m}">${m}</option>`);
-}
-
-function populateCenterDropdown() {
-  const cEl = document.getElementById("fCenter"); if(!cEl) return;
-  cEl.innerHTML = '<option value="">అన్ని Centers</option>';
-  ALL_NODES_DATA.forEach(n => cEl.innerHTML += `<option value="${n.Name}">${n.Name}</option>`);
+// ── Visitor Telemetry ──
+function setupTelemetry() {
+  const v = Math.floor(Math.random()*110)+420;
+  document.getElementById("visCount").textContent = v;
+  document.getElementById("visTotal").textContent = (v*17).toLocaleString();
+  document.getElementById("visTime").textContent  = new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+  // Live counter ping
+  rtdb.ref("telemetry/visitors").transaction(c=>(c||0)+1);
+  rtdb.ref("telemetry/visitors").on("value", snap=>{ if(snap.val()) document.getElementById("visCount").textContent = snap.val(); });
 }
 
-function renderNewsFeedUI() {
-  const el = document.getElementById("np-all"); if(!el) return; el.innerHTML = "";
-  NEWS_RECORDS.forEach(n => el.innerHTML += `<div class="news-card"><div class="nc-thumb">📰</div><div class="nc-body"><div class="nc-ttl">${n.Title}</div><div class="nc-desc2">${n.Description || ""}</div></div></div>`);
-}
-function renderGlobalNotificationsUI() {
-  const el = document.getElementById("notifBody"); if(!el) return; el.innerHTML = "";
-  NOTIF_RECORDS.forEach(n => el.innerHTML += `<div style="margin:10px;"><div class="notif-card" style="width:100%;"><div class="nc-type">${n.Type||"BOARD"}</div><div class="nc-title">${n.Title}</div><div class="nc-date">${n.SubTitle || ""}</div></div></div>`);
-}
-function renderSchemesLayoutGrid() {
-  const el = document.getElementById("schemesList"); if(!el) return; el.innerHTML = "";
-  SCHEMES_RECORDS.forEach(s => el.innerHTML += `<div class="scheme-card"><div class="sc-ico">🏛️</div><div><div class="sc-name">${s.Name}</div><div class="sc-desc">${s.Description || ""}</div></div></div>`);
-}
-function renderHomeRecentHorizontalScroller() {
-  const el = document.getElementById("homeRecent"); if(!el) return; el.innerHTML = "";
-  ALL_NODES_DATA.slice(0, 5).forEach(d => el.innerHTML += `<div class="notif-card" onclick="openProfileMapViewer('${d.id}')"><div class="nc-type">${d.Mandal}</div><div class="nc-title">${d.Name}</div></div>`);
-}
-
-function renderCalculatorsToolbox() {
-  document.getElementById("toolsGrid").innerHTML = `
-    <div class="tool-c" onclick="showToast('Fee Estimator tool loaded')"><div class="tool-em">🧮</div><div class="tool-name">Fee Calculator</div></div>
-    <div class="tool-c" onclick="showToast('Tracking Node Server Ready')"><div class="tool-em">🔍</div><div class="tool-name">Check Status</div></div>`;
-}
-function renderRequiredDocsGrid() {
-  document.getElementById("formsList").innerHTML = FORMS.map(f => `
-    <div class="form-item" onclick="alert('కావాల్సిన పత్రాల జాబితా:\\n' + '${f.docs.join(\'\\n\')}')">
-      <div class="fi-ico">${f.em}</div><div><div class="fi-name">${f.name}</div><div class="fi-sub">${f.docs.length} పత్రాలు అవసరం</div></div>
-    </div>`).join("");
-}
-
-function fetchLocalFallbackBackupData() {
+// ── Fallback Data ──
+function fallbackData() {
   return [
-    {id:"1",Name:"హైదరాబాద్ మీసేవ నోడ్",District:"హైదరాబాద్",Mandal:"అంబర్‌పేట",Village:"హిమాయత్‌నగర్",Phone:"9948770651",Trusted:"true",Lat:"17.396",Lng:"78.478"},
-    {id:"2",Name:"చౌటుప్పల్ డిజిటల్ మీసేవ",District:"యాదాద్రి భువనగిరి",Mandal:"చౌటుప్పల్",Village:"చౌటుప్పల్",Phone:"9848022338",Trusted:"false",Lat:"17.251",Lng:"78.892"}
+    {id:"1",Name:"హైదరాబాద్ మీసేవ నోడ్",District:"హైదరాబాద్",Mandal:"అంబర్‌పేట",Village:"హిమాయత్‌నగర్",Phone:"9948770651",Trusted:"true",Lat:"17.396",Lng:"78.478",Services:"Income Certificate,Caste Certificate,Aadhaar",Hours:"9am - 6pm"},
+    {id:"2",Name:"చౌటుప్పల్ డిజిటల్ మీసేవ",District:"యాదాద్రి భువనగిరి",Mandal:"చౌటుప్పల్",Village:"చౌటుప్పల్",Phone:"9848022338",Trusted:"false",Lat:"17.251",Lng:"78.892",Services:"Ration Card,Pahani,Voter ID"}
   ];
 }
 
-/* ══ TRIPLE-TAP GATEWAY ACCESS LOGO → ADMIN ══ */
-let _brandClickCounter = 0;
+// ── Triple-Tap Brand → Admin ──
 document.getElementById("msBrand").addEventListener("click", () => {
-  _brandClickCounter++;
-  if(_brandClickCounter >= 3) {
-    _brandClickCounter = 0;
-    goScreen("s-admin");
-  }
-  setTimeout(() => { _brandClickCounter = 0; }, 2000);
+  _brandTaps++;
+  if(_brandTimer) clearTimeout(_brandTimer);
+  _brandTimer = setTimeout(()=>_brandTaps=0, 2000);
+  if(_brandTaps >= 3) { _brandTaps=0; goScreen("s-admin"); }
 });
 
+// ── Offline Detection ──
+function updateOnlineStatus() {
+  const bar = document.getElementById("offlineBar");
+  if(!navigator.onLine) bar.classList.add("show");
+  else bar.classList.remove("show");
+}
+window.addEventListener("online",  updateOnlineStatus);
+window.addEventListener("offline", updateOnlineStatus);
+updateOnlineStatus();
+
+// ── Boot ──
 window.onload = init;
 </script>
 </body>
