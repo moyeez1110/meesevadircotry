@@ -773,7 +773,9 @@ let _firebaseReady = false;
 })();
 
 // ── Cloud Proxy (Google Apps Script) ──
-const CLOUD_PROXY_GATEWAY_URL = "https://script.google.com/macros/s/AKfycbyAfxC_Zg_9iAg-Cjfzo31v5zB9uOHvXcU03TzhGLes03Y3204kh5ivXEyZaCrE8msY/exec";
+// ⚠️  మీ Apps Script URL ఇక్కడ paste చేయండి ↓↓↓
+const CLOUD_PROXY_GATEWAY_URL = "https://script.google.com/macros/s/AKfycbw2rnQAkMV9kpgJkwRor_ukXKubvPRSSaHXFqEd3eDa3EWNy1IHISB3JAn8hoQ2EdqH/exec";
+//                               ↑ Extensions → Apps Script → Deploy → Web App → URL copy చేయండి
 
 // ── App State ──
 let ALL_NODES_DATA = [], SYSTEM_VIEW_LAYOUT = "grid";
@@ -1456,16 +1458,23 @@ async function verifyAdmin() {
   const code = document.getElementById("adminPwd").value.trim();
   if(!code) return showToast("⚠️ Password enter చేయాలి!");
   showToast("🔐 Verifying...");
+
+  // ── మీ Apps Script కి match అయ్యే exact action names ──
+  // POST → action: "admin_login"   (doPost handler)
+  // GET  → action: "adminLoginCheck" (doGet fallback)
+  // Response → data.success === true  (not data.status)
+
   try {
-    // POST-based auth (Apps Script doPost must handle this)
     const r = await fetch(CLOUD_PROXY_GATEWAY_URL, {
-      method:"POST", mode:"cors",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({action:"adminLogin", password:code})
+      method : "POST",
+      mode   : "cors",
+      headers: { "Content-Type": "application/json" },
+      body   : JSON.stringify({ action: "admin_login", password: code })
     });
-    const data = await r.json().catch(()=>null);
-    if(data && (data.status==="success"||data.token)) {
-      SECURE_SESSION_TOKEN = data.token || "admin-" + Date.now();
+    const data = await r.json().catch(() => null);
+
+    if (data && (data.success === true || data.token)) {
+      SECURE_SESSION_TOKEN = data.token || "";
       document.getElementById("adminLock").style.display = "none";
       document.getElementById("adminDash").style.display = "block";
       showToast("✅ Authenticated. Admin Unlocked.");
@@ -1475,18 +1484,21 @@ async function verifyAdmin() {
       document.getElementById("adminPwd").value = "";
     }
   } catch(e) {
-    // Fallback GET for simpler Apps Script setups
+    // GET fallback → action=adminLoginCheck (మీ Apps Script doGet)
     try {
-      const r2 = await fetch(`${CLOUD_PROXY_GATEWAY_URL}?action=adminLogin&password=${encodeURIComponent(code)}`);
-      const data2 = await r2.json();
-      if(data2.status==="success"||data2.token) {
-        SECURE_SESSION_TOKEN = data2.token||"admin-"+Date.now();
-        document.getElementById("adminLock").style.display="none";
-        document.getElementById("adminDash").style.display="block";
+      const r2  = await fetch(`${CLOUD_PROXY_GATEWAY_URL}?action=adminLoginCheck&password=${encodeURIComponent(code)}`);
+      const d2  = await r2.json();
+      if (d2.success === true || d2.token) {
+        SECURE_SESSION_TOKEN = d2.token || "";
+        document.getElementById("adminLock").style.display = "none";
+        document.getElementById("adminDash").style.display = "block";
         showToast("✅ Authenticated.");
         renderAdminDash();
-      } else showToast("❌ Invalid credentials!");
-    } catch(e2) { showToast("⚠️ Network error. Retry."); }
+      } else {
+        showToast("❌ Invalid credentials!");
+        document.getElementById("adminPwd").value = "";
+      }
+    } catch(e2) { showToast("⚠️ Network error. Retry చేయండి."); }
   }
 }
 
@@ -1530,7 +1542,7 @@ async function triggerBroadcast() {
   if(!t||!m) return showToast("⚠️ Title & Message నింపండి!");
   showToast("📡 Broadcasting...");
   try {
-    await fetch(CLOUD_PROXY_GATEWAY_URL,{method:"POST",mode:"no-cors",body:JSON.stringify({action:"sendPushNotification",token:SECURE_SESSION_TOKEN,title:t,message:m})});
+    await fetch(CLOUD_PROXY_GATEWAY_URL,{method:"POST",mode:"no-cors",body:JSON.stringify({action:"send_push",token:SECURE_SESSION_TOKEN,title:t,message:m})});
     showToast("🚀 Broadcast Sent!");
     document.getElementById("pushTitle").value="";
     document.getElementById("pushMessage").value="";
