@@ -761,7 +761,7 @@ let _firebaseReady = false;
       console.warn("⚠️ Firebase SDK not loaded — offline/fallback mode.");
       return;
     }
-    const cfg = { databaseURL: "https://meeseva-directory-default-rtdb.firebaseio.com/" };
+    const cfg = { databaseURL: "https://meeseva-directory-default-rtdb.asia-southeast1.firebasedatabase.app" };
     if (!firebase.apps.length) firebase.initializeApp(cfg);
     rtdb = firebase.database();
     _firebaseReady = true;
