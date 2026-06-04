@@ -15,8 +15,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <style>
 /* ═══════════════════════════════════════════
    ROOT — MeeSeva Saffron+Green+Gold Theme
@@ -745,16 +743,34 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;font-size:14px;color:var(-
 
 <div class="toast" id="toast"></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════
 // 🔒 MEESEVA DIRECTORY — COMPLETE + SECURE ENGINE
 // ═══════════════════════════════════════════════════════════════
 
-// ── Firebase Initialization ──
-const firebaseConfig = { databaseURL: "https://meeseva-directory-default-rtdb.firebaseio.com/" };
-firebase.initializeApp(firebaseConfig);
-const rtdb = firebase.database();
+// ── Firebase Safe Initialization ──
+// Firebase CDN fail అయినా app పని చేస్తుంది — graceful fallback
+let rtdb = null;
+let _firebaseReady = false;
+(function initFirebaseSafe() {
+  try {
+    if (typeof firebase === "undefined") {
+      console.warn("⚠️ Firebase SDK not loaded — offline/fallback mode.");
+      return;
+    }
+    const cfg = { databaseURL: "https://meeseva-directory-default-rtdb.firebaseio.com/" };
+    if (!firebase.apps.length) firebase.initializeApp(cfg);
+    rtdb = firebase.database();
+    _firebaseReady = true;
+    console.log("✅ Firebase connected.");
+  } catch(e) {
+    console.warn("⚠️ Firebase init error:", e.message);
+    rtdb = null;
+  }
+})();
 
 // ── Cloud Proxy (Google Apps Script) ──
 const CLOUD_PROXY_GATEWAY_URL = "https://script.google.com/macros/s/AKfycbyAfxC_Zg_9iAg-Cjfzo31v5zB9uOHvXcU03TzhGLes03Y3204kh5ivXEyZaCrE8msY/exec";
@@ -848,14 +864,20 @@ async function init() {
   renderCalculators();
   renderDocsForms();
 
-  // Firebase live listener
-  rtdb.ref("centers").on("value", snap => {
-    const data = snap.val();
-    let list = [];
-    if(data) Object.keys(data).forEach(k => list.push({id:k, ...data[k]}));
-    ALL_NODES_DATA = list.length ? list : fallbackData();
+  // Firebase live listener (null-safe)
+  if (rtdb) {
+    rtdb.ref("centers").on("value", snap => {
+      const data = snap.val();
+      let list = [];
+      if(data) Object.keys(data).forEach(k => list.push({id:k, ...data[k]}));
+      ALL_NODES_DATA = list.length ? list : fallbackData();
+      refreshMatrix();
+    }, () => { ALL_NODES_DATA = fallbackData(); refreshMatrix(); });
+  } else {
+    // Firebase unavailable — use local fallback immediately
+    ALL_NODES_DATA = fallbackData();
     refreshMatrix();
-  }, () => { ALL_NODES_DATA = fallbackData(); refreshMatrix(); });
+  }
 
   // Cloud data feeds
   fetchFeed("news",    txt => { NEWS_RECORDS    = parseCSV(txt); renderNewsFeed(); renderHomeNews(); });
@@ -1409,8 +1431,8 @@ async function submitJoinFormSecure() {
   try {
     // POST to Apps Script
     await fetch(CLOUD_PROXY_GATEWAY_URL, {method:"POST",mode:"no-cors",body:JSON.stringify(payload)});
-    // Also write to Firebase
-    rtdb.ref("centers/"+f.phone).set({
+    // Also write to Firebase (null-safe)
+    if (rtdb) rtdb.ref("centers/"+f.phone).set({
       Name:f.center, District:f.dist, Mandal:f.mandal, Village:f.village,
       Phone:f.phone, Address:f.addr, Services:payload.Services,
       WhatsApp:payload.WhatsApp, Photos:payload.Photos, Videos:payload.Videos,
@@ -1492,9 +1514,9 @@ async function adminAction(action, phone) {
     // Local state toggle for immediate feedback
     if(action==="toggle_trusted") {
       const node = ALL_NODES_DATA.find(n=>n.Phone===phone);
-      if(node) { node.Trusted = node.Trusted==="true"?"false":"true"; rtdb.ref("centers/"+phone+"/Trusted").set(node.Trusted); }
+      if(node) { node.Trusted = node.Trusted==="true"?"false":"true"; if(rtdb) rtdb.ref("centers/"+phone+"/Trusted").set(node.Trusted); }
     } else if(action==="remove_center") {
-      rtdb.ref("centers/"+phone).remove();
+      if(rtdb) rtdb.ref("centers/"+phone).remove();
     }
     showToast("✅ Done!");
     setTimeout(renderAdminDash, 500);
@@ -1541,9 +1563,13 @@ function setupTelemetry() {
   document.getElementById("visCount").textContent = v;
   document.getElementById("visTotal").textContent = (v*17).toLocaleString();
   document.getElementById("visTime").textContent  = new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-  // Live counter ping
-  rtdb.ref("telemetry/visitors").transaction(c=>(c||0)+1);
-  rtdb.ref("telemetry/visitors").on("value", snap=>{ if(snap.val()) document.getElementById("visCount").textContent = snap.val(); });
+  // Live counter ping (null-safe)
+  if (rtdb) {
+    try {
+      rtdb.ref("telemetry/visitors").transaction(c=>(c||0)+1);
+      rtdb.ref("telemetry/visitors").on("value", snap=>{ if(snap && snap.val()) document.getElementById("visCount").textContent = snap.val(); });
+    } catch(e) { /* telemetry optional */ }
+  }
 }
 
 // ── Fallback Data ──
